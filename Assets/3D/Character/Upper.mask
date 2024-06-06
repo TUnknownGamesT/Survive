@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Upper
+  m_Mask: 00000000010000000100000000000000000000000100000001000000010000000100000000000000000000000000000000000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Armature
+    m_Weight: 0
+  - m_Path: Armature/Base
+    m_Weight: 0
+  - m_Path: Armature/Base/Ass
+    m_Weight: 0
+  - m_Path: Armature/Base/Ass/Spine
+    m_Weight: 1
+  - m_Path: Armature/Base/Ass/Spine/Back
+    m_Weight: 1
+  - m_Path: Armature/Base/Ass/Spine/Back/L_Shoulder
+    m_Weight: 1
+  - m_Path: Armature/Base/Ass/Spine/Back/L_Shoulder/L_Shoulder.001
+    m_Weight: 1
+  - m_Path: Armature/Base/Ass/Spine/Back/L_Shoulder/L_Shoulder.001/L_Arm
+    m_Weight: 1
+  - m_Path: Armature/Base/Ass/Spine/Back/L_Shoulder/L_Shoulder.001/L_Arm/L_Hand
+    m_Weight: 1
+  - m_Path: Armature/Base/Ass/Spine/Back/L_Shoulder/L_Shoulder.001/L_Arm/L_Hand/L_Hand_end
+    m_Weight: 1
+  - m_Path: Armature/Base/Ass/Spine/Back/Neck
+    m_Weight: 1
+  - m_Path: Armature/Base/Ass/Spine/Back/Neck/Head
+    m_Weight: 1
+  - m_Path: Armature/Base/Ass/Spine/Back/Neck/Head/Head_end
+    m_Weight: 1
+  - m_Path: Armature/Base/Ass/Spine/Back/R_Shoulder
+    m_Weight: 1
+  - m_Path: Armature/Base/Ass/Spine/Back/R_Shoulder/R_Shoulder.001
+    m_Weight: 1
+  - m_Path: Armature/Base/Ass/Spine/Back/R_Shoulder/R_Shoulder.001/R_Arm
+    m_Weight: 1
+  - m_Path: Armature/Base/Ass/Spine/Back/R_Shoulder/R_Shoulder.001/R_Arm/R_hand
+    m_Weight: 1
+  - m_Path: Armature/Base/Ass/Spine/Back/R_Shoulder/R_Shoulder.001/R_Arm/R_hand/Weapon
+    m_Weight: 1
+  - m_Path: Armature/Base/Ass/Spine/Back/R_Shoulder/R_Shoulder.001/R_Arm/R_hand/Weapon/Weapon_end
+    m_Weight: 1
+  - m_Path: Armature/Base/L_Elbow
+    m_Weight: 0
+  - m_Path: Armature/Base/L_Elbow/L_Elbow_end
+    m_Weight: 0
+  - m_Path: Armature/Base/L_Hand_Target
+    m_Weight: 1
+  - m_Path: Armature/Base/L_Hand_Target/L_Hand_Target_end
+    m_Weight: 1
+  - m_Path: Armature/Base/L_Hips
+    m_Weight: 0
+  - m_Path: Armature/Base/L_Hips/L_Leg1
+    m_Weight: 0
+  - m_Path: Armature/Base/L_Hips/L_Leg1/L_Leg2
+    m_Weight: 0
+  - m_Path: Armature/Base/L_Hips/L_Leg1/L_Leg2/L_Leg2_end
+    m_Weight: 0
+  - m_Path: Armature/Base/L_Knee
+    m_Weight: 0
+  - m_Path: Armature/Base/L_Knee/L_Knee_end
+    m_Weight: 0
+  - m_Path: Armature/Base/L_Leg_Target
+    m_Weight: 0
+  - m_Path: Armature/Base/L_Leg_Target/L_Leg_Target_end
+    m_Weight: 0
+  - m_Path: Armature/Base/R_Elbow
+    m_Weight: 1
+  - m_Path: Armature/Base/R_Elbow/R_Elbow_end
+    m_Weight: 1
+  - m_Path: Armature/Base/R_Hand_Target
+    m_Weight: 1
+  - m_Path: Armature/Base/R_Hand_Target/R_Hand_Target_end
+    m_Weight: 1
+  - m_Path: Armature/Base/R_Hips
+    m_Weight: 0
+  - m_Path: Armature/Base/R_Hips/R_Leg1
+    m_Weight: 0
+  - m_Path: Armature/Base/R_Hips/R_Leg1/R_leg2
+    m_Weight: 0
+  - m_Path: Armature/Base/R_Hips/R_Leg1/R_leg2/R_leg2_end
+    m_Weight: 0
+  - m_Path: Armature/Base/R_Knee
+    m_Weight: 0
+  - m_Path: Armature/Base/R_Knee/R_Knee_end
+    m_Weight: 0
+  - m_Path: Armature/Base/R_Leg_Target
+    m_Weight: 0
+  - m_Path: Armature/Base/R_Leg_Target/R_Leg_Target_end
+    m_Weight: 0
+  - m_Path: Ass
+    m_Weight: 0
+  - m_Path: Back1
+    m_Weight: 0
+  - m_Path: Cube
+    m_Weight: 0
+  - m_Path: Empty
+    m_Weight: 0
+  - m_Path: LeftArm
+    m_Weight: 0
+  - m_Path: LeftHadn
+    m_Weight: 0
+  - m_Path: LeftLeg1
+    m_Weight: 0
+  - m_Path: LeftLeg2
+    m_Weight: 0
+  - m_Path: LeftShoulder
+    m_Weight: 0
+  - m_Path: LeftShoulder.001
+    m_Weight: 0
+  - m_Path: RightArm
+    m_Weight: 0
+  - m_Path: RightHand
+    m_Weight: 0
+  - m_Path: RightLeg1
+    m_Weight: 0
+  - m_Path: RightLeg2
+    m_Weight: 0
+  - m_Path: Torso
+    m_Weight: 0
