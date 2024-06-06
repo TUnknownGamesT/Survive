@@ -3,17 +3,24 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Gun
+  - Bullet
+  - Wall
+  - Enemy
+  - CrossHair
+  - Grenade
+  - PlayerBase
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Floor
+  - CrossHair
+  - Bullet
   - 
   - 
   - 

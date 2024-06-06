@@ -1,0 +1,7 @@
+#PlayerHP Label {
+    display: none;
+}
+
+#PlayerHP #unity-drag-container {
+    background-image: url('project://database/Assets/_ProjectAssets/Textures/Asset%2027.png?fileID=21300000&guid=87351c28e9232ad49a081e51c8e3fcf2&type=3#Asset 27');
+}
