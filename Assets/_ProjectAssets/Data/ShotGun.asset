@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   armPrefab: {fileID: 877126217387688659, guid: 02460addadfaec44a99beeec8e26ac68, type: 3}
   enemyType: 3
-  health: 20
+  health: 21
   damping: 200
   stoppingDistance: 10
   pauseBetweenMovement: 2
+  speed: 5
   soundComponent: {fileID: 0}
   armSpawnPoint: {fileID: 0}
   aiBody: {fileID: 0}

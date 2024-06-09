@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -46,6 +44,21 @@ public class CameraController : MonoBehaviour
     private  CinemachineVirtualCamera _cinemachineVirtualCamera;
     private Vector3 velocity;
 
+
+    private void OnEnable()
+    {
+        AIBrain.onEnemyDeath += KillEffect;
+    }
+    
+    private void OnDisable()
+    {
+        AIBrain.onEnemyDeath -= KillEffect;
+    }
+
+    private void Start()
+    {
+        virtualCamera = GetComponent<CinemachineVirtualCamera>();
+    }
 
 
     private void Update()
@@ -113,15 +126,7 @@ public class CameraController : MonoBehaviour
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 8f;
         shakeTimeRemain = 1f;
     }
-
-    public static void MoveCameraSmooth(Vector3 newPosition)
-    {
-        Debug.Log("Moving");
-        LeanTween.value(0, 1, 0.5f).setOnUpdate((float value) =>
-        {
-            _cinemachineCameraOffset.m_Offset = Vector3.Lerp(_cinemachineCameraOffset.m_Offset, newPosition, value);
-        }).setEaseInQuad();
-    }
+    
 
     public void KillEffect()
     {

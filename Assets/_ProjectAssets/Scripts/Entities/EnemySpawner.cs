@@ -17,6 +17,7 @@ public class EnemySpawner : MonoBehaviour
 
     private List<Transform> spawnPoints = new();
     private int enemySpawned = 0;
+    private int roundPassed;
 
     private void Awake()
     {
@@ -44,12 +45,18 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-        StartSpawning();
+        StartSpawning(UpgradeType.Base);
     }
 
-
-    private void StartSpawning()
+    //Schimbat pe viitor sa nu mai fie nevoie de Upgrade Type
+    private void StartSpawning(UpgradeType upgradeType)
     {
+        roundPassed++;
+        if (roundPassed == 5)
+        {
+            enemies++;
+            roundPassed = 0;
+        }
         UniTask.Void(async () =>
         {
             Debug.LogWarning("Spawning");

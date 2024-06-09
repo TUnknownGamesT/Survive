@@ -164,7 +164,7 @@ public class UpperBodyStateMachine : MonoBehaviour
         if (currentArm != null)
         {
             currentArm.gameObject.transform.SetParent(null);
-            currentArm.gameObject.transform.position = Vector3.zero;
+            currentArm.gameObject.transform.localPosition = Vector3.zero;
             currentArm.GetComponent<Rigidbody>().isKinematic = false;
             currentArm.GetComponent<BoxCollider>().enabled = true;
         }

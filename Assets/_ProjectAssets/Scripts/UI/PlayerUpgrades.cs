@@ -15,7 +15,7 @@ public class PlayerUpgrades : MonoBehaviour
 {
     public static Action<int> onHealthUpgrade;
     public static Action<float> onSpeedUpgrade;
-    public static Action onPlayerUpgradeSelected;
+    public static Action<UpgradeType> onPlayerUpgradeSelected;
 
 
     public float speedAmountToAdd;
@@ -66,7 +66,7 @@ public class PlayerUpgrades : MonoBehaviour
                 break;
         }
         
-        onPlayerUpgradeSelected?.Invoke();
+        onPlayerUpgradeSelected?.Invoke(UpgradeType.Player);
     }
 
     private void AddCardUpgradeAttribute()

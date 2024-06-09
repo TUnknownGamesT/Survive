@@ -63,6 +63,7 @@ public class AIBrain : MonoBehaviour
         mockEnemyType.soundComponent = _soundComponent;
         mockEnemyType.aiBody = gameObject;
         mockEnemyType.navMeshAgent = GetComponent<NavMeshAgent>();
+        mockEnemyType.navMeshAgent.speed = mockEnemyType.speed;
         mockEnemyType.travelPoints = travelPoints;
         mockEnemyType.armPrefab.GetComponent<Gun>().SetArmHandler(_enemyAnimations);
 
@@ -136,6 +137,7 @@ public class AIBrain : MonoBehaviour
         if (_alive)
         {
             onEnemyDeath?.Invoke();
+            CameraController.SlowMotion(0.2f);
             //_enemyAnimations.Die();
             enabled = false;
             _alive = false;
