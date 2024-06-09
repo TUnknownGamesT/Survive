@@ -16,7 +16,7 @@ public class BaseUpgrade : MonoBehaviour
 {
 
     public static Action<BaseUpgradesOptions,float> onBaseUpgraded;
-    public static Action onBaseUpgradeSelected;
+    public static Action<UpgradeType> onBaseUpgradeSelected;
 
     
     [Header("References")]
@@ -80,7 +80,7 @@ public class BaseUpgrade : MonoBehaviour
                 break;
         }
         
-        onBaseUpgradeSelected?.Invoke();
+        onBaseUpgradeSelected?.Invoke(UpgradeType.Base);
     }
 
     private void AddCardUpgradeAttribute()

@@ -24,10 +24,10 @@ public class ShotGunn : Gun
                     ForceMode.Impulse);
             }
 
-           // vfx.Play();
+            vfx.Play();
             currentAmunition--;
             TimeSinceLastShot = 0;
-            //CameraController.ShakeCamera(0.2f,2);
+            CameraController.ShakeCamera(0.2f,2);
             _soundComponent.PlaySound(shootSound);
             onShoot?.Invoke();
             //_armHandler.animation.StopShooting();

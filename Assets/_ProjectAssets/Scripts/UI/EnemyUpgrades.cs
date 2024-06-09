@@ -36,19 +36,21 @@ public class EnemyUpgrades : MonoBehaviour
     public float healthUpgrade;
     public float damageUpgrade;
 
-    private readonly List<EnemyUpgradesOptions> _enemyUpgradesOptions = new ();
+    private readonly List<EnemyUpgradesOptions> _enemyUpgradesOptions = new ()
+    {
+        EnemyUpgradesOptions.Speed,EnemyUpgradesOptions.Health,EnemyUpgradesOptions.Damage
+    };
     private float _upgradedStatus;
     private EnemyUpgradesOptions _randomUpgrade;
     
     private void Awake()
     {
-        _enemyUpgradesOptions.Add(EnemyUpgradesOptions.Speed);
-        _enemyUpgradesOptions.Add(EnemyUpgradesOptions.Damage);
-        _enemyUpgradesOptions.Add(EnemyUpgradesOptions.Health);
+
     }
     
     private void OnEnable()
     {
+        
         UpgradePanelBehaviour.onSecondaryCardDisappear += AddCardUpgradeAttribute;
         UpgradePanelBehaviour.onPanelDisappear += SwitchCardToIdle;
     }

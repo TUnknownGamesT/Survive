@@ -12,6 +12,7 @@ public class EnemyType : ScriptableObject
     public float damping;
     public float stoppingDistance;
     public float pauseBetweenMovement;
+    public float speed;
 
     //References to be set in the AIBrain and pass forward to
     // to states

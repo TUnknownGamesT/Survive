@@ -23,6 +23,7 @@ public class PlayerHealth : MonoBehaviour
         onPlayerHealthChanged?.Invoke(damageReceived);
         if (currentHealth<=0)
         {
+            CameraController.instance.TakeDamageEffect();
             Cursor.visible = true;
             onPlayerDeath?.Invoke();
         }

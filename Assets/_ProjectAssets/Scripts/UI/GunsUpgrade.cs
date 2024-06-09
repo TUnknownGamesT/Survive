@@ -17,7 +17,7 @@ public enum GunsUpgradeOptions
 public class GunsUpgrade : MonoBehaviour
 {
     
-    public static Action onGunsUpgradeSelected;
+    public static Action<UpgradeType> onGunsUpgradeSelected;
     
     public float reloadSpeedAmountToDecrease;
     public float damageAmountToAdd;
@@ -115,7 +115,7 @@ public class GunsUpgrade : MonoBehaviour
                 break;
         }
         
-        onGunsUpgradeSelected?.Invoke();
+        onGunsUpgradeSelected?.Invoke(UpgradeType.Guns);
     }
     
     private void AddCardUpgradeAttribute()

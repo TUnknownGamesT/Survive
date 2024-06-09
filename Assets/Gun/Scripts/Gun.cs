@@ -84,11 +84,12 @@ public abstract class Gun : MonoBehaviour
             
             Rigidbody rb =  Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation).GetComponent<Rigidbody>();
             rb.AddRelativeForce((Vector3.forward + new Vector3(xSpread,YSpread,0)) * bulletSpeed, ForceMode.Impulse);
-           // vfx.Play();
+            vfx.Play();
             currentAmunition--;
             TimeSinceLastShot = 0;
             _soundComponent.PlaySound(shootSound);
             onShoot?.Invoke();
+            CameraController.ShakeCamera(0.2f,2f);
         }
         else if(currentAmunition<=0 && rezervAmo>0)
         {
