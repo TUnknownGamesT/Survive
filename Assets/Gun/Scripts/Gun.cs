@@ -57,7 +57,7 @@ public abstract class Gun : MonoBehaviour
         TimeSinceLastShot += Time.deltaTime;
     }
 
-    public void SetArmHandler(AnimationController arm)
+    public void SetArmHandler(AnimationManager arm)
     {
         /*if (arm as PlayerAnimation != null)
         {

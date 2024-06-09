@@ -4,14 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
 public class PlayerAnimationsManager : AnimationManager
 {
-    private void OnEnable()
-    {
-        _animator = GetComponent<Animator>();
-        
-    }
+    [SerializeField]
+    private Animator _animator;
 
     public override void Attack()
     {

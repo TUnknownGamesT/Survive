@@ -13,11 +13,11 @@ public abstract class AnimationManager : MonoBehaviour
 
     protected Animator _animator;
     protected WeaponTypesAnimated _currentWeaponType = WeaponTypesAnimated.Melee;
-    
-    public void SetWeaponType(WeaponTypesAnimated weaponType)
+    public RagDollController ragDollController;
+    public void SetWeaponType(int weaponType)
     {
-        _currentWeaponType = weaponType;
-        _animator.SetInteger("I_weaponId", (int) _currentWeaponType);
+        _currentWeaponType = (WeaponTypesAnimated) weaponType;
+        _animator.SetInteger("I_weaponId",  weaponType);
     }
     public virtual void Attack()
     {
@@ -32,5 +32,10 @@ public abstract class AnimationManager : MonoBehaviour
     public void SetSpeed(float speed)
     {
         _animator.SetFloat("F_Speed", speed);
+    }
+
+    public void Die()
+    {
+        ragDollController.ActivateRagdoll();
     }
 }

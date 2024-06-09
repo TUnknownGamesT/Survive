@@ -24,7 +24,7 @@ public class AnimationsDebug : MonoBehaviour
     [Button("Set Weapon Type")]
     public void SetWeaponType()
     {
-        animationsManager.SetWeaponType((WeaponTypesAnimated) weaponType);
+        animationsManager.SetWeaponType(weaponType);
     }
     
     [Button("SetSpeed")]

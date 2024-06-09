@@ -20,7 +20,7 @@ public class AIBrain : MonoBehaviour
     private float stoppingDistance;
     [Header("References")]
     public Transform armSpawnPoint;
-    private EnemyAnimations _enemyAnimations;
+    private ZombieAnimationManager _enemyAnimations;
     private AIHealth _aiHealth;
     private SoundComponent _soundComponent;
     
@@ -45,7 +45,7 @@ public class AIBrain : MonoBehaviour
         
         
         travelPoints.Add(GameManager.playerBaseRef);
-        _enemyAnimations= GetComponent<EnemyAnimations>();
+        _enemyAnimations= GetComponent<ZombieAnimationManager>();
         _aiHealth = GetComponent<AIHealth>();
         
         _patrolState = new PatrolState();
@@ -64,7 +64,8 @@ public class AIBrain : MonoBehaviour
         mockEnemyType.aiBody = gameObject;
         mockEnemyType.navMeshAgent = GetComponent<NavMeshAgent>();
         mockEnemyType.travelPoints = travelPoints;
-        mockEnemyType.armPrefab.GetComponent<Gun>().SetArmHandler(_enemyAnimations);
+        //TODO: Implement this
+        //mockEnemyType.armPrefab.GetComponent<Gun>().SetArmHandler(_enemyAnimations);
 
         stoppingDistance = mockEnemyType.stoppingDistance;
         

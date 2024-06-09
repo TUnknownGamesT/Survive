@@ -21,7 +21,7 @@ public class UpperBodyStateMachine : MonoBehaviour
     #endregion
 
     public Gun currentArm;
-    public PlayerAnimation animation;
+    public PlayerAnimationsManager animation;
     public Transform armSpawnPoint;
 
     private bool _hasGrenade = false;
@@ -64,7 +64,7 @@ public class UpperBodyStateMachine : MonoBehaviour
         UserInputController._reload.started += Reload;
         UserInputController._mouseScrollY.performed += SwitchGunFromInventory;
         
-        //animation = GetComponent<PlayerAnimation>();
+        animation = GetComponent<PlayerAnimationsManager>();
         
         InitStates();
         
@@ -178,9 +178,10 @@ public class UpperBodyStateMachine : MonoBehaviour
         transform1.localPosition = Vector3.zero;
         transform1.localRotation = Quaternion.identity;
         
-        //animation?.ChangeWeapon((int)currentArm.enemyDrop);
+        animation?.SetWeaponType((int)currentArm.enemyDrop);
         _shootState.OnInitState(gameObject);
         _reloadState.OnInitState(gameObject);
+        //TODo:WTF
         //currentArm.SetArmHandler(animation);
     }
     

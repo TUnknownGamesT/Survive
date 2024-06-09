@@ -14,6 +14,6 @@ public class FreezeInteraction : MonoBehaviour, ISpecialInteraction
     private IEnumerator WaitForDeath()
     {
         yield return new WaitForSeconds(9f);
-        GetComponent<EnemyAnimations>().Die();
+        GetComponent<ZombieAnimationManager>().Die();
     }
 }
