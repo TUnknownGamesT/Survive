@@ -42,8 +42,6 @@ public class AIBrain : MonoBehaviour
 
     private void Awake()
     {
-        
-        
         travelPoints.Add(GameManager.playerBaseRef);
         _enemyAnimations= GetComponent<ZombieAnimationManager>();
         _aiHealth = GetComponent<AIHealth>();
@@ -65,8 +63,7 @@ public class AIBrain : MonoBehaviour
         mockEnemyType.navMeshAgent = GetComponent<NavMeshAgent>();
         mockEnemyType.navMeshAgent.speed = mockEnemyType.speed;
         mockEnemyType.travelPoints = travelPoints;
-        //TODO: Implement this
-        //mockEnemyType.armPrefab.GetComponent<Gun>().SetArmHandler(_enemyAnimations);
+        mockEnemyType.armPrefab.GetComponent<Gun>().SetArmHandler(_enemyAnimations);
 
         stoppingDistance = mockEnemyType.stoppingDistance;
         
@@ -139,7 +136,7 @@ public class AIBrain : MonoBehaviour
         {
             onEnemyDeath?.Invoke();
             CameraController.SlowMotion(0.2f);
-            //_enemyAnimations.Die();
+            _enemyAnimations.Die();
             enabled = false;
             _alive = false;
             ChangeState(_deadState);

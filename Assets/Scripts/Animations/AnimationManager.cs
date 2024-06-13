@@ -10,7 +10,7 @@ public enum WeaponTypesAnimated
 }
 public abstract class AnimationManager : MonoBehaviour
 {
-
+    [SerializeField]
     protected Animator _animator;
     protected WeaponTypesAnimated _currentWeaponType = WeaponTypesAnimated.Melee;
     public RagDollController ragDollController;
@@ -38,4 +38,5 @@ public abstract class AnimationManager : MonoBehaviour
     {
         ragDollController.ActivateRagdoll();
     }
+    
 }

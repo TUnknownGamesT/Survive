@@ -37,7 +37,7 @@ public abstract class Gun : MonoBehaviour
     protected MeshRenderer _renderer;
     public int currentAmunition;
     
-
+    protected AnimationManager _armHandler;
     private int bulletRezerSize;
 
     private void Awake()
@@ -59,15 +59,15 @@ public abstract class Gun : MonoBehaviour
 
     public void SetArmHandler(AnimationManager arm)
     {
-        /*if (arm as PlayerAnimation != null)
+        if (arm as PlayerAnimationsManager != null)
         {
-            _armHandler = arm as PlayerAnimation;
+            _armHandler = arm as PlayerAnimationsManager;
         }
         
-        if(arm as EnemyAnimations != null)
+        if(arm as ZombieAnimationManager != null)
         {
-            _armHandler = arm as EnemyAnimations;
-        }*/
+            _armHandler = arm as ZombieAnimationManager;
+        }
         
     } 
     
@@ -88,6 +88,7 @@ public abstract class Gun : MonoBehaviour
             currentAmunition--;
             TimeSinceLastShot = 0;
             _soundComponent.PlaySound(shootSound);
+            _armHandler.Attack();
             onShoot?.Invoke();
             CameraController.ShakeCamera(0.2f,2f);
         }
@@ -104,13 +105,12 @@ public abstract class Gun : MonoBehaviour
     {
         reloading = true;
         _soundComponent.PlaySound(reloadSound);
-        //_armHandler.animation.Reload();
+        _armHandler.Reload();
         UniTask.Void(async () =>
         {
             await UniTask.Delay(TimeSpan.FromSeconds(reloadTime));
             reloading = false;
-            //_armHandler.animation.ReloadComplete();
-            
+
             int difference = magSize - currentAmunition;
             if ( rezervAmo - difference >= 0)
             {

@@ -68,9 +68,9 @@ public class UpperBodyStateMachine : MonoBehaviour
         
         InitStates();
         
-        ChangeArm(currentArm.gameObject);
+       
         ChangeState(_idleState);
-        
+        ChangeArm(currentArm.gameObject);
     }
 
     private void Update()
@@ -178,11 +178,12 @@ public class UpperBodyStateMachine : MonoBehaviour
         transform1.localPosition = Vector3.zero;
         transform1.localRotation = Quaternion.identity;
         
-        animation?.SetWeaponType((int)currentArm.enemyDrop);
+        
+        
         _shootState.OnInitState(gameObject);
         _reloadState.OnInitState(gameObject);
-        //TODo:WTF
-        //currentArm.SetArmHandler(animation);
+        animation?.SetWeaponType((int)currentArm.enemyDrop);
+        currentArm.SetArmHandler(animation);
     }
     
     public void RefillCurrentArmAmmo(int amount)

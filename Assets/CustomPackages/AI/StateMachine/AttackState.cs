@@ -10,6 +10,7 @@ public class AttackState : IState
     private SoundComponent soundComponent;
     private GameObject _aiBody;
     private CancellationTokenSource _cts;
+    private ZombieAnimationManager _enemyAnimations;
     private float _damping;
 
 
@@ -20,7 +21,8 @@ public class AttackState : IState
             _armSpawnPoint = enemyType.armSpawnPoint;
             _aiBody = enemyType.aiBody;
             _damping = enemyType.damping;
-
+            
+            _enemyAnimations = _aiBody.GetComponent<ZombieAnimationManager>();
             _armPrefab = Object.Instantiate(enemyType.armPrefab, _armSpawnPoint.position, Quaternion.identity, _armSpawnPoint.transform).GetComponent<Gun>();
             _armPrefab.transform.localPosition = Vector3.zero;
             _armPrefab.transform.localRotation = Quaternion.identity;
@@ -33,6 +35,7 @@ public class AttackState : IState
     public void OnEnter()
     {
         _cts = new CancellationTokenSource();
+        _enemyAnimations.Attack();
     }
 
     public void OnUpdate()
