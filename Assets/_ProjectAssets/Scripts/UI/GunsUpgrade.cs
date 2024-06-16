@@ -26,9 +26,9 @@ public class GunsUpgrade : MonoBehaviour
 
    
 
-    public Gun pistol;
-    public Gun ak47;
-    public Gun shotgun;
+    public Firearm pistol;
+    public Firearm ak47;
+    public Firearm shotgun;
     
     public TextMeshProUGUI upgradeText;
     public Button upgradeButton;
@@ -67,8 +67,8 @@ public class GunsUpgrade : MonoBehaviour
         
         // Add all weapon types to the list
         weaponTypes.Add(Constants.GunsType.Pistol);
-        weaponTypes.Add(Constants.GunsType.AKA47);
-        weaponTypes.Add(Constants.GunsType.ShotGun);
+        weaponTypes.Add(Constants.GunsType.AK);
+        weaponTypes.Add(Constants.GunsType.Shotgun);
     }
     
     public void GetRandomWeaponUpgrade()
@@ -81,36 +81,36 @@ public class GunsUpgrade : MonoBehaviour
                 GetRandomUpgrade(pistol);
                 gunImage.sprite = pistol.weaponIcon;
                 break;
-            case Constants.GunsType.AKA47:
+            case Constants.GunsType.AK:
                 GetRandomUpgrade(ak47);
                 gunImage.sprite = ak47.weaponIcon;
                 break;
-            case Constants.GunsType.ShotGun:
+            case Constants.GunsType.Shotgun:
                 GetRandomUpgrade(shotgun);
                 gunImage.sprite = shotgun.weaponIcon;
                 break;
         }
     }
 
-    private void GetRandomUpgrade(Gun gun)
+    private void GetRandomUpgrade(Firearm firearm)
     {
         randomUpgrade = gunsUpgradeOptions[UnityEngine.Random.Range(0, gunsUpgradeOptions.Count)];
         switch (randomUpgrade)
         {
             case GunsUpgradeOptions.ReloadSpeed:
-                gun.reloadTime -= reloadSpeedAmountToDecrease;
+                firearm.reloadTime -= reloadSpeedAmountToDecrease;
                 upgrade = reloadSpeedAmountToDecrease;
                 break;
             case GunsUpgradeOptions.Damage:
-                gun.damage += damageAmountToAdd;
+                firearm.damage += damageAmountToAdd;
                 upgrade = damageAmountToAdd;
                 break;
             case GunsUpgradeOptions.Magazine:
-                gun.magSize += magazineAmountToAdd;
+                firearm.magSize += magazineAmountToAdd;
                 upgrade = magazineAmountToAdd;
                 break;
             case GunsUpgradeOptions.Spread:
-                gun.spread -= spreadAmountToDecrease;
+                firearm.spread -= spreadAmountToDecrease;
                 upgrade = spreadAmountToDecrease;
                 break;
         }

@@ -65,7 +65,7 @@ public class UIManager : MonoBehaviour
         
         UserInputController._pause.started -= Pause;
 
-        Gun.onPickUpNewWeapon -= SetAmoUI;
+        Firearm.onPickUpNewWeapon -= SetAmoUI;
         
 
         //Resources
@@ -81,7 +81,7 @@ public class UIManager : MonoBehaviour
         
         UserInputController._pause.started += Pause;
 
-        Gun.onPickUpNewWeapon += SetAmoUI;
+        Firearm.onPickUpNewWeapon += SetAmoUI;
         
         //Resources
 

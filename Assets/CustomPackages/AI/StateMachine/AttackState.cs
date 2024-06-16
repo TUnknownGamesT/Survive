@@ -6,7 +6,7 @@ public class AttackState : IState
     private Transform _armSpawnPoint;
     private float _spread;
     private bool _reloading;
-    private Gun _armPrefab;
+    private Firearm _armPrefab;
     private SoundComponent soundComponent;
     private GameObject _aiBody;
     private CancellationTokenSource _cts;
@@ -23,7 +23,7 @@ public class AttackState : IState
             _damping = enemyType.damping;
             
             _enemyAnimations = _aiBody.GetComponent<ZombieAnimationManager>();
-            _armPrefab = Object.Instantiate(enemyType.armPrefab, _armSpawnPoint.position, Quaternion.identity, _armSpawnPoint.transform).GetComponent<Gun>();
+            _armPrefab = Object.Instantiate(enemyType.armPrefab, _armSpawnPoint.position, Quaternion.identity, _armSpawnPoint.transform).GetComponent<Firearm>();
             _armPrefab.transform.localPosition = Vector3.zero;
             _armPrefab.transform.localRotation = Quaternion.identity;
             _armPrefab.GetComponent<BoxCollider>().enabled = false;

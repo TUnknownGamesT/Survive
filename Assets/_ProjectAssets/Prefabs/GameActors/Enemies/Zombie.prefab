@@ -82,7 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf3048c086dab5c43b51737697acaa7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: 0
+  enemyType: 1
   travelPoints: []
   armSpawnPoint: {fileID: 1827186632398295991}
 --- !u!114 &1827186632662338062

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3481203993835220018}
   - component: {fileID: -2112214358298119607}
   - component: {fileID: 7481823310595633127}
-  - component: {fileID: -4729495059711158967}
   - component: {fileID: 8556258299818641891}
   - component: {fileID: 8278832694581849676}
   m_Layer: 0
@@ -147,34 +146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f24f314be900d44b279dd9aca6d296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-4729495059711158967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1389793772019306325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 015076448b948f64e9f5a48cda854688, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponIcon: {fileID: 0}
-  enemyDrop: 0
-  damage: 3
-  vfx: {fileID: 0}
-  spread: 0
-  fireRate: 300
-  reloadTime: 3
-  magSize: 10
-  rezervAmo: 10
-  bulletSpeed: 10
-  reloading: 0
-  bulletSpawnPoint: {fileID: 0}
-  bulletPrefab: {fileID: 0}
-  shootSound: {fileID: 0}
-  reloadSound: {fileID: 0}
-  currentAmunition: 0
 --- !u!54 &8556258299818641891
 Rigidbody:
   m_ObjectHideFlags: 0

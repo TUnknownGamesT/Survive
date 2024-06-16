@@ -34,7 +34,7 @@ public class Constants : MonoBehaviour
    public enum Upgrades
    {
       Player,
-      Guns
+      Weapon
    }
    
    public enum Tags
@@ -46,18 +46,18 @@ public class Constants : MonoBehaviour
    
    public enum EnemyType
    {
-      Male=0,
+      Melee=0,
       Pistol=1,
-      AKA47=2,
-      ShotGun=3,
+      AK=2,
+      Shotgun=3,
       Sniper=4,
    }
    
    public enum GunsType
    {
       Pistol=0,
-      AKA47=1,
-      ShotGun=2,
+      AK=1,
+      Shotgun=2,
       Sniper=3,
    }
 

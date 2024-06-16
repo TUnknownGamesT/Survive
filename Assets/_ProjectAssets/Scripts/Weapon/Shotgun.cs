@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShotGunn : Gun
+public class Shotgun : Firearm
 {
     public float numberOfBulletsPerShoot;
     public MeshRenderer meshRenderer;
@@ -26,7 +26,7 @@ public class ShotGunn : Gun
 
             vfx.Play();
             currentAmunition--;
-            TimeSinceLastShot = 0;
+            timeSinceLastShot = 0;
             CameraController.ShakeCamera(0.2f,2);
             _soundComponent.PlaySound(shootSound);
             onShoot?.Invoke();

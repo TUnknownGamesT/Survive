@@ -67,7 +67,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentArm: {fileID: 0}
-  animation: {fileID: 0}
+  animation: {fileID: 195188366320019993}
   armSpawnPoint: {fileID: 7718333339688184568}
   changeWeaponScrollDuration: 0
   guns:
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distanceOfPoint: 20
-  playerBody: {fileID: 0}
+  playerBody: {fileID: 7718333338416556976}
   crossHair: {fileID: 0}
   mousePosition: {x: 0, y: 0, z: 0}
 --- !u!114 &7718333338416556986
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9612c9ee6b095b428450dbf3bf50764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footstepSound: {fileID: 0}
+  footstepSound: {fileID: 8300000, guid: 0293b07d1062d90498ed372d3b99eb56, type: 3}
   minTimeBetweenFootsteps: 0.3
   maxTimeBetweenFootsteps: 0.6
 --- !u!65 &7718333338416556985
@@ -175,7 +175,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8747223ed891eea4b8d98211f96dcde3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 0}
+  _animator: {fileID: 3317826063929567191}
+  ragDollController: {fileID: 2105619537}
 --- !u!1 &7718333339688184569
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,14 +201,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7718333339688184569}
-  m_LocalRotation: {x: -0, y: -0, z: 0.0000001872535, w: 1}
-  m_LocalPosition: {x: 0.55999994, y: 4.64, z: 1.0710001}
+  m_LocalRotation: {x: 0.00042219096, y: -0.045207247, z: -0.039629918, w: 0.9981912}
+  m_LocalPosition: {x: 0.336972, y: 2.3258643, z: 0.32329273}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7718333338416556976}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.157, y: -5.18, z: -4.54}
 --- !u!1773428102 &387316965205249809
 ParentConstraint:
   m_ObjectHideFlags: 0
@@ -217,18 +218,18 @@ ParentConstraint:
   m_GameObject: {fileID: 7718333339688184569}
   m_Enabled: 1
   m_Weight: 1
-  m_TranslationAtRest: {x: 0.56, y: 4.64, z: 1.071}
-  m_RotationAtRest: {x: 0, y: 0, z: 0}
+  m_TranslationAtRest: {x: 0.336972, y: 2.3258643, z: 0.32329273}
+  m_RotationAtRest: {x: 70.01544, y: -15.318168, z: -18.988562}
   m_TranslationOffsets:
-  - {x: -0.13096589, y: 0.38743877, z: 0.1612091}
+  - {x: 0, y: 0, z: 0}
   m_RotationOffsets:
-  - {x: -70.56728, y: -7.7943764, z: 13.746638}
+  - {x: 0, y: 0, z: 0}
   m_AffectTranslationX: 1
   m_AffectTranslationY: 1
   m_AffectTranslationZ: 1
-  m_AffectRotationX: 1
-  m_AffectRotationY: 1
-  m_AffectRotationZ: 1
+  m_AffectRotationX: 0
+  m_AffectRotationY: 0
+  m_AffectRotationZ: 0
   m_IsContraintActive: 1
   m_IsLocked: 1
   m_Sources:
@@ -284,6 +285,10 @@ PrefabInstance:
     - target: {fileID: 280901126367391067, guid: 99df780c519a56b449980f2a24bc719f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 319561421326184455, guid: 99df780c519a56b449980f2a24bc719f, type: 3}
+      propertyPath: m_Avatar
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 319561421326184455, guid: 99df780c519a56b449980f2a24bc719f, type: 3}
       propertyPath: m_Controller
@@ -351,9 +356,33 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: d77322f5b73487b43ac73174eb35631f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99df780c519a56b449980f2a24bc719f, type: 3}
+--- !u!1 &2506852323415810097 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 625479981049509857, guid: 99df780c519a56b449980f2a24bc719f, type: 3}
+  m_PrefabInstance: {fileID: 3054573399022835664}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2105619537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2506852323415810097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ce377a5a8982e847a3786aae5a8b13e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ragdollBodies: []
+  animator: {fileID: 3317826063929567191}
 --- !u!4 &2990935805003807371 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 280901126367391067, guid: 99df780c519a56b449980f2a24bc719f, type: 3}
+  m_PrefabInstance: {fileID: 3054573399022835664}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &3317826063929567191 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 319561421326184455, guid: 99df780c519a56b449980f2a24bc719f, type: 3}
   m_PrefabInstance: {fileID: 3054573399022835664}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8715784661421081682 stripped

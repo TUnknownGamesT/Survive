@@ -63,7 +63,7 @@ public class AIBrain : MonoBehaviour
         mockEnemyType.navMeshAgent = GetComponent<NavMeshAgent>();
         mockEnemyType.navMeshAgent.speed = mockEnemyType.speed;
         mockEnemyType.travelPoints = travelPoints;
-        mockEnemyType.armPrefab.GetComponent<Gun>().SetArmHandler(_enemyAnimations);
+        mockEnemyType.armPrefab.GetComponent<Firearm>().SetArmHandler(_enemyAnimations);
 
         stoppingDistance = mockEnemyType.stoppingDistance;
         

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.VFX;
 
 [RequireComponent(typeof(SoundComponent))]
-public abstract class Gun : MonoBehaviour
+public abstract class Firearm : MonoBehaviour
 {
     
     public static  Action<int,int> onPickUpNewWeapon;
@@ -33,17 +33,15 @@ public abstract class Gun : MonoBehaviour
     public AudioClip reloadSound;
 
     protected SoundComponent _soundComponent;
-    protected float TimeSinceLastShot;
-    protected MeshRenderer _renderer;
+    protected float timeSinceLastShot;
     public int currentAmunition;
     
-    protected AnimationManager _armHandler;
+    protected AnimationManager _animationManager;
     private int bulletRezerSize;
 
     private void Awake()
     {
         currentAmunition = magSize;
-        _renderer = GetComponent<MeshRenderer>();
         _soundComponent = GetComponent<SoundComponent>();
     }
 
@@ -54,24 +52,24 @@ public abstract class Gun : MonoBehaviour
 
     protected void Update()
     {
-        TimeSinceLastShot += Time.deltaTime;
+        timeSinceLastShot += Time.deltaTime;
     }
 
     public void SetArmHandler(AnimationManager arm)
     {
         if (arm as PlayerAnimationsManager != null)
         {
-            _armHandler = arm as PlayerAnimationsManager;
+            _animationManager = arm as PlayerAnimationsManager;
         }
         
         if(arm as ZombieAnimationManager != null)
         {
-            _armHandler = arm as ZombieAnimationManager;
+            _animationManager = arm as ZombieAnimationManager;
         }
         
     } 
     
-    public virtual bool CanShoot() => !reloading && TimeSinceLastShot > 1f / (fireRate / 60f);
+    public virtual bool CanShoot() => !reloading && timeSinceLastShot > 1f / (fireRate / 60f);
     
     public virtual void Shoot()
     {
@@ -86,9 +84,9 @@ public abstract class Gun : MonoBehaviour
             rb.AddRelativeForce((Vector3.forward + new Vector3(xSpread,YSpread,0)) * bulletSpeed, ForceMode.Impulse);
             vfx.Play();
             currentAmunition--;
-            TimeSinceLastShot = 0;
+            timeSinceLastShot = 0;
             _soundComponent.PlaySound(shootSound);
-            _armHandler.Attack();
+            _animationManager.Attack();
             onShoot?.Invoke();
             CameraController.ShakeCamera(0.2f,2f);
         }
@@ -105,7 +103,7 @@ public abstract class Gun : MonoBehaviour
     {
         reloading = true;
         _soundComponent.PlaySound(reloadSound);
-        _armHandler.Reload();
+        _animationManager.Reload();
         UniTask.Void(async () =>
         {
             await UniTask.Delay(TimeSpan.FromSeconds(reloadTime));

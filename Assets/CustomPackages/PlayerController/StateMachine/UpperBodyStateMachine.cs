@@ -20,7 +20,7 @@ public class UpperBodyStateMachine : MonoBehaviour
     
     #endregion
 
-    public Gun currentArm;
+    public Firearm currentArm;
     public PlayerAnimationsManager animation;
     public Transform armSpawnPoint;
 
@@ -169,7 +169,7 @@ public class UpperBodyStateMachine : MonoBehaviour
             currentArm.GetComponent<BoxCollider>().enabled = true;
         }
         
-        currentArm = arm.GetComponent<Gun>();
+        currentArm = arm.GetComponent<Firearm>();
         currentArm.GetComponent<Rigidbody>().isKinematic = true;
         currentArm.GetComponent<BoxCollider>().enabled = false;
         

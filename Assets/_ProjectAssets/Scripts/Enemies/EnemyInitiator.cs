@@ -21,7 +21,7 @@ public class EnemyInitiator : MonoBehaviour
     #endregion
 
     public List<EnemyType> enemyTypes;
-    public List<Gun> enemyGuns;
+    public List<Firearm> enemyGuns;
     
     private List<EnemyType> mockUpEnemys;
 
