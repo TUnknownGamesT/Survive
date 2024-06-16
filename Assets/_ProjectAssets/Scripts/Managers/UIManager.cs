@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -38,6 +40,7 @@ public class UIManager : MonoBehaviour
     public Gradient lifeBarColor;
     public bool isPaused = false;
     public OptionMenuBehaviour optionsMenuBehaviour;
+    public TextMeshProUGUI counter;
 
     [Header("Weapon UI")]
     public Image grenade;
@@ -58,6 +61,7 @@ public class UIManager : MonoBehaviour
     
     private void OnDisable()
     {
+        EnemySpawner.onPauseStart -= DisplayCounter;
         EnemySpawner.onAllEnemiesDead -= ShowUpgradeUI;
         PlayerHealth.onPlayerHealthChanged -= SetPlayerHP;
         PlayerHealth.onPlayerDeath -= PlayerDie;
@@ -74,6 +78,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        EnemySpawner.onPauseStart += DisplayCounter;
         BaseBehaviour.onBaseHPCHnage += SetBaseHP;
         EnemySpawner.onAllEnemiesDead += ShowUpgradeUI;
         PlayerHealth.onPlayerHealthChanged += SetPlayerHP;
@@ -131,7 +136,8 @@ public class UIManager : MonoBehaviour
     {
         Cursor.visible = true;
         optionsMenuBehaviour.DisableMainMenu();
-        ActivateCanvas(inMainMenu ? mainMenuCanvas : pauseMenuCanvas);
+        ActivateCanvas(pauseMenuCanvas);
+        //ActivateCanvas(inMainMenu ? mainMenuCanvas : pauseMenuCanvas);
     }
 
     public void EnableOnlyOptionMenu()
@@ -163,6 +169,24 @@ public class UIManager : MonoBehaviour
 
     #region Player UI
 
+    private void DisplayCounter(int value)
+    {
+        int secondsRemains = value;
+        counter.text = secondsRemains.ToString();
+        UniTask.Void(async () =>
+        {
+            do
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(1));
+                secondsRemains--;
+                counter.text = secondsRemains.ToString();
+                if(secondsRemains == 0)
+                    counter.text = "";
+            } while (secondsRemains != 0);
+        });  
+    }
+    
+    
     public void ChangeWeaponIcon(int index)
     {
         weaponDisplayer[_currentWeaponIndex].Deactivate();

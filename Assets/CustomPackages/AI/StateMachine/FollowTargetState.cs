@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class FollowPlayerState : IState
+public class FollowTargetState : IState
 {
     private NavMeshAgent _navMeshAgent;
     private Transform _enemyBody;

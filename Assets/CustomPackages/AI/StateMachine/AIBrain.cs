@@ -17,7 +17,9 @@ public class AIBrain : MonoBehaviour
     public List<Transform> travelPoints =new();
     
 
-    private float stoppingDistance;
+    private float _stoppingDistance;
+    private float _stoppingDistanceBase = 15f;
+    private float _currentStoppingDistance;
     [Header("References")]
     public Transform armSpawnPoint;
     private EnemyAnimations _enemyAnimations;
@@ -25,16 +27,17 @@ public class AIBrain : MonoBehaviour
     private SoundComponent _soundComponent;
     
     private IState _currentState;
-    private bool _playerInView;
+    private bool _activeTargetInView;
     private bool _alive = true;
     private bool _alreadyNoticed;
+    private Transform _currentTarget;
 
-    
+
     #region State Initialization
 
     private PatrolState _patrolState;
     private DeadState _deadState;
-    private FollowPlayerState _followPlayerState;
+    private FollowTargetState _followTargetState;
     private AttackState _attackState;
 
     #endregion
@@ -45,12 +48,13 @@ public class AIBrain : MonoBehaviour
         
         
         travelPoints.Add(GameManager.playerBaseRef);
+        _currentTarget = GameManager.playerBaseRef;
         _enemyAnimations= GetComponent<EnemyAnimations>();
         _aiHealth = GetComponent<AIHealth>();
         
         _patrolState = new PatrolState();
         _deadState = new DeadState();
-        _followPlayerState = new FollowPlayerState();
+        _followTargetState = new FollowTargetState();
         _attackState = new AttackState();
     }
 
@@ -67,14 +71,16 @@ public class AIBrain : MonoBehaviour
         mockEnemyType.travelPoints = travelPoints;
         mockEnemyType.armPrefab.GetComponent<Gun>().SetArmHandler(_enemyAnimations);
 
-        stoppingDistance = mockEnemyType.stoppingDistance;
-        
+        _stoppingDistance = mockEnemyType.stoppingDistance;
+        _currentStoppingDistance = _stoppingDistanceBase;
+
         _aiHealth.Init(mockEnemyType.health);
         
         _patrolState.OnInitState(mockEnemyType);
         _deadState.OnInitState(mockEnemyType);
-        _followPlayerState.OnInitState(mockEnemyType);
+        _followTargetState.OnInitState(mockEnemyType);
         _attackState.OnInitState(mockEnemyType);
+        _attackState.SetTarget(GameManager.playerBaseRef);
     }
 
     private void Update()
@@ -87,16 +93,16 @@ public class AIBrain : MonoBehaviour
     {
         if (_alive)
         {
-            if (_playerInView &&  Vector3.Distance(transform.position, GameManager.playerRef.position) <= stoppingDistance)
+            if (_activeTargetInView &&  Vector3.Distance(transform.position, _currentTarget.position) <= _currentStoppingDistance)
             {
                 ChangeState(_attackState);
                 Debug.LogWarning("Attack State");
-            }else if(_playerInView &&Vector3.Distance(transform.position, GameManager.playerRef.position) > stoppingDistance)
+            }else if(_activeTargetInView &&Vector3.Distance(transform.position, _currentTarget.position) > _currentStoppingDistance)
             {
-                ChangeState(_followPlayerState);
+                ChangeState(_followTargetState);
                 Debug.LogWarning("Follow Player State");
             }
-            else if(!_playerInView)
+            else if(!_activeTargetInView)
             {
                 ChangeState(_patrolState);
                 Debug.LogWarning("Patrol State");
@@ -119,8 +125,7 @@ public class AIBrain : MonoBehaviour
             });
         }
     }
-    
-    
+
     private void ChangeState(IState newState)
     {
         if (newState != _currentState)
@@ -130,6 +135,7 @@ public class AIBrain : MonoBehaviour
             _currentState.OnEnter();
         }
     }
+    
     
 
     public void Death()
@@ -145,16 +151,22 @@ public class AIBrain : MonoBehaviour
             Destroy(gameObject,1f);
         }
     }
-
+    
     public void PlayerInView()
     {
-        _playerInView = true;
+        _currentStoppingDistance =  _stoppingDistance;
+        _activeTargetInView = true;
+        _attackState.SetTarget(GameManager.playerRef);
     }
 
+    //Add last seen target not player every time
     public void PlayerOutOfView()
     {
         Debug.LogWarning("Player Out of View");
-        _playerInView = false;
+        _activeTargetInView = false;
         _patrolState.AddTravelPoint(GameManager.playerRef);
+        _currentTarget = GameManager.playerBaseRef;
+        _attackState.SetTarget(GameManager.playerBaseRef);
+        _currentStoppingDistance = _stoppingDistanceBase;
     }
 }

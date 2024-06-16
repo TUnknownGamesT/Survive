@@ -14,11 +14,13 @@ public class BaseBehaviour : MonoBehaviour
     private void OnEnable()
     {
         BaseUpgrade.onBaseUpgraded += UpgradeBase;
+        RepairBaseBehaviour.onBaseRepaired += HealBase;
     }
     
     private void OnDisable()
     {
         BaseUpgrade.onBaseUpgraded -= UpgradeBase;
+        RepairBaseBehaviour.onBaseRepaired -= HealBase;
     }
 
 
@@ -38,6 +40,13 @@ public class BaseBehaviour : MonoBehaviour
                 break;
         }
     }
+    
+    
+    private void HealBase(int amount)
+    {
+        onBaseHPCHnage?.Invoke(amount);
+        baseHP += amount;
+    }
 
     private void TakeDmg(int dmg)
     {
@@ -53,6 +62,7 @@ public class BaseBehaviour : MonoBehaviour
     {
         if (other.CompareTag("Bullet"))
         {
+            Debug.Log(other.name);
             TakeDmg(1);
         }
     }

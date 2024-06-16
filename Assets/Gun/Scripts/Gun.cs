@@ -39,7 +39,7 @@ public abstract class Gun : MonoBehaviour
     
 
     private int bulletRezerSize;
-
+    
     private void Awake()
     {
         currentAmunition = magSize;

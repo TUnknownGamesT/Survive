@@ -1,19 +1,19 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 public class EnemySpawner : MonoBehaviour
 {
     public static Action onAllEnemiesDead;
+    public static Action<int> onPauseStart;
 
     public GameObject spawnPointsParent;
     [Tooltip("The amount of enemies to spawn per round")]
     public int enemies;
     [Tooltip("The amount of time between each round")]
-    public float pauseTime;
+    public int pauseTime;
 
     private List<Transform> spawnPoints = new();
     private int enemySpawned = 0;
@@ -51,6 +51,7 @@ public class EnemySpawner : MonoBehaviour
     //Schimbat pe viitor sa nu mai fie nevoie de Upgrade Type
     private void StartSpawning(UpgradeType upgradeType)
     {
+        Debug.Log("Start Spawning");
         roundPassed++;
         if (roundPassed == 5)
         {
@@ -60,6 +61,7 @@ public class EnemySpawner : MonoBehaviour
         UniTask.Void(async () =>
         {
             Debug.LogWarning("Spawning");
+            onPauseStart?.Invoke(pauseTime);
             await UniTask.Delay(TimeSpan.FromSeconds(pauseTime));
             enemySpawned = enemies;
             for (int i = 0; i < enemies; i++)

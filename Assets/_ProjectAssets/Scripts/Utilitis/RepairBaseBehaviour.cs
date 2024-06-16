@@ -1,10 +1,13 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class HealStationBehaviour : MonoBehaviour
+public class RepairBaseBehaviour : MonoBehaviour
 {
+    public static Action<int> onBaseRepaired;
     
     [Tooltip("Heal amount per heal")]
     public int healAmount;
@@ -23,7 +26,7 @@ public class HealStationBehaviour : MonoBehaviour
         UniTask.Void(async () =>
         {
             await UniTask.Delay(TimeSpan.FromSeconds(timeBetweenHeals),cancellationToken:_cts.Token);
-            GameManager.playerRef.GetComponent<PlayerBrain>().Heal(healAmount);
+            onBaseRepaired?.Invoke(healAmount);
             Heal();
         });
     }
@@ -45,5 +48,4 @@ public class HealStationBehaviour : MonoBehaviour
             _cts = new CancellationTokenSource();
         }
     }
-    
 }

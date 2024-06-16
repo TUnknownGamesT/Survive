@@ -14,9 +14,24 @@ public class AmbiientMusicController : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
     }
 
+    private void OnEnable()
+    {
+        OptionsMenu.onAmbientVolumeValueChanged += SetMusicVolume;
+    }
+    
+    private void OnDisable()
+    {
+        OptionsMenu.onAmbientVolumeValueChanged -= SetMusicVolume;
+    }
+
     private void Start()
     {
         // _audioSource.clip = musicClips[Random.Range(0, musicClips.Count)];
         // _audioSource.Play();
+    }
+    
+    private void SetMusicVolume(float value)
+    {
+        _audioSource.volume = value;
     }
 }

@@ -82,7 +82,7 @@ MonoBehaviour:
   weaponIcon: {fileID: 21300000, guid: 0944c4cf8e6ba1f49b09b53c6f4eac68, type: 3}
   enemyDrop: 2
   damage: 3
-  vfx: {fileID: 0}
+  vfx: {fileID: 2181117302016121882}
   spread: 0.06
   fireRate: 320
   reloadTime: 3
@@ -92,7 +92,7 @@ MonoBehaviour:
   reloading: 0
   bulletSpawnPoint: {fileID: 9194641389020858947}
   bulletPrefab: {fileID: 4554020830683859374, guid: 9307afa9b3a1b244ebed89b1babc2b7f, type: 3}
-  shootSound: {fileID: 8300000, guid: 6664505dc16395b499965ea7da7f48b9, type: 3}
+  shootSound: {fileID: 8300000, guid: 6b40697d4921a7947a1d25668c7e8355, type: 3}
   reloadSound: {fileID: 8300000, guid: f061e2f36fb3fdb478b1aad6196cc7f6, type: 3}
   currentAmunition: 0
   meshRenderers:
@@ -370,7 +370,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7030881331475948484, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
       propertyPath: m_Name
-      value: SCI-FIMuzzleFlare
+      value: MuzzleFlare
       objectReference: {fileID: 0}
     - target: {fileID: 7030881331475948485, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
       propertyPath: m_RootOrder
@@ -378,15 +378,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7030881331475948485, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.0063121133
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7030881331475948485, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.0063121133
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7030881331475948485, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.0063121133
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7030881331475948485, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -428,5 +428,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7030881331475948485, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030881331475948491, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030881331475948491, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.x
+      value: 11.984314
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030881331475948491, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.y
+      value: 3.611961
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030881331475948491, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.z
+      value: 0.06274522
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
+--- !u!2083052967 &2181117302016121882 stripped
+VisualEffect:
+  m_CorrespondingSourceObject: {fileID: 7030881331475948491, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
+  m_PrefabInstance: {fileID: 9211646778496892881}
+  m_PrefabAsset: {fileID: 0}

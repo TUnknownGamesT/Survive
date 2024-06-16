@@ -160,15 +160,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f53a7eb842556bf4485557de169214bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 7.44
-  angle: 101
+  radius: 27.59
+  angle: 102
   obstructionMask:
     serializedVersion: 2
     m_Bits: 0
   targetMask:
     serializedVersion: 2
-    m_Bits: 8
-  canSeePlayer: 0
+    m_Bits: 520
+  targetInView: 0
   _playerRef: {fileID: 0}
 --- !u!195 &1827186632662338055
 NavMeshAgent:
