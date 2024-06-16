@@ -12,7 +12,7 @@ public class AttackState : IState
     private CancellationTokenSource _cts;
     private ZombieAnimationManager _enemyAnimations;
     private float _damping;
-
+    private Transform _currentTarget;
 
     public void OnInitState<T>(T gameObject)
     {
@@ -50,15 +50,21 @@ public class AttackState : IState
     
     private void RotateTowardThePlayer()
     {
-        var lookPos = GameManager.playerRef.position - _aiBody.transform.position;
+        var lookPos = _currentTarget.position - _aiBody.transform.position;
         lookPos.y = 0;
         var rotation = Quaternion.LookRotation(lookPos);
         _aiBody.transform.rotation = Quaternion.Slerp(_aiBody.transform.rotation, rotation, Time.deltaTime * _damping);
     }
-
+    
+    
     public void OnExit()
     {
         _cts.Cancel();
+    }
+    
+    public void SetTarget(Transform target)
+    {
+        _currentTarget = target;
     }
     
     public void DropArm()

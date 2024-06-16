@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 937828832324034772}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 30.000002, y: 30.000002, z: 30.000002}
+  m_LocalScale: {x: 30, y: 30, z: 30}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4459699204743388749}
@@ -145,7 +145,7 @@ MonoBehaviour:
   reloading: 0
   bulletSpawnPoint: {fileID: 4459699204743388749}
   bulletPrefab: {fileID: 4554020830683859374, guid: 6a401c9ac795d4f4ea50d508d9a13461, type: 3}
-  shootSound: {fileID: 8300000, guid: 6664505dc16395b499965ea7da7f48b9, type: 3}
+  shootSound: {fileID: 8300000, guid: e246dda0fd16715438aea48046c190a6, type: 3}
   reloadSound: {fileID: 8300000, guid: e8fe908c1135ffd47b5ae61e645e6980, type: 3}
   currentAmunition: 20
 --- !u!82 &5032266901560752177
@@ -296,7 +296,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7030881331475948484, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
       propertyPath: m_Name
-      value: SCI-FIMuzzleFlare
+      value: MuzzleFlare
       objectReference: {fileID: 0}
     - target: {fileID: 7030881331475948485, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
       propertyPath: m_RootOrder
@@ -341,6 +341,22 @@ PrefabInstance:
     - target: {fileID: 7030881331475948485, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030881331475948491, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030881331475948491, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.x
+      value: 7.9066987
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030881331475948491, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.y
+      value: 6.3336387
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030881331475948491, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.z
+      value: 0.08279266
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d56969fe6c450e46ad954d0265999d6, type: 3}

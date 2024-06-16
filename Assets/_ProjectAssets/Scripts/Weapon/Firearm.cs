@@ -38,7 +38,7 @@ public abstract class Firearm : MonoBehaviour
     
     protected AnimationManager _animationManager;
     private int bulletRezerSize;
-
+    
     private void Awake()
     {
         currentAmunition = magSize;

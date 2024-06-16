@@ -16,7 +16,7 @@ public class BulletBehaviour : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Wall"))
+        if (collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("PlayerBase"))
         { 
             Quaternion rot = Quaternion.FromToRotation(Vector3.back, collision.contacts[0].normal);
            GameObject wallMark =Instantiate(wallHitEffect, collision.contacts[0].point, rot);

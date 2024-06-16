@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class FieldOfView : MonoBehaviour
 {
@@ -11,8 +12,8 @@ public class FieldOfView : MonoBehaviour
     public float angle;
     public LayerMask obstructionMask;
     public LayerMask targetMask;
-    [HideInInspector]
-    public bool canSeePlayer;
+    [FormerlySerializedAs("canSeePlayer")] [HideInInspector]
+    public bool targetInView;
     [HideInInspector]
     public GameObject _playerRef;
 
@@ -37,7 +38,7 @@ public class FieldOfView : MonoBehaviour
 
     public void EnemyDeath()
     {
-        canSeePlayer = false;
+        targetInView = false;
         _cts.Cancel();
     }
     
@@ -61,30 +62,30 @@ public class FieldOfView : MonoBehaviour
                     if (Vector3.Angle(transform.forward, directionToTarget) < angle / 2)
                     {
                         float distanceToTarget = Vector3.Distance(transform.position, target.position);
-                        canSeePlayer = !Physics.Raycast(transform.position, directionToTarget, distanceToTarget,
+                        targetInView = !Physics.Raycast(transform.position, directionToTarget, distanceToTarget,
                             obstructionMask);
-                        Debug.LogWarning(canSeePlayer);
-                        if (canSeePlayer && !_alreadyInView)
+                        Debug.LogWarning(targetInView);
+                        if (targetInView && !_alreadyInView)
                         {
                             _aiBrain.PlayerInView();
                             _alreadyInView = true;
                         }
-                        else if(!canSeePlayer && _alreadyInView)
+                        else if(!targetInView && _alreadyInView)
                         {
-                            canSeePlayer = false;
+                            targetInView = false;
                             _alreadyInView = false;
                             _aiBrain.PlayerOutOfView();
                         }
                     }
                     else if(_alreadyInView)
                     {
-                        canSeePlayer = false;
+                        targetInView = false;
                         _alreadyInView = false;
                         _aiBrain.PlayerOutOfView();
                     }
                 }else if(_alreadyInView)
                 {
-                    canSeePlayer = false;
+                    targetInView = false;
                     _alreadyInView = false;
                     _aiBrain.PlayerOutOfView();
                 }

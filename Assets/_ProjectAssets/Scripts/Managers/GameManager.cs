@@ -21,10 +21,15 @@ public class GameManager : MonoBehaviour
         crossHairRef = GameObject.FindGameObjectWithTag("CrossHair").transform;
         playerBaseRef = GameObject.FindGameObjectWithTag("PlayerBase").transform;
     }
+    
+    private void Start()
+    {
+        Time.timeScale = 0;
+    }
 
     public void StartGame()
     {
-        
+        Time.timeScale = 1f;
     }
     
     

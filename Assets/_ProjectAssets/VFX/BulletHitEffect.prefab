@@ -4882,7 +4882,7 @@ GameObject:
   - component: {fileID: 7195850616620820401}
   - component: {fileID: 778065955106453676}
   m_Layer: 0
-  m_Name: LaserHitEffect
+  m_Name: BulletHitEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
