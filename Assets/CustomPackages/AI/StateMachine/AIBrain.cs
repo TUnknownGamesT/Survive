@@ -22,7 +22,7 @@ public class AIBrain : MonoBehaviour
     private float _currentStoppingDistance;
     [Header("References")]
     public Transform armSpawnPoint;
-    private EnemyAnimations _enemyAnimations;
+    private ZombieAnimationManager _enemyAnimations;
     private AIHealth _aiHealth;
     private SoundComponent _soundComponent;
     
@@ -45,11 +45,10 @@ public class AIBrain : MonoBehaviour
 
     private void Awake()
     {
-        
-        
         travelPoints.Add(GameManager.playerBaseRef);
+        _enemyAnimations= GetComponent<ZombieAnimationManager>();
         _currentTarget = GameManager.playerBaseRef;
-        _enemyAnimations= GetComponent<EnemyAnimations>();
+
         _aiHealth = GetComponent<AIHealth>();
         
         _patrolState = new PatrolState();
@@ -69,7 +68,7 @@ public class AIBrain : MonoBehaviour
         mockEnemyType.navMeshAgent = GetComponent<NavMeshAgent>();
         mockEnemyType.navMeshAgent.speed = mockEnemyType.speed;
         mockEnemyType.travelPoints = travelPoints;
-        mockEnemyType.armPrefab.GetComponent<Gun>().SetArmHandler(_enemyAnimations);
+        mockEnemyType.armPrefab.GetComponent<Firearm>().SetArmHandler(_enemyAnimations);
 
         _stoppingDistance = mockEnemyType.stoppingDistance;
         _currentStoppingDistance = _stoppingDistanceBase;
@@ -144,7 +143,7 @@ public class AIBrain : MonoBehaviour
         {
             onEnemyDeath?.Invoke();
             CameraController.SlowMotion(0.2f);
-            //_enemyAnimations.Die();
+            _enemyAnimations.Die();
             enabled = false;
             _alive = false;
             ChangeState(_deadState);

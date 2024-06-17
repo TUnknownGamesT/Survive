@@ -20,8 +20,8 @@ public class UpperBodyStateMachine : MonoBehaviour
     
     #endregion
 
-    public Gun currentArm;
-    public PlayerAnimation animation;
+    public Firearm currentArm;
+    public PlayerAnimationsManager animation;
     public Transform armSpawnPoint;
 
     private bool _hasGrenade = false;
@@ -64,13 +64,13 @@ public class UpperBodyStateMachine : MonoBehaviour
         UserInputController._reload.started += Reload;
         UserInputController._mouseScrollY.performed += SwitchGunFromInventory;
         
-        //animation = GetComponent<PlayerAnimation>();
+        animation = GetComponent<PlayerAnimationsManager>();
         
         InitStates();
         
-        ChangeArm(currentArm.gameObject);
+       
         ChangeState(_idleState);
-        
+        ChangeArm(currentArm.gameObject);
     }
 
     private void Update()
@@ -169,7 +169,7 @@ public class UpperBodyStateMachine : MonoBehaviour
             currentArm.GetComponent<BoxCollider>().enabled = true;
         }
         
-        currentArm = arm.GetComponent<Gun>();
+        currentArm = arm.GetComponent<Firearm>();
         currentArm.GetComponent<Rigidbody>().isKinematic = true;
         currentArm.GetComponent<BoxCollider>().enabled = false;
         
@@ -178,10 +178,12 @@ public class UpperBodyStateMachine : MonoBehaviour
         transform1.localPosition = Vector3.zero;
         transform1.localRotation = Quaternion.identity;
         
-        //animation?.ChangeWeapon((int)currentArm.enemyDrop);
+        
+        
         _shootState.OnInitState(gameObject);
         _reloadState.OnInitState(gameObject);
-        //currentArm.SetArmHandler(animation);
+        animation?.SetWeaponType((int)currentArm.enemyDrop);
+        currentArm.SetArmHandler(animation);
     }
     
     public void RefillCurrentArmAmmo(int amount)

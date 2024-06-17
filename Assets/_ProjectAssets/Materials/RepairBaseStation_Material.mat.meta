@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/AnimationsGym.unity.meta
+guid: 15cf22fadda81ab4eadfc6cafa3b3cd9
+DefaultImporter:
+========
 guid: 1218625f3cb402644bc25017fa20f6d6
 NativeFormatImporter:
+>>>>>>>> main:Assets/_ProjectAssets/Materials/RepairBaseStation_Material.mat.meta
   externalObjects: {}
   mainObjectFileID: 2100000
   userData: 

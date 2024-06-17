@@ -36,7 +36,7 @@ public class AIHealth : MonoBehaviour
 
     private void ActivateRagDoll(Vector3 collisionPoint)
     {
-        foreach (var rb in GetComponent<AnimationController>().rigidbodies)
+        foreach (var rb in GetComponent<AnimationManager>().ragDollController.ragdollBodies)
         {
             Vector3 direction = collisionPoint - transform.position;
             direction.y = 0;

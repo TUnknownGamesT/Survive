@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerShootState : IState
 {
-    public Gun currentArm;
+    public Firearm currentArm;
 
     public void OnInitState<T>(T gameObject)
     {

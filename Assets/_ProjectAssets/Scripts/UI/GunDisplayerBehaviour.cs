@@ -7,7 +7,7 @@ public class GunDisplayerBehaviour : MonoBehaviour
 {
     public TextMeshProUGUI currentAmoText;
     public TextMeshProUGUI totalAmmunition;
-    public Gun gunn;
+    public Firearm gunn;
     public Image armIcon;
     private int totalAmmo;
     
@@ -43,14 +43,14 @@ public class GunDisplayerBehaviour : MonoBehaviour
 
     public void SetGunDisplayer(GameObject gun)
     {
-        Gun gunScript = gun.GetComponent<Gun>();
-        gunn = gunScript;
-        armIcon.sprite = gunScript.weaponIcon;
+        Firearm firearmScript = gun.GetComponent<Firearm>();
+        gunn = firearmScript;
+        armIcon.sprite = firearmScript.weaponIcon;
         Color c = armIcon.color;
         c.a = 1;
         armIcon.color = c;
         SetAmoText(gunn.currentAmunition, gunn.rezervAmo);
-        ListenGun(gunScript);
+        ListenGun(firearmScript);
     }
     
     public void SetAmoText(int currentAmo, int rezervAmo)
@@ -85,7 +85,7 @@ public class GunDisplayerBehaviour : MonoBehaviour
         currentAmoText.text = $"{amo}/{split[1]}";
     }
 
-    private void ListenGun(Gun newGunn)
+    private void ListenGun(Firearm newGunn)
     {
         if (gunn != null)
         {
