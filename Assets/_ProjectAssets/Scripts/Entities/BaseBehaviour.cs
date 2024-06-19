@@ -4,6 +4,7 @@ using UnityEngine;
 public class BaseBehaviour : MonoBehaviour
 {
     public static Action<float> onBaseHPCHnage;
+    public static Action onBaseDestroyed;
     
     public RefillAmoBehaviour refillAmoBehaviour;
     public HealStationBehaviour healStationBehaviour;
@@ -54,6 +55,7 @@ public class BaseBehaviour : MonoBehaviour
         onBaseHPCHnage?.Invoke(-dmg);
         if (baseHP <= 0)
         {
+            onBaseDestroyed?.Invoke();
             Destroy(gameObject);
         }
     }

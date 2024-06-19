@@ -50,6 +50,7 @@ public  class PlayerBrain : MonoBehaviour
 
     public void Heal(int amount)
     {
+        Debug.Log("Heal");
         playerHealth.IncreaseLife(amount);
     }
 }

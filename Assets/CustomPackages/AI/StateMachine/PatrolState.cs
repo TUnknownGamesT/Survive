@@ -15,7 +15,7 @@ public class PatrolState : IState
     
     private NavMeshAgent _navMeshAgent;
     private CancellationTokenSource _cts;
-    private int _travelPointIndex;
+    private int _travelPointIndex = 0;
     
    
 
@@ -48,7 +48,7 @@ public class PatrolState : IState
 
     public void OnUpdate()
     {
-       
+       ShootRaycast();
     }
 
     public void OnExit()
@@ -58,7 +58,20 @@ public class PatrolState : IState
             travelPoints.Remove(GameObject.FindWithTag("Player").transform);
         _navMeshAgent.destination = enemyBody.position;
     }
-
+    
+    private void ShootRaycast()
+    {
+        RaycastHit hit;
+        
+        if (Physics.Raycast(enemyBody.position, enemyBody.TransformDirection(Vector3.forward), out hit, 10, Constants.baseLayer))
+        {
+            Debug.Log("Base in View");
+            GameObject playerBaseHitPoint = new GameObject();
+            playerBaseHitPoint.transform.position = hit.point;
+            enemyBody.gameObject.GetComponent<AIBrain>().BaseInView(playerBaseHitPoint.transform);
+        }
+    }
+    
     public void AddTravelPoint(Transform newPoint)
     {
         travelPoints.Add(newPoint);
@@ -72,6 +85,7 @@ public class PatrolState : IState
             {
                 if(travelPoints.Count == 0)
                     return;
+                
                 _navMeshAgent.destination = travelPoints[_travelPointIndex].position;
 
                 _travelPointIndex = Random.Range(0, travelPoints.Count);
@@ -79,6 +93,9 @@ public class PatrolState : IState
                 await UniTask.WaitUntil(()=>Vector3.Distance(enemyBody.position,_navMeshAgent.destination) <= stoppingDistance, cancellationToken: _cts.Token);
 
                 await UniTask.Delay(TimeSpan.FromSeconds(pauseBetweenMovement), cancellationToken: _cts.Token);
+                
+                if(travelPoints.Contains(GameObject.FindWithTag("Player").transform))
+                    travelPoints.Remove(GameObject.FindWithTag("Player").transform);
 
                 Travel();
 

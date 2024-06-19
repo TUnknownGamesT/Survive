@@ -18,8 +18,6 @@ public class AIBrain : MonoBehaviour
     
 
     private float _stoppingDistance;
-    private float _stoppingDistanceBase = 15f;
-    private float _currentStoppingDistance;
     [Header("References")]
     public Transform armSpawnPoint;
     private ZombieAnimationManager _enemyAnimations;
@@ -31,6 +29,8 @@ public class AIBrain : MonoBehaviour
     private bool _alive = true;
     private bool _alreadyNoticed;
     private Transform _currentTarget;
+    public Transform basePoint;
+    
 
 
     #region State Initialization
@@ -47,7 +47,6 @@ public class AIBrain : MonoBehaviour
     {
         travelPoints.Add(GameManager.playerBaseRef);
         _enemyAnimations= GetComponent<ZombieAnimationManager>();
-        _currentTarget = GameManager.playerBaseRef;
 
         _aiHealth = GetComponent<AIHealth>();
         
@@ -68,10 +67,9 @@ public class AIBrain : MonoBehaviour
         mockEnemyType.navMeshAgent = GetComponent<NavMeshAgent>();
         mockEnemyType.navMeshAgent.speed = mockEnemyType.speed;
         mockEnemyType.travelPoints = travelPoints;
-        mockEnemyType.armPrefab.GetComponent<Firearm>().SetArmHandler(_enemyAnimations);
+        mockEnemyType.armPrefab.GetComponent<Weapon>().SetArmHandler(_enemyAnimations);
 
         _stoppingDistance = mockEnemyType.stoppingDistance;
-        _currentStoppingDistance = _stoppingDistanceBase;
 
         _aiHealth.Init(mockEnemyType.health);
         
@@ -92,11 +90,11 @@ public class AIBrain : MonoBehaviour
     {
         if (_alive)
         {
-            if (_activeTargetInView &&  Vector3.Distance(transform.position, _currentTarget.position) <= _currentStoppingDistance)
+            if (_activeTargetInView &&  Vector3.Distance(transform.position, _currentTarget.position) <= _stoppingDistance)
             {
                 ChangeState(_attackState);
-                Debug.LogWarning("Attack State");
-            }else if(_activeTargetInView &&Vector3.Distance(transform.position, _currentTarget.position) > _currentStoppingDistance)
+                Debug.LogWarning("Attack State" + _currentTarget.gameObject.name);
+            }else if(_activeTargetInView &&Vector3.Distance(transform.position, _currentTarget.position) > _stoppingDistance)
             {
                 ChangeState(_followTargetState);
                 Debug.LogWarning("Follow Player State");
@@ -150,22 +148,30 @@ public class AIBrain : MonoBehaviour
             Destroy(gameObject,1f);
         }
     }
+
+    public void BaseInView(Transform basePoint)
+    {
+         this.basePoint = basePoint;
+        _currentTarget = basePoint;
+        _activeTargetInView = true;
+        _attackState.SetTarget(basePoint);
+        _followTargetState.SetTarget(basePoint);
+    }
     
     public void PlayerInView()
     {
-        _currentStoppingDistance =  _stoppingDistance;
         _activeTargetInView = true;
+        if(_currentTarget != GameManager.playerRef.transform)
+            Destroy(_currentTarget.gameObject);
+        _currentTarget = GameManager.playerRef.transform;
         _attackState.SetTarget(GameManager.playerRef);
+        _followTargetState.SetTarget(GameManager.playerRef);
     }
 
     //Add last seen target not player every time
     public void PlayerOutOfView()
     {
-        Debug.LogWarning("Player Out of View");
         _activeTargetInView = false;
         _patrolState.AddTravelPoint(GameManager.playerRef);
-        _currentTarget = GameManager.playerBaseRef;
-        _attackState.SetTarget(GameManager.playerBaseRef);
-        _currentStoppingDistance = _stoppingDistanceBase;
     }
 }

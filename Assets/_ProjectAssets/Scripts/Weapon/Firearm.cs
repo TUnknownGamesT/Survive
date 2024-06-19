@@ -4,22 +4,20 @@ using UnityEngine;
 using UnityEngine.VFX;
 
 [RequireComponent(typeof(SoundComponent))]
-public abstract class Firearm : MonoBehaviour
+public abstract class Firearm : Weapon
 {
     
     public static  Action<int,int> onPickUpNewWeapon;
     public  Action onShoot;
     public  Action<int,int> onFinishReload;
-
-    public Sprite weaponIcon;
+    
+    
     public Constants.EnemyType enemyDrop;
     [Header("Shooting")]
     public float damage;
-    public VisualEffect vfx;
     [Range(0,1f)]
     public float spread;
     [Header("Reloading")]
-    public float fireRate;
     public float reloadTime;
     public int magSize;
     public int rezervAmo;
@@ -33,7 +31,6 @@ public abstract class Firearm : MonoBehaviour
     public AudioClip reloadSound;
 
     protected SoundComponent _soundComponent;
-    protected float timeSinceLastShot;
     public int currentAmunition;
     
     protected AnimationManager _animationManager;
@@ -55,7 +52,7 @@ public abstract class Firearm : MonoBehaviour
         timeSinceLastShot += Time.deltaTime;
     }
 
-    public void SetArmHandler(AnimationManager arm)
+    public override void SetArmHandler(AnimationManager arm)
     {
         if (arm as PlayerAnimationsManager != null)
         {
@@ -69,9 +66,9 @@ public abstract class Firearm : MonoBehaviour
         
     } 
     
-    public virtual bool CanShoot() => !reloading && timeSinceLastShot > 1f / (fireRate / 60f);
+    public override bool CanShoot() => !reloading && timeSinceLastShot > 1f / (fireRate / 60f);
     
-    public virtual void Shoot()
+    public override void Shoot()
     {
 
         if(currentAmunition>0&& CanShoot())
@@ -86,7 +83,7 @@ public abstract class Firearm : MonoBehaviour
             currentAmunition--;
             timeSinceLastShot = 0;
             _soundComponent.PlaySound(shootSound);
-            _animationManager.Attack();
+//            _animationManager.Attack();
             onShoot?.Invoke();
             CameraController.ShakeCamera(0.2f,2f);
         }
@@ -103,7 +100,7 @@ public abstract class Firearm : MonoBehaviour
     {
         reloading = true;
         _soundComponent.PlaySound(reloadSound);
-        _animationManager.Reload();
+//        _animationManager.Reload();
         UniTask.Void(async () =>
         {
             await UniTask.Delay(TimeSpan.FromSeconds(reloadTime));
