@@ -83,7 +83,7 @@ public abstract class Firearm : Weapon
             currentAmunition--;
             timeSinceLastShot = 0;
             _soundComponent.PlaySound(shootSound);
-//            _animationManager.Attack();
+            _animationManager.Attack();
             onShoot?.Invoke();
             CameraController.ShakeCamera(0.2f,2f);
         }
