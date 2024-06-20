@@ -12,7 +12,7 @@ public class Shotgun : Firearm
         if (currentAmunition > 0 && CanShoot())
         {
             
-            // _armHandler.animation.Shoot();
+            _animationManager.Attack();
             for (int i = 0; i < numberOfBulletsPerShoot; i++)
             {
                 float xSpread = UnityEngine.Random.Range(-spread, spread);
@@ -30,7 +30,6 @@ public class Shotgun : Firearm
             CameraController.ShakeCamera(0.2f,2);
             _soundComponent.PlaySound(shootSound);
             onShoot?.Invoke();
-            //_armHandler.animation.StopShooting();
         }
         else if (currentAmunition <= 0 && rezervAmo > 0)
         {

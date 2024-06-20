@@ -16,6 +16,7 @@ public class PatrolState : IState
     private NavMeshAgent _navMeshAgent;
     private CancellationTokenSource _cts;
     private int _travelPointIndex;
+    private ZombieAnimationManager _zombieAnimations;
     
    
 
@@ -28,6 +29,7 @@ public class PatrolState : IState
             pauseBetweenMovement = enemyStats.pauseBetweenMovement;
             stoppingDistance = enemyStats.stoppingDistance;
             enemyBody = enemyStats.aiBody.transform;
+            _zombieAnimations = enemyStats.aiBody.GetComponent<ZombieAnimationManager>();
         }
         
     }
@@ -35,7 +37,7 @@ public class PatrolState : IState
     public void OnEnter()
     {
         _cts = new CancellationTokenSource();
-        
+        _zombieAnimations.SetSpeed(1);
         if (travelPoints.Count > 0)
         {
             if (travelPoints.Contains(GameManager.playerRef.transform))
@@ -57,6 +59,7 @@ public class PatrolState : IState
         if(travelPoints.Contains(GameObject.FindWithTag("Player").transform))
             travelPoints.Remove(GameObject.FindWithTag("Player").transform);
         _navMeshAgent.destination = enemyBody.position;
+        _zombieAnimations.SetSpeed(0);
     }
 
     public void AddTravelPoint(Transform newPoint)

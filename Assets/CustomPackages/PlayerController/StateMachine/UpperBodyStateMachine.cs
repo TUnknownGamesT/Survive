@@ -20,6 +20,7 @@ public class UpperBodyStateMachine : MonoBehaviour
     
     #endregion
 
+    [HideInInspector]
     public Firearm currentArm;
     public PlayerAnimationsManager animation;
     public Transform armSpawnPoint;

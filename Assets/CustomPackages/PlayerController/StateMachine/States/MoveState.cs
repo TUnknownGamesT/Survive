@@ -4,6 +4,7 @@ public class MoveState : IState
 {
     private CharacterController _characterController;
     private FootStepsSound _footStepsSound;
+    private AnimationManager _animationManager;
     private float _speed;
     
     public void OnInitState<T>(T gameObject)
@@ -13,6 +14,7 @@ public class MoveState : IState
             _footStepsSound = player.GetComponent<FootStepsSound>();
             _characterController = player.GetComponent<CharacterController>();
             _speed = player.GetComponent<LowerBodyStateMachine>().speed;
+            _animationManager = player.GetComponent<AnimationManager>();
         }
     }
 
@@ -28,11 +30,14 @@ public class MoveState : IState
         if (direction.magnitude != 0)
         {
             MakeFootStepsSound();
+            _animationManager?.SetSpeed(_speed);
         }
         else
         {
             StopMakingFootStepsSound();
+            _animationManager?.SetSpeed(0);
         }
+        
     }
 
     public void OnExit()
