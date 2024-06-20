@@ -61,19 +61,11 @@ public class Constants : MonoBehaviour
       Sniper=3,
    }
 
-   public static int PistolEnemyHealth = 1;
-   public static int Ak47EnemyHealth = 1;
-   public static int MaleEnemyHealth = 1;
-   public static float wallPeacesMass = 1f;
-   public static float doorPeacesMass = 1;
-   public Material defaultMaterialBackPack;
-   
-   
-   public GameObject pressECanvas;
 
-   public AudioClip openDoorSound;
+   public static LayerMask baseLayer;
 
-   [FormerlySerializedAs("gunnHighLight")] public Material highLightInteractable;
-   [FormerlySerializedAs("gunnUnHighLight")] public Material unhighlightInteractable;
-
+   private void Start()
+   {
+      baseLayer = LayerMask.GetMask("PlayerBase");
+   }
 }

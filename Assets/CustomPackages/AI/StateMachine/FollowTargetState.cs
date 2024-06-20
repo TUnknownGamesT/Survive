@@ -8,6 +8,9 @@ public class FollowTargetState : IState
     private float _stoppingDistance;
     private ZombieAnimationManager _zombieAnimations;
 
+    private Transform _currentTarget;
+
+
     public void OnInitState<T>(T gameObject)
     {
         if(gameObject is EnemyType enemyStats)
@@ -26,7 +29,7 @@ public class FollowTargetState : IState
 
     public void OnUpdate()
     {
-        _navMeshAgent.destination = Vector3.Distance(_enemyBody.position, GameObject.FindWithTag("Player").transform.position) > _stoppingDistance 
+        _navMeshAgent.destination = Vector3.Distance(_enemyBody.position, _currentTarget.transform.position) > _stoppingDistance 
             ? GameManager.playerRef.transform.position : _enemyBody.position;
     }
 
@@ -34,6 +37,11 @@ public class FollowTargetState : IState
     {
         _navMeshAgent.destination = _enemyBody.position;
         _zombieAnimations.SetSpeed(0);
+    }
+
+    public void SetTarget(Transform targetPosition)
+    {
+        _currentTarget= targetPosition;
     }
     
 }

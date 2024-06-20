@@ -64,10 +64,10 @@ public class UIManager : MonoBehaviour
         EnemySpawner.onPauseStart -= DisplayCounter;
         EnemySpawner.onAllEnemiesDead -= ShowUpgradeUI;
         PlayerHealth.onPlayerHealthChanged -= SetPlayerHP;
-        PlayerHealth.onPlayerDeath -= PlayerDie;
         BaseBehaviour.onBaseHPCHnage -= SetBaseHP;
         
         UserInputController._pause.started -= Pause;
+        GameManager.onGameEnd -= PlayerDie;
 
         Firearm.onPickUpNewWeapon -= SetAmoUI;
         
@@ -76,20 +76,20 @@ public class UIManager : MonoBehaviour
 
     }
 
-    private void Start()
+    private void OnEnable()
     {
         EnemySpawner.onPauseStart += DisplayCounter;
         BaseBehaviour.onBaseHPCHnage += SetBaseHP;
         EnemySpawner.onAllEnemiesDead += ShowUpgradeUI;
         PlayerHealth.onPlayerHealthChanged += SetPlayerHP;
-        PlayerHealth.onPlayerDeath += PlayerDie;
-        
-        UserInputController._pause.started += Pause;
+        GameManager.onGameEnd += PlayerDie;
 
         Firearm.onPickUpNewWeapon += SetAmoUI;
-        
-        //Resources
+    }
 
+    private void Start()
+    {
+        UserInputController._pause.started += Pause;
     }
     
     

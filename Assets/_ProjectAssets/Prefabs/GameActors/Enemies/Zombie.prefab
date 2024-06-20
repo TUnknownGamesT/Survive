@@ -82,9 +82,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf3048c086dab5c43b51737697acaa7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: 1
+  enemyType: 0
   travelPoints: []
   armSpawnPoint: {fileID: 1827186632398295991}
+  basePoint: {fileID: 0}
 --- !u!114 &1827186632662338062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,11 +115,11 @@ MonoBehaviour:
   angle: 101
   obstructionMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   targetMask:
     serializedVersion: 2
     m_Bits: 8
-  canSeePlayer: 0
+  targetInView: 0
   _playerRef: {fileID: 0}
 --- !u!195 &1827186632662338055
 NavMeshAgent:
