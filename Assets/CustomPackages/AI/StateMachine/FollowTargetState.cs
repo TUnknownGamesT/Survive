@@ -6,7 +6,10 @@ public class FollowTargetState : IState
     private NavMeshAgent _navMeshAgent;
     private Transform _enemyBody;
     private float _stoppingDistance;
+    private ZombieAnimationManager _zombieAnimations;
+
     private Transform _currentTarget;
+
 
     public void OnInitState<T>(T gameObject)
     {
@@ -15,12 +18,13 @@ public class FollowTargetState : IState
             _navMeshAgent = enemyStats.navMeshAgent;
             _enemyBody = enemyStats.aiBody.transform;
             _stoppingDistance = enemyStats.stoppingDistance;
+            _zombieAnimations = enemyStats.aiBody.GetComponent<ZombieAnimationManager>();
         }
     }
 
     public void OnEnter()
     {
-       
+       _zombieAnimations.SetSpeed(1);
     }
 
     public void OnUpdate()
@@ -32,6 +36,7 @@ public class FollowTargetState : IState
     public void OnExit()
     {
         _navMeshAgent.destination = _enemyBody.position;
+        _zombieAnimations.SetSpeed(0);
     }
 
     public void SetTarget(Transform targetPosition)
