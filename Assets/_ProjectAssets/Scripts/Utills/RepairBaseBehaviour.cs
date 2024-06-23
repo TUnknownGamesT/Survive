@@ -13,6 +13,7 @@ public class RepairBaseBehaviour : MonoBehaviour
     public int healAmount;
     [Tooltip("The amount of time between each heal")]
     public float timeBetweenHeals;
+   
 
     private CancellationTokenSource _cts;
 
