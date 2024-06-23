@@ -66,4 +66,13 @@ public class AIHealth : MonoBehaviour
             TakeDmg(1);
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Bullet"))
+        {
+            _collisionPoint = other.transform.position;
+            TakeDmg(1);
+        }
+    }
 }

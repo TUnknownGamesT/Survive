@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
 
     private void EndGame()
     {
-        Time.timeScale = 0;
+        //Time.timeScale = 0;
         onGameEnd?.Invoke();
     }
     
