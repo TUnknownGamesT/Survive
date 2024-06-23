@@ -41,10 +41,13 @@ public class UIManager : MonoBehaviour
     public bool isPaused = false;
     public OptionMenuBehaviour optionsMenuBehaviour;
     public TextMeshProUGUI counter;
+    [Header("Player Death Menu")]
+    public TextMeshProUGUI score;
 
-    [Header("Weapon UI")]
+    [Header("Weapon UI")] 
+    public GameObject gunsWrapper;
     public Image grenade;
-    public List<GunDisplayerBehaviour> weaponDisplayer;
+    public List<IWeaponDisplayer> weaponDisplayer = new();
     private int _currentWeaponIndex = 0;
 
     [Header("Resources UI")] 
@@ -59,36 +62,35 @@ public class UIManager : MonoBehaviour
     
     private  bool inMainMenu = true;
     
+    private void OnEnable()
+    {
+        EnemySpawner.onPauseStart += DisplayCounter;
+        BaseBehaviour.onBaseHPCHnage += SetBaseSliderHP;
+        BaseBehaviour.onBaseMaxHealthChanged += SetBaseSliderMax; 
+        EnemySpawner.onAllEnemiesDead += ShowUpgradeUI;
+        PlayerHealth.onPlayerHealthChanged += SetPlayerHP;
+        GameManager.onGameEnd += PlayerDie;
+        
+    }
+
+    
     private void OnDisable()
     {
         EnemySpawner.onPauseStart -= DisplayCounter;
         EnemySpawner.onAllEnemiesDead -= ShowUpgradeUI;
         PlayerHealth.onPlayerHealthChanged -= SetPlayerHP;
-        BaseBehaviour.onBaseHPCHnage -= SetBaseHP;
-        
+        BaseBehaviour.onBaseHPCHnage -= SetBaseSliderHP;
+        BaseBehaviour.onBaseMaxHealthChanged -= SetBaseSliderMax;
         UserInputController._pause.started -= Pause;
         GameManager.onGameEnd -= PlayerDie;
-
-        Firearm.onPickUpNewWeapon -= SetAmoUI;
-        
-
-        //Resources
-
     }
-
-    private void OnEnable()
-    {
-        EnemySpawner.onPauseStart += DisplayCounter;
-        BaseBehaviour.onBaseHPCHnage += SetBaseHP;
-        EnemySpawner.onAllEnemiesDead += ShowUpgradeUI;
-        PlayerHealth.onPlayerHealthChanged += SetPlayerHP;
-        GameManager.onGameEnd += PlayerDie;
-
-        Firearm.onPickUpNewWeapon += SetAmoUI;
-    }
-
     private void Start()
     {
+        foreach (Transform element in gunsWrapper.transform)
+        {
+            weaponDisplayer.Add(element.GetComponent<IWeaponDisplayer>());
+        }
+
         UserInputController._pause.started += Pause;
     }
     
@@ -153,10 +155,23 @@ public class UIManager : MonoBehaviour
         inMainMenu= false;
     }
 
-    public void PlayerDie()
+    private void PlayerDie()
     {
         Cursor.visible = true;
+        SetScore();
         ActivateCanvas(deathMenuCanvas);
+    }
+
+    private void SetScore()
+    {
+        UniTask.Void(async () =>
+        {
+           await  UniTask.Delay(TimeSpan.FromSeconds(0.4f));
+           LeanTween.value(0,ScoreKeeper.Score,1f).setOnUpdate((float value) =>
+           {
+               score.text = Mathf.RoundToInt(value).ToString();
+           }).setEaseInQuad();
+        });
     }
 
     public void Menu()
@@ -194,23 +209,14 @@ public class UIManager : MonoBehaviour
         _currentWeaponIndex = index;
     }
 
-    public void SetEnemyGunSlot(GameObject newGun)
-    {
-        weaponDisplayer[3].SetGunDisplayer(newGun);
-    }
-    
-    
+
     public void SetHealthBarMaxLife(float value)
     {
         playerHealthBar.maxValue = value;
         playerHealthBar.value = value;
         lifeBar.color = lifeBarColor.Evaluate((playerHealthBar.normalizedValue));
     }
-
-    private void SetAmoUI(int currentAmo, int maxAmo)
-    {
-        weaponDisplayer[_currentWeaponIndex].SetAmoText(currentAmo, maxAmo);
-    }
+    
 
     private void SetPlayerHP(int value)
     {
@@ -218,9 +224,14 @@ public class UIManager : MonoBehaviour
         lifeBar.color = lifeBarColor.Evaluate((playerHealthBar.normalizedValue));
     }
     
-    private void SetBaseHP(float value)
+    private void SetBaseSliderMax(int value)
     {
-        baseHealthBar.value += value;
+        baseHealthBar.maxValue = value;
+    }
+    
+    private void SetBaseSliderHP(float value)
+    {
+        baseHealthBar.value = value;
     }
     
     public void HasGrenade()

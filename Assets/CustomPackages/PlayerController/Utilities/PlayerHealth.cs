@@ -51,8 +51,9 @@ public class PlayerHealth : MonoBehaviour
     
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Bullet"))
+        if (collision.gameObject.CompareTag("EnemyArm"))
         {
+            Debug.LogWarningFormat("<color=reed>Get the same damage from all the enemies SOLVE</color>");
             TakeDamage(-2);
         }
     }

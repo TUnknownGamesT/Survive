@@ -4,12 +4,14 @@ using UnityEngine;
 public class BaseBehaviour : MonoBehaviour
 {
     public static Action<float> onBaseHPCHnage;
+    public static Action<int> onBaseMaxHealthChanged;
     public static Action onBaseDestroyed;
     
     public RefillAmoBehaviour refillAmoBehaviour;
     public HealStationBehaviour healStationBehaviour;
+    public int baseMaxHP;
     
-    public float baseHP;
+    private int baseCurrentHP;
 
 
     private void OnEnable()
@@ -25,6 +27,13 @@ public class BaseBehaviour : MonoBehaviour
     }
 
 
+    private void Start()
+    {
+        baseCurrentHP = baseMaxHP;
+        onBaseMaxHealthChanged?.Invoke(baseMaxHP);
+        onBaseHPCHnage?.Invoke(baseMaxHP);
+    }
+
     private void UpgradeBase(BaseUpgradesOptions upgrade,float amount)
     {
         switch (upgrade)
@@ -36,8 +45,8 @@ public class BaseBehaviour : MonoBehaviour
                 healStationBehaviour.healAmount += (int) amount;
                 break;
             case BaseUpgradesOptions.Wall:
-                baseHP += amount;
-                onBaseHPCHnage?.Invoke(baseHP);
+                baseMaxHP += (int)amount;
+                onBaseHPCHnage?.Invoke(baseMaxHP);
                 break;
         }
     }
@@ -45,15 +54,18 @@ public class BaseBehaviour : MonoBehaviour
     
     private void HealBase(int amount)
     {
-        onBaseHPCHnage?.Invoke(amount);
-        baseHP += amount;
+        if (baseCurrentHP + amount < baseMaxHP)
+        {
+            onBaseHPCHnage?.Invoke(amount);
+            baseCurrentHP+= amount;   
+        }
     }
 
     private void TakeDmg(int dmg)
     {
-        baseHP -= dmg;
-        onBaseHPCHnage?.Invoke(-dmg);
-        if (baseHP <= 0)
+        baseCurrentHP -= dmg;
+        onBaseHPCHnage?.Invoke(baseCurrentHP);
+        if (baseCurrentHP <= 0)
         {
             onBaseDestroyed?.Invoke();
             Destroy(gameObject);
@@ -62,9 +74,9 @@ public class BaseBehaviour : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Bullet"))
+        if (other.CompareTag("EnemyArm"))
         {
-            Debug.Log(other.name);
+            Debug.LogWarningFormat("<color=reed>Get the same damage from all the enemies SOLVE</color>");
             TakeDmg(1);
         }
     }

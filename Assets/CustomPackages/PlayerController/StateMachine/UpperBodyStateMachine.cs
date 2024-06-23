@@ -21,7 +21,7 @@ public class UpperBodyStateMachine : MonoBehaviour
     #endregion
 
     [HideInInspector]
-    public Firearm currentArm;
+    public Weapon currentArm;
     public PlayerAnimationsManager animation;
     public Transform armSpawnPoint;
 
@@ -71,7 +71,7 @@ public class UpperBodyStateMachine : MonoBehaviour
         
        
         ChangeState(_idleState);
-        ChangeArm(currentArm.gameObject);
+        ChangeArm(guns[0]);
     }
 
     private void Update()
@@ -170,7 +170,7 @@ public class UpperBodyStateMachine : MonoBehaviour
             currentArm.GetComponent<BoxCollider>().enabled = true;
         }
         
-        currentArm = arm.GetComponent<Firearm>();
+        currentArm = arm.GetComponent<Weapon>();
         currentArm.GetComponent<Rigidbody>().isKinematic = true;
         currentArm.GetComponent<BoxCollider>().enabled = false;
         

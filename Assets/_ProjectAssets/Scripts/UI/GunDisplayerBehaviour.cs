@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GunDisplayerBehaviour : MonoBehaviour
+public class GunDisplayerBehaviour : MonoBehaviour, IWeaponDisplayer
 {
     public TextMeshProUGUI currentAmoText;
     public TextMeshProUGUI totalAmmunition;
@@ -37,11 +37,16 @@ public class GunDisplayerBehaviour : MonoBehaviour
     private void Start()
     {
         _canvasGroup = GetComponent<CanvasGroup>();
-        if(gunn!=null)
+        if (gunn.GetComponent<Firearm>() != null)
+        {
             SetAmoText(gunn.currentAmunition, gunn.rezervAmo);
+        }
+            
     }
+    
+    
 
-    public void SetGunDisplayer(GameObject gun)
+    public void SetDisplayer(Weapon gun)
     {
         Firearm firearmScript = gun.GetComponent<Firearm>();
         gunn = firearmScript;
@@ -58,7 +63,7 @@ public class GunDisplayerBehaviour : MonoBehaviour
         currentAmoText.text = $"{currentAmo}/{rezervAmo}";
         totalAmmo = currentAmo + rezervAmo;
     }
-    
+
     public void Activate()
     {
         GetComponent<RectTransform>().localScale = new Vector3(0.7f,0.7f,0.7f);

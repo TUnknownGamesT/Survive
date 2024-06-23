@@ -11,6 +11,7 @@ TagManager:
   - CrossHair
   - Grenade
   - PlayerBase
+  - EnemyArm
   layers:
   - Default
   - TransparentFX

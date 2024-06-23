@@ -167,10 +167,10 @@ public class AIBrain : MonoBehaviour
         _attackState.SetTarget(GameManager.playerRef);
         _followTargetState.SetTarget(GameManager.playerRef);
     }
-
-    //Add last seen target not player every time
+    
     public void PlayerOutOfView()
     {
+        Debug.LogWarningFormat("<color=reed>Add last seen target not player every time SOLVE</color>");
         _activeTargetInView = false;
         _patrolState.AddTravelPoint(GameManager.playerRef);
     }

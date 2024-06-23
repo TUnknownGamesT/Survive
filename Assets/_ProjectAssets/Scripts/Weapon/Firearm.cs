@@ -7,18 +7,14 @@ using UnityEngine.VFX;
 public abstract class Firearm : Weapon
 {
     
-    public static  Action<int,int> onPickUpNewWeapon;
     public  Action onShoot;
     public  Action<int,int> onFinishReload;
-    
-    
-    public Constants.EnemyType enemyDrop;
+
     [Header("Shooting")]
     public float damage;
     [Range(0,1f)]
     public float spread;
     [Header("Reloading")]
-    public float reloadTime;
     public int magSize;
     public int rezervAmo;
     public float bulletSpeed;
@@ -123,7 +119,7 @@ public abstract class Firearm : Weapon
     }
     
 
-    public void RefillAmmunition(int amount)
+    public override void RefillAmmunition(int amount)
     {
         if(rezervAmo+amount<=bulletRezerSize)
         {
