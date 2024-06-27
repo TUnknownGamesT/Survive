@@ -11,6 +11,9 @@ public class HealStationBehaviour : MonoBehaviour
     [Tooltip("The amount of time between each heal")]
     public float timeBetweenHeals;
 
+    [SerializeField]
+    private ParticleSystem vfx;
+    
     private CancellationTokenSource _cts;
 
     private void Start()
@@ -34,6 +37,7 @@ public class HealStationBehaviour : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Heal();
+            vfx.Play();
         }
     }
     
@@ -43,6 +47,7 @@ public class HealStationBehaviour : MonoBehaviour
         {
             _cts.Cancel();
             _cts = new CancellationTokenSource();
+            vfx.Stop();
         }
     }
     

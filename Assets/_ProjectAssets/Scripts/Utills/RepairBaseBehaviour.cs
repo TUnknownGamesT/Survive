@@ -14,6 +14,10 @@ public class RepairBaseBehaviour : MonoBehaviour
     [Tooltip("The amount of time between each heal")]
     public float timeBetweenHeals;
 
+    [SerializeField]
+    private ParticleSystem vfx;
+   
+
     private CancellationTokenSource _cts;
 
     private void Start()
@@ -37,6 +41,7 @@ public class RepairBaseBehaviour : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Heal();
+            vfx.Play();
         }
     }
     
@@ -46,6 +51,7 @@ public class RepairBaseBehaviour : MonoBehaviour
         {
             _cts.Cancel();
             _cts = new CancellationTokenSource();
+            vfx.Stop();
         }
     }
 }

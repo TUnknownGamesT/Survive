@@ -14,6 +14,8 @@ public class RefillAmoBehaviour : MonoBehaviour
     [Tooltip("The amount of time between each refill")]
     public float timeBetweenRefills;
 
+    [SerializeField]
+    private ParticleSystem vfx;
 
     private CancellationTokenSource _cts;
     
@@ -39,6 +41,7 @@ public class RefillAmoBehaviour : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             RefillAmo();
+            vfx.Play();
         }
     }
 
@@ -48,6 +51,7 @@ public class RefillAmoBehaviour : MonoBehaviour
         {
             _cts.Cancel();
             _cts = new CancellationTokenSource();
+            vfx.Stop();
         }
     }
 }
