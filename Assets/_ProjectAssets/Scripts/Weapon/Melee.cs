@@ -2,10 +2,11 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Triggers;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class Mele : Weapon
+public class Melee : Weapon
 {
     
     private BoxCollider _collider;
@@ -22,11 +23,6 @@ public class Mele : Weapon
         timeSinceLastShot += Time.deltaTime;
     }
 
-    public override void SetArmHandler(AnimationManager arm)
-    {
-        Debug.Log("Moticel fa ceva");
-    }
-
     public override bool CanShoot() => timeSinceLastShot > 1f / (fireRate / 60f);
 
     public override void Shoot()
@@ -35,7 +31,7 @@ public class Mele : Weapon
         {
             timeSinceLastShot = 0;
            Attack();
-           Debug.Log("Attack");
+           _animationManager.Attack();
         }
     }
 

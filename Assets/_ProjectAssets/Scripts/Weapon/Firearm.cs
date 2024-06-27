@@ -29,7 +29,7 @@ public abstract class Firearm : Weapon
     protected SoundComponent _soundComponent;
     public int currentAmunition;
     
-    protected AnimationManager _animationManager;
+    
     private int bulletRezerSize;
     
     private void Awake()
@@ -48,16 +48,16 @@ public abstract class Firearm : Weapon
         timeSinceLastShot += Time.deltaTime;
     }
 
-    public override void SetArmHandler(AnimationManager arm)
+    public override void SetArmHandler(AnimationManager animationManager)
     {
-        if (arm as PlayerAnimationsManager != null)
+        if (animationManager as PlayerAnimationsManager != null)
         {
-            _animationManager = arm as PlayerAnimationsManager;
+            _animationManager = animationManager as PlayerAnimationsManager;
         }
         
-        if(arm as ZombieAnimationManager != null)
+        if(animationManager as ZombieAnimationManager != null)
         {
-            _animationManager = arm as ZombieAnimationManager;
+            _animationManager = animationManager as ZombieAnimationManager;
         }
         
     } 
@@ -96,7 +96,7 @@ public abstract class Firearm : Weapon
     {
         reloading = true;
         _soundComponent.PlaySound(reloadSound);
-//        _animationManager.Reload();
+        _animationManager.Reload();
         UniTask.Void(async () =>
         {
             await UniTask.Delay(TimeSpan.FromSeconds(reloadTime));
