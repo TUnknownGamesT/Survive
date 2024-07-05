@@ -10,6 +10,7 @@ public class Weapon : MonoBehaviour
     public Sprite weaponIcon;
     public VisualEffect vfx;
     protected float timeSinceLastShot;
+    protected AnimationManager _animationManager;
     
     public float fireRate;
 
@@ -30,7 +31,7 @@ public class Weapon : MonoBehaviour
 
     public virtual void SetArmHandler(AnimationManager arm)
     {
-        throw new NotImplementedException();
+        _animationManager = arm;
     }
     
     public virtual void RefillAmmunition(int amount)
