@@ -92,7 +92,7 @@ public abstract class Firearm : Weapon
         }
     }
 
-    public void Reload()
+    public override void Reload()
     {
         reloading = true;
         _soundComponent.PlaySound(reloadSound);

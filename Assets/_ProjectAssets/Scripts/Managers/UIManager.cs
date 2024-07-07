@@ -90,6 +90,8 @@ public class UIManager : MonoBehaviour
         {
             weaponDisplayer.Add(element.GetComponent<IWeaponDisplayer>());
         }
+        
+        weaponDisplayer.Reverse();
 
         UserInputController._pause.started += Pause;
     }
@@ -184,9 +186,9 @@ public class UIManager : MonoBehaviour
 
     #region Player UI
 
-    private void DisplayCounter(int value)
+    private void DisplayCounter(float value)
     {
-        int secondsRemains = value;
+        float secondsRemains = value;
         counter.text = secondsRemains.ToString();
         UniTask.Void(async () =>
         {

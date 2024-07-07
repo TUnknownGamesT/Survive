@@ -17,7 +17,7 @@ public class TimeManager : MonoBehaviour
     }
 
 
-    private void StartCycle(int pauseTime)
+    private void StartCycle(float pauseTime)
     {
         UniTask.Void(async () =>
         {

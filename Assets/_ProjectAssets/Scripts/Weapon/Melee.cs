@@ -28,7 +28,7 @@ public class Melee : Weapon
     public override void Shoot()
     {
         if (CanShoot())
-        {
+        { 
             timeSinceLastShot = 0;
            Attack();
            _animationManager.Attack();

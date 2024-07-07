@@ -14,7 +14,7 @@ public class DeadState : IState
 
     public void OnEnter()
     {
-        
+        transform.GetComponent<BoxCollider>().enabled = false;
     }
 
     public void OnUpdate()

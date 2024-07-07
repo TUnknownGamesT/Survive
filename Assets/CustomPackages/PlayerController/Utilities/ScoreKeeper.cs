@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ScoreKeeper : MonoBehaviour
 {
-    private static int score=100;
+    private static int score=0;
     public static  int Score
     {
         get =>score;
@@ -22,6 +22,7 @@ public class ScoreKeeper : MonoBehaviour
 
     private void IncreaseScore()
     {
+        Debug.LogWarning("Score increased");
         Score++;
     }
 }

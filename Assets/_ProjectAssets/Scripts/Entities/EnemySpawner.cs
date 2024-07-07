@@ -7,13 +7,15 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public static Action onAllEnemiesDead;
-    public static Action<int> onPauseStart;
+    public static Action<float> onPauseStart;
 
     public GameObject spawnPointsParent;
     [Tooltip("The amount of enemies to spawn per round")]
     public int enemies;
     [Tooltip("The amount of time between each round")]
-    public int pauseTime;
+    public float pauseTime;
+    public int roundsToPass;
+    public int enemiesPerRoundIncrease;
 
     private List<Transform> spawnPoints = new();
     private int enemySpawned = 0;
@@ -45,7 +47,17 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
+        Init();
         StartSpawning(UpgradeType.Base);
+    }
+
+    private void Init()
+    {
+        LvlSettings lvlSettings = GameManager.instance.LvlSettings;
+        enemies = lvlSettings.enemiesToSpawn;
+        pauseTime = lvlSettings.pauseBetweenRounds;
+        roundsToPass = lvlSettings.roundsToPass;
+        enemiesPerRoundIncrease = lvlSettings.enemiesPerRoundIncrease;
     }
 
     //Schimbat pe viitor sa nu mai fie nevoie de Upgrade Type
@@ -53,9 +65,9 @@ public class EnemySpawner : MonoBehaviour
     {
         Debug.Log("Start Spawning");
         roundPassed++;
-        if (roundPassed == 5)
+        if (roundPassed == roundsToPass)
         {
-            enemies++;
+            enemies+=enemiesPerRoundIncrease;
             roundPassed = 0;
         }
         UniTask.Void(async () =>

@@ -56,8 +56,8 @@ public class BaseBehaviour : MonoBehaviour
     {
         if (baseCurrentHP + amount < baseMaxHP)
         {
-            onBaseHPCHnage?.Invoke(amount);
             baseCurrentHP+= amount;   
+            onBaseHPCHnage?.Invoke(baseCurrentHP);
         }
     }
 
