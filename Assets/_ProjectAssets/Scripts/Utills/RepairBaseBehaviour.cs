@@ -32,6 +32,7 @@ public class RepairBaseBehaviour : MonoBehaviour
             await UniTask.Delay(TimeSpan.FromSeconds(timeBetweenHeals),cancellationToken:_cts.Token);
             onBaseRepaired?.Invoke(healAmount);
             Heal();
+            vfx.Play();
         });
     }
     
@@ -41,7 +42,6 @@ public class RepairBaseBehaviour : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Heal();
-            vfx.Play();
         }
     }
     
@@ -50,8 +50,7 @@ public class RepairBaseBehaviour : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _cts.Cancel();
-            _cts = new CancellationTokenSource();
-            vfx.Stop();
+            _cts = new CancellationTokenSource(); 
         }
     }
 }

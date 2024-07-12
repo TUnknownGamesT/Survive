@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class BaseBehaviour : MonoBehaviour
+public class BaseBehaviour : MonoBehaviour, IDamageable
 {
     public static Action<float> onBaseHPCHnage;
     public static Action<int> onBaseMaxHealthChanged;
@@ -11,7 +11,7 @@ public class BaseBehaviour : MonoBehaviour
     public HealStationBehaviour healStationBehaviour;
     public int baseMaxHP;
     
-    private int baseCurrentHP;
+    private float baseCurrentHP;
 
 
     private void OnEnable()
@@ -54,14 +54,14 @@ public class BaseBehaviour : MonoBehaviour
     
     private void HealBase(int amount)
     {
-        if (baseCurrentHP + amount < baseMaxHP)
+        if (baseCurrentHP + amount <= baseMaxHP)
         {
             baseCurrentHP+= amount;   
             onBaseHPCHnage?.Invoke(baseCurrentHP);
         }
     }
 
-    private void TakeDmg(int dmg)
+    public void TakeDamage(float dmg)
     {
         baseCurrentHP -= dmg;
         onBaseHPCHnage?.Invoke(baseCurrentHP);
@@ -77,7 +77,7 @@ public class BaseBehaviour : MonoBehaviour
         if (other.CompareTag("EnemyArm"))
         {
             Debug.LogWarningFormat("<color=reed>Get the same damage from all the enemies SOLVE</color>");
-            TakeDmg(1);
+            TakeDamage(1);
         }
     }
 }

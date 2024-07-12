@@ -67,7 +67,7 @@ public class PatrolState : IState
     {
         RaycastHit hit;
         
-        if (Physics.Raycast(enemyBody.position, enemyBody.TransformDirection(Vector3.forward), out hit, 10, Constants.baseLayer))
+        if (Physics.Raycast(enemyBody.position, enemyBody.TransformDirection(Vector3.forward), out hit, 10, Constants.instance.baseLayer))
         {
             Debug.Log("Base in View");
             GameObject playerBaseHitPoint = new GameObject();

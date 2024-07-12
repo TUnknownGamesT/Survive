@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class AIHealth : MonoBehaviour
+public class AIHealth : MonoBehaviour, IDamageable
 {
     
     [HideInInspector]
@@ -22,7 +22,7 @@ public class AIHealth : MonoBehaviour
         this.health = health;
     }
 
-    public void TakeDmg(int damage)
+    public void TakeDamage(float damage)
     {
         health-=damage;
         if (health <= 0)
@@ -63,7 +63,6 @@ public class AIHealth : MonoBehaviour
         if (collision.gameObject.CompareTag("Bullet"))
         {
             _collisionPoint = collision.contacts[0].point;
-            TakeDmg(1);
         }
     }
 
@@ -72,7 +71,6 @@ public class AIHealth : MonoBehaviour
         if (other.gameObject.CompareTag("Bullet"))
         {
             _collisionPoint = other.transform.position;
-            TakeDmg(1);
         }
     }
 }

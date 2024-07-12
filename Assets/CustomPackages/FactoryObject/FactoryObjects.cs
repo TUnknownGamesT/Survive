@@ -4,7 +4,8 @@ using UnityEngine;
 public enum FactoryObjectsType
 {
     KillingText,
-    Enemy
+    Enemy,
+    Blood
 }
 
 
@@ -42,7 +43,9 @@ public class FactoryObjects : MonoBehaviour
     #endregion
     
     [Header("Objects")]
-    public GameObject enemyPrefab;
+    public List<GameObject> enemiesToSpawn;
+
+    public GameObject blood;
 
     [Header("Text")] 
     [ColorUsage(true,true)]
@@ -57,6 +60,9 @@ public class FactoryObjects : MonoBehaviour
            case FactoryObjectsType.Enemy:
                CreateEnemy(factoryObject.Instructions);
                break;
+           case FactoryObjectsType.Blood:
+               CreateBlood(factoryObject.Instructions);
+               break;
            
            default:
                Debug.LogWarning("FactoryObject type not found!");
@@ -64,6 +70,14 @@ public class FactoryObjects : MonoBehaviour
         }
     }
 
+
+    private void CreateBlood<T>(T position)
+    {
+        if(position is Collider collider)
+            Instantiate(blood, collider.ClosestPointOnBounds(collider.transform.position), Quaternion.identity);
+        if(position is Collision collision)
+            Instantiate(blood, collision.contacts[0].point, Quaternion.identity);
+    }
 
     #region CreateKillingText
     
@@ -87,7 +101,7 @@ public class FactoryObjects : MonoBehaviour
      {
          if (positionToSpawn is Transform position)
          {
-             Instantiate(enemyPrefab, position.position , Quaternion.identity);
+             Instantiate(enemiesToSpawn[Random.Range(0,enemiesToSpawn.Count)], position.position , Quaternion.identity);
          }
      }
 

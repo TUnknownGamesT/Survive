@@ -83,7 +83,7 @@ public class Grenade : MonoBehaviour
             {
                 if(explosionEffect!=null)
                  Instantiate(explosionEffect,enemy.transform.position,Quaternion.identity,enemy.transform.GetChild(0));
-                enemy.TakeDmg(dmg);
+                enemy.TakeDamage(dmg);
             }else if (rb != null)
             {
                 Debug.Log(rb.gameObject.name);

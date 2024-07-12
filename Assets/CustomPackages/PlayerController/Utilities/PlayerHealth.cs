@@ -1,15 +1,15 @@
 using System;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : MonoBehaviour,IDamageable
 {
 
-    public static Action<int> onPlayerHealthChanged;
+    public static Action<float> onPlayerHealthChanged;
     public static Action onPlayerDeath;
 
-    public int currentHealth;
+    public float currentHealth;
 
-    private int maxLife;
+    private float maxLife;
 
     private void Start()
     {
@@ -17,10 +17,10 @@ public class PlayerHealth : MonoBehaviour
         onPlayerHealthChanged?.Invoke(maxLife);
     }
 
-    public void TakeDamage(int damageReceived)
+    public void TakeDamage(float damageReceived)
     {
-        currentHealth += damageReceived;
-        onPlayerHealthChanged?.Invoke(damageReceived);
+        currentHealth -= damageReceived;
+        onPlayerHealthChanged?.Invoke(currentHealth);
         if (currentHealth<=0)
         {
             CameraController.instance.TakeDamageEffect();

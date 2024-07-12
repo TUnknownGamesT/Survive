@@ -18,7 +18,7 @@ MonoBehaviour:
   damping: 200
   stoppingDistance: 1
   pauseBetweenMovement: 3
-  speed: 6
+  speed: 7
   soundComponent: {fileID: 0}
   armSpawnPoint: {fileID: 0}
   aiBody: {fileID: 0}

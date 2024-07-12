@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 7.44
-  angle: 101
+  angle: 100
   obstructionMask:
     serializedVersion: 2
     m_Bits: 512

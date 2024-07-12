@@ -19,12 +19,12 @@ public class FieldOfView : MonoBehaviour
 
     private bool _alreadyInView;
     private CancellationTokenSource _cts;
-    private AIBrain _aiBrain;
+    private IAIBrain _aiBrain;
     
 
     private void Awake()
     {
-        _aiBrain = GetComponent<AIBrain>();
+        _aiBrain = GetComponent<IAIBrain>();
         _cts = new CancellationTokenSource();
     }
     
@@ -64,9 +64,10 @@ public class FieldOfView : MonoBehaviour
                         float distanceToTarget = Vector3.Distance(transform.position, target.position);
                         targetInView = !Physics.Raycast(transform.position, directionToTarget, distanceToTarget,
                             obstructionMask);
-                        Debug.LogWarning(targetInView);
+                        
                         if (targetInView && !_alreadyInView)
                         {
+                            Debug.LogWarning("Player in View");
                             _aiBrain.PlayerInView();
                             _alreadyInView = true;
                         }

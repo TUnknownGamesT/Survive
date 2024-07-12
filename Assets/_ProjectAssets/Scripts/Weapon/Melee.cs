@@ -31,7 +31,7 @@ public class Melee : Weapon
         { 
             timeSinceLastShot = 0;
            Attack();
-           _animationManager.Attack();
+           //_animationManager.Attack();
         }
     }
 

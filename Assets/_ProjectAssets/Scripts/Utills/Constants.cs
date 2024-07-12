@@ -51,6 +51,7 @@ public class Constants : MonoBehaviour
       AK=2,
       Shotgun=3,
       Sniper=4,
+      Minion=5,
    }
    
    public enum GunsType
@@ -62,10 +63,6 @@ public class Constants : MonoBehaviour
    }
 
 
-   public static LayerMask baseLayer;
-
-   private void Start()
-   {
-      baseLayer = LayerMask.GetMask("PlayerBase");
-   }
+   public LayerMask baseLayer;
+   
 }

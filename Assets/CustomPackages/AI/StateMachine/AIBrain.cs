@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-public class AIBrain : MonoBehaviour
+public class AIBrain : MonoBehaviour, IAIBrain
 {
     
     public static Action onEnemyDeath;
@@ -106,6 +106,7 @@ public class AIBrain : MonoBehaviour
             }
         }
     }
+    
 
     public void Notice()
     {
@@ -160,6 +161,7 @@ public class AIBrain : MonoBehaviour
     
     public void PlayerInView()
     {
+        
         _activeTargetInView = true;
         if(_currentTarget != GameManager.playerRef.transform)
             Destroy(_currentTarget.gameObject);

@@ -212,17 +212,9 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void SetHealthBarMaxLife(float value)
+    private void SetPlayerHP(float value)
     {
-        playerHealthBar.maxValue = value;
         playerHealthBar.value = value;
-        lifeBar.color = lifeBarColor.Evaluate((playerHealthBar.normalizedValue));
-    }
-    
-
-    private void SetPlayerHP(int value)
-    {
-        playerHealthBar.value += value;
         lifeBar.color = lifeBarColor.Evaluate((playerHealthBar.normalizedValue));
     }
     
