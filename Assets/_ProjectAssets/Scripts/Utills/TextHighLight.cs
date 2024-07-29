@@ -23,7 +23,7 @@ public class TextHighLight : MonoBehaviour,IPointerExitHandler,IPointerEnterHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        _textMeshPro.fontStyle = FontStyles.Underline | FontStyles.Bold;
+        _textMeshPro.fontStyle = FontStyles.Bold;
         _textMeshPro.color = Color.yellow;
     }
 }

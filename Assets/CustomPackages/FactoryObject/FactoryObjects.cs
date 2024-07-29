@@ -1,11 +1,14 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public enum FactoryObjectsType
 {
     KillingText,
     Enemy,
-    Blood
+    Blood,
+    EnemyWeapon
 }
 
 
@@ -42,8 +45,11 @@ public class FactoryObjects : MonoBehaviour
 
     #endregion
     
+    public static Action<Transform> onEnemySpawned;
+    
     [Header("Objects")]
     public List<GameObject> enemiesToSpawn;
+    public List<Weapon> enemyGuns;
 
     public GameObject blood;
 
@@ -51,8 +57,17 @@ public class FactoryObjects : MonoBehaviour
     [ColorUsage(true,true)]
     public List<Color> colors;
     public List<string> texts;
+
+    private void OnEnable()
+    {
+        EnemyStatusManager.onEnemyDamageChanged += UpgradeEnemyArms;
+    }
     
-    
+    private void OnDisable()
+    {
+        EnemyStatusManager.onEnemyDamageChanged -= UpgradeEnemyArms;
+    }
+
     public void CreateObject<T>(FactoryObject<T> factoryObject)
     {
         switch (factoryObject.FactoryObjectType)
@@ -63,7 +78,9 @@ public class FactoryObjects : MonoBehaviour
            case FactoryObjectsType.Blood:
                CreateBlood(factoryObject.Instructions);
                break;
-           
+           case FactoryObjectsType.EnemyWeapon:
+               CreateEnemyEnemyWeapon(factoryObject.Instructions);
+               break;
            default:
                Debug.LogWarning("FactoryObject type not found!");
                break;
@@ -79,6 +96,24 @@ public class FactoryObjects : MonoBehaviour
             Instantiate(blood, collision.contacts[0].point, Quaternion.identity);
     }
 
+    private void CreateEnemyEnemyWeapon<T>(T instructions)
+    {
+        if (instructions is EnemyWeaponInstructions enemyDetails)
+        {
+            Instantiate(enemyGuns.Find(x => x.enemyType == enemyDetails.enemyType).gameObject,
+                enemyDetails.parent.position, Quaternion.identity, enemyDetails.parent);
+        }
+    }
+    
+    private void UpgradeEnemyArms(float amount)
+    {
+        foreach (var gun in enemyGuns)
+        {
+            gun.damage += amount;
+        }
+    }
+    
+    
     #region CreateKillingText
     
     
@@ -101,7 +136,8 @@ public class FactoryObjects : MonoBehaviour
      {
          if (positionToSpawn is Transform position)
          {
-             Instantiate(enemiesToSpawn[Random.Range(0,enemiesToSpawn.Count)], position.position , Quaternion.identity);
+            Transform  enemy = Instantiate(enemiesToSpawn[Random.Range(0,enemiesToSpawn.Count)], position.position , Quaternion.identity).transform;
+            onEnemySpawned?.Invoke(enemy);
          }
      }
 

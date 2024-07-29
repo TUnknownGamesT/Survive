@@ -9,9 +9,7 @@ public abstract class Firearm : Weapon
     
     public  Action onShoot;
     public  Action<int,int> onFinishReload;
-
-    [Header("Shooting")]
-    public float damage;
+    
     [Range(0,1f)]
     public float spread;
     [Header("Reloading")]
@@ -73,8 +71,9 @@ public abstract class Firearm : Weapon
             float xSpread = UnityEngine.Random.Range(-spread, spread);
             float YSpread = UnityEngine.Random.Range(-spread, spread);
             
-            Rigidbody rb =  Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation).GetComponent<Rigidbody>();
-            rb.AddRelativeForce((Vector3.forward + new Vector3(xSpread,YSpread,0)) * bulletSpeed, ForceMode.Impulse);
+            Transform bullet  =  Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation).transform;
+            bullet.GetComponent<Rigidbody>().AddRelativeForce((Vector3.forward + new Vector3(xSpread,YSpread,0)) * bulletSpeed, ForceMode.Impulse);
+            bullet.GetComponent<BulletBehaviour>().damage = damage;
             vfx.Play();
             currentAmunition--;
             timeSinceLastShot = 0;

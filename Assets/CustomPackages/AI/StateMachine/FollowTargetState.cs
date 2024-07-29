@@ -29,8 +29,10 @@ public class FollowTargetState : IState
 
     public void OnUpdate()
     {
-        _navMeshAgent.destination = Vector3.Distance(_enemyBody.position, _currentTarget.transform.position) > _stoppingDistance 
-            ? GameManager.playerRef.transform.position : _enemyBody.position;
+        if (Vector3.Distance(_enemyBody.position, _currentTarget.transform.position) > _stoppingDistance)
+        {
+            _navMeshAgent.destination = _currentTarget.position;
+        }
     }
 
     public void OnExit()

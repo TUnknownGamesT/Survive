@@ -16,9 +16,9 @@ MonoBehaviour:
   enemyType: 0
   health: 2
   damping: 200
-  stoppingDistance: 1
+  stoppingDistance: 4
   pauseBetweenMovement: 3
-  speed: 7
+  speed: 8
   soundComponent: {fileID: 0}
   armSpawnPoint: {fileID: 0}
   aiBody: {fileID: 0}

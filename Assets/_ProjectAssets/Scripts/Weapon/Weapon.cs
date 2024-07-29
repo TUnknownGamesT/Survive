@@ -4,9 +4,11 @@ using UnityEngine.VFX;
 
 public class Weapon : MonoBehaviour
 {
-
+    
+    
+    public float damage;
     public float reloadTime;
-    public Constants.EnemyType enemyDrop;
+    public Constants.EnemyType enemyType;
     public Sprite weaponIcon;
     public VisualEffect vfx;
     protected float timeSinceLastShot;

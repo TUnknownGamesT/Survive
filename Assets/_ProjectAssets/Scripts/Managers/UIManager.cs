@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviour
     public Canvas pauseMenuCanvas;
     public Canvas deathMenuCanvas;
     public Canvas mainMenuCanvas;
+    public Canvas optionsCanvas;
     
     [Header("Player UI")]
     public Slider playerHealthBar;
@@ -39,7 +40,6 @@ public class UIManager : MonoBehaviour
     public Image lifeBar;
     public Gradient lifeBarColor;
     public bool isPaused = false;
-    public OptionMenuBehaviour optionsMenuBehaviour;
     public TextMeshProUGUI counter;
     [Header("Player Death Menu")]
     public TextMeshProUGUI score;
@@ -55,13 +55,15 @@ public class UIManager : MonoBehaviour
     public Slider engineSlider;
     public Slider pressureSlider;
     private Slider currentResource;
-    
+
     [Header("Upgrade UI")]
     public UpgradePanelBehaviour upgradePanel;
     
     
     private  bool inMainMenu = true;
-    
+    private List<Canvas> history = new ();
+    private bool playerDied;
+
     private void OnEnable()
     {
         EnemySpawner.onPauseStart += DisplayCounter;
@@ -86,6 +88,7 @@ public class UIManager : MonoBehaviour
     }
     private void Start()
     {
+        history.Add(mainMenuCanvas);
         foreach (Transform element in gunsWrapper.transform)
         {
             weaponDisplayer.Add(element.GetComponent<IWeaponDisplayer>());
@@ -99,7 +102,22 @@ public class UIManager : MonoBehaviour
     
 
     #region UI Menu
-    
+
+    public void Back()
+    {
+        if (history.Count == 1)
+        {
+            DeactivateCanvas(history[^1]);
+            history.RemoveAt(history.Count - 1);
+        }
+        else
+        {
+            DeactivateCanvas(history[^1]);
+            history.RemoveAt(history.Count - 1);
+            ActivateCanvas(history[^1]);
+        }
+    }
+
     public void RestartGame()
     {
         ActivateCanvas(playerCanvas);
@@ -109,46 +127,50 @@ public class UIManager : MonoBehaviour
     
     public void UnPause()
     {
-        Pause(new InputAction.CallbackContext());
+        Back();
+        ActivateCanvas(playerCanvas);
+        Time.timeScale = 1f;
+        isPaused = !isPaused;
     }
     
     private void Pause(InputAction.CallbackContext obj)
     {
+        if (playerDied) return;
         Cursor.visible = !Cursor.visible;
         isPaused = !isPaused;
         if (isPaused)
         {
+            if (history.Count != 0)
+            {
+                DeactivateCanvas(history[^1]);
+            }
+            history.Add(pauseMenuCanvas);
             DeactivateCanvas(playerCanvas);
             ActivateCanvas(pauseMenuCanvas);
         }
         else
         {
+            Back();
             ActivateCanvas(playerCanvas);
-            DeactivateCanvas(pauseMenuCanvas);
         }
         Time.timeScale = isPaused ? 0f : 1f;
     }
 
     public void EnableOptionsMenu()
-    {
+    {       
         Cursor.visible = true;
-        optionsMenuBehaviour.EnableMainMenu();
-        DeactivateCanvas(pauseMenuCanvas);
+        ActivateCanvas(optionsCanvas);
+        history.Add(optionsCanvas);
+        DeactivateCanvas(history[^2]);
     }
 
     public void CloseOptionMenu()
     {
         Cursor.visible = true;
-        optionsMenuBehaviour.DisableMainMenu();
-        ActivateCanvas(pauseMenuCanvas);
+        Back();
         //ActivateCanvas(inMainMenu ? mainMenuCanvas : pauseMenuCanvas);
     }
-
-    public void EnableOnlyOptionMenu()
-    {
-        DeactivateCanvas(mainMenuCanvas);
-        optionsMenuBehaviour.EnableMainMenu();
-    }
+    
     
     public void ExitMainMenu()
     {
@@ -159,6 +181,7 @@ public class UIManager : MonoBehaviour
 
     private void PlayerDie()
     {
+        playerDied = true;
         Cursor.visible = true;
         SetScore();
         ActivateCanvas(deathMenuCanvas);
@@ -167,8 +190,8 @@ public class UIManager : MonoBehaviour
     private void SetScore()
     {
         UniTask.Void(async () =>
-        {
-           await  UniTask.Delay(TimeSpan.FromSeconds(0.4f));
+        {  
+            await  UniTask.Delay(TimeSpan.FromSeconds(0.4f));
            LeanTween.value(0,ScoreKeeper.Score,1f).setOnUpdate((float value) =>
            {
                score.text = Mathf.RoundToInt(value).ToString();

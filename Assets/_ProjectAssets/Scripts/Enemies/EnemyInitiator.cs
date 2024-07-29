@@ -16,61 +16,52 @@ public class EnemyInitiator : MonoBehaviour
         {
             instance = this;
         }
+        
+        mockUpEnemys = new List<EnemyType>(enemyTypes);
     }
 
     #endregion
 
     public List<EnemyType> enemyTypes;
-    public List<Firearm> enemyGuns;
-    
+
     private List<EnemyType> mockUpEnemys;
 
 
     private void OnEnable()
     {
-        EnemyUpgrades.onEnemyUpgraded += UpgradeEnemy;
+        EnemyStatusManager.onEnemyHealthChanged += UpgradeHealth;
+        EnemyStatusManager.onEnemySpeedChanged += UpgradeSpeed;
     }
-
+    
     private void OnDisable()
     {
-        EnemyUpgrades.onEnemyUpgraded -= UpgradeEnemy;
+        EnemyStatusManager.onEnemyHealthChanged -= UpgradeHealth;
+        EnemyStatusManager.onEnemySpeedChanged -= UpgradeSpeed;
     }
 
-    private void Start()
-    {
-        mockUpEnemys = new List<EnemyType>(enemyTypes);
-    }
 
     public EnemyType GetEnemyStats(Constants.EnemyType enemy)
     {
         return mockUpEnemys.Find(x => x.enemyType == enemy);
     }
 
-
-    private void UpgradeEnemy(EnemyUpgradesOptions upgrade,float amount)
+    private void UpgradeHealth(float amount)
     {
-
-        switch (upgrade)
+        foreach (var enemy in mockUpEnemys)
         {
-            case EnemyUpgradesOptions.Health:
-                foreach (var enemy in mockUpEnemys)
-                {
-                    enemy.health += (int) amount;
-                }
-                break;
-            case EnemyUpgradesOptions.Speed:
-                foreach (var enemy in mockUpEnemys)
-                {
-                    enemy.speed += amount;
-                }
-                break;
-            case EnemyUpgradesOptions.Damage:
-                foreach (var gun in enemyGuns)
-                {
-                    gun.damage += amount;
-                }
-                break;
+            enemy.health += (int) amount;
         }
-     
     }
+    
+    private void UpgradeSpeed(float amount)
+    {
+        foreach (var enemy in mockUpEnemys)
+        {
+            enemy.speed += amount;
+        }
+    }
+    
+
+
+    
 }

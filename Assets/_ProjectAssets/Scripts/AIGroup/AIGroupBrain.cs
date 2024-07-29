@@ -2,11 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class AIGroupBrain : MonoBehaviour,IAIBrain
 {
+    public static Action onEnemyDeath;
+    
     #region Formation
 
     [HideInInspector]
@@ -27,9 +30,8 @@ public class AIGroupBrain : MonoBehaviour,IAIBrain
     AttackStateGroup attackStateGroup = new AttackStateGroup();
 
     #endregion
-
-    public float _stoppingDistance;
     
+    public float _stoppingDistance;
     private IState _currentState;
     private bool _activeTargetInView;
     private bool _alive = true;
@@ -133,6 +135,7 @@ public class AIGroupBrain : MonoBehaviour,IAIBrain
             _spawnedUnits.Remove(minion);
         if (_spawnedUnits.Count == 0)
         {
+            onEnemyDeath?.Invoke();
             Destroy(gameObject);
         }
     }
@@ -140,7 +143,6 @@ public class AIGroupBrain : MonoBehaviour,IAIBrain
 
     public void BaseInView(Transform basePoint)
     {
-        Debug.LogWarning("Base in view");
         this.basePoint = basePoint;
         _currentTarget = basePoint;
         _activeTargetInView = true;
@@ -163,4 +165,6 @@ public class AIGroupBrain : MonoBehaviour,IAIBrain
         Debug.LogWarningFormat("<color=reed>Add last seen target not player every time SOLVE</color>");
         _activeTargetInView = false;
     }
+    
+    
 }

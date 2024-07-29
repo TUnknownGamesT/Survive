@@ -183,7 +183,7 @@ public class UpperBodyStateMachine : MonoBehaviour
         
         _shootState.OnInitState(gameObject);
         _reloadState.OnInitState(gameObject);
-        animation?.SetWeaponType((int)currentArm.enemyDrop);
+        animation?.SetWeaponType((int)currentArm.enemyType);
         currentArm.SetArmHandler(animation);
     }
     

@@ -22,7 +22,7 @@ public class PlayerHealth : MonoBehaviour,IDamageable
         currentHealth -= damageReceived;
         onPlayerHealthChanged?.Invoke(currentHealth);
         if (currentHealth<=0)
-        {
+        { 
             CameraController.instance.TakeDamageEffect();
             Cursor.visible = true;
             onPlayerDeath?.Invoke();
@@ -47,14 +47,5 @@ public class PlayerHealth : MonoBehaviour,IDamageable
     {
         maxLife += amount;
         currentHealth = maxLife;
-    }
-    
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("EnemyArm"))
-        {
-            Debug.LogWarningFormat("<color=reed>Get the same damage from all the enemies SOLVE</color>");
-            TakeDamage(-2);
-        }
     }
 }

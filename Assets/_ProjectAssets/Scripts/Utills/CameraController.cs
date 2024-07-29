@@ -112,7 +112,7 @@ public class CameraController : MonoBehaviour
         UniTask.Void(async () =>
         {
             Time.timeScale = scaler;
-            await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
+            await UniTask.Delay(TimeSpan.FromSeconds(0.02f));
             Time.timeScale = 1f;
         });
        

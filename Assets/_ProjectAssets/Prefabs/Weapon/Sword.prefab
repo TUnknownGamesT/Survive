@@ -190,7 +190,7 @@ MonoBehaviour:
   enemyDrop: 0
   weaponIcon: {fileID: 21300000, guid: 297c896cbcdd7fb4eab0dbb9acea646b, type: 3}
   vfx: {fileID: 0}
-  fireRate: 20
+  fireRate: 10
 --- !u!1001 &8835851707777841813
 PrefabInstance:
   m_ObjectHideFlags: 0

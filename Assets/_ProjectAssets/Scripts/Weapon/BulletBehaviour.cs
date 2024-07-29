@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class BulletBehaviour : MonoBehaviour
 {
-    public int damage;
+    public float damage;
     public GameObject wallHitEffect;
 
     private void Start()
@@ -23,14 +23,16 @@ public class BulletBehaviour : MonoBehaviour
             wallMark.transform.position += wallMark.transform.forward * -0.1f;
             wallMark.transform.SetParent(collision.transform);
             wallMark.transform.localScale = Vector3.one;
+            Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<IDamageable>().TakeDamage(damage);
             FactoryObjects.instance.CreateObject(new FactoryObject<Collision>(FactoryObjectsType.Blood, collision));
+            Destroy(gameObject);
         }
 
-        Destroy(gameObject);
+        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -39,8 +41,9 @@ public class BulletBehaviour : MonoBehaviour
         {
             FactoryObjects.instance.CreateObject(new FactoryObject<Collider>(FactoryObjectsType.Blood, other));
             other.GetComponent<IDamageable>().TakeDamage(damage);
+            Destroy(gameObject);
         }
 
-        Destroy(gameObject);
+        
     }
 }

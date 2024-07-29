@@ -68,6 +68,8 @@ public class AIBrain : MonoBehaviour, IAIBrain
         mockEnemyType.navMeshAgent.speed = mockEnemyType.speed;
         mockEnemyType.travelPoints = travelPoints;
         mockEnemyType.armPrefab.GetComponent<Weapon>().SetArmHandler(_enemyAnimations);
+        FactoryObjects.instance.CreateObject(new FactoryObject<EnemyWeaponInstructions>
+            (FactoryObjectsType.EnemyWeapon,new EnemyWeaponInstructions(Constants.EnemyType.Melee, armSpawnPoint)));
 
         _stoppingDistance = mockEnemyType.stoppingDistance;
 
@@ -140,11 +142,11 @@ public class AIBrain : MonoBehaviour, IAIBrain
     {
         if (_alive)
         {
+            _alive = false;
             onEnemyDeath?.Invoke();
             CameraController.SlowMotion(0.2f);
             _enemyAnimations.Die();
             enabled = false;
-            _alive = false;
             ChangeState(_deadState);
             Destroy(gameObject,1f);
         }

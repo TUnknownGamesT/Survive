@@ -53,5 +53,13 @@ public class Melee : Weapon
           
         });
     }
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out IDamageable damageable)
+            && other.gameObject.CompareTag("Player"))
+        {
+            damageable.TakeDamage(damage);
+        }
+    }
 }

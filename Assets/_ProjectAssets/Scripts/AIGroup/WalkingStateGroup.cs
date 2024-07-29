@@ -4,6 +4,7 @@ public class WalkingStateGroup : IState
 {
     
     private Transform aiBody;
+    private bool hitPlayerBase;
 
     public void OnInitState<T>(T gameObject)
     {
@@ -14,11 +15,13 @@ public class WalkingStateGroup : IState
 
     public void OnEnter()
     {
-        
+        hitPlayerBase = false;
     }
 
     public void OnUpdate()
     {
+        if(hitPlayerBase)
+            return;
         ShootRaycast();
     }
 
@@ -30,13 +33,14 @@ public class WalkingStateGroup : IState
     private void ShootRaycast()
     {
         RaycastHit hit;
-
-        if (Physics.Raycast(aiBody.position, GameManager.playerBaseRef.position, out hit, 20, Constants.instance.baseLayer))
+        Vector3 direction =  GameManager.playerBaseRef.position - aiBody.position;
+        if (Physics.Raycast(aiBody.position, direction, out hit, Mathf.Infinity,Constants.instance.baseLayer))
         {
-            Debug.Log("Base in View");
+            hitPlayerBase = true;
+            Debug.Log(hit.point);
             GameObject playerBaseHitPoint = new GameObject("PlayerBaseHitPoint");
             playerBaseHitPoint.transform.position = hit.point;
-            aiBody.gameObject.GetComponent<IAIBrain>().BaseInView(playerBaseHitPoint.transform);
+            aiBody.GetComponent<IAIBrain>().BaseInView(playerBaseHitPoint.transform);
         }
     }
     

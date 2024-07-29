@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
         crossHairRef = GameObject.FindGameObjectWithTag("CrossHair").transform;
         playerBaseRef = GameObject.FindGameObjectWithTag("PlayerBase").transform;
     }
+    
 
     #endregion
     
@@ -35,15 +36,11 @@ public class GameManager : MonoBehaviour
     public static Transform playerBaseRef;
     [SerializeField]
     private LvlSettings lvlSettings;
-    
+
     public LvlSettings LvlSettings => lvlSettings;
     
     //Enemy Spawner
     private EnemySpawner enemySpawner;
-    
-    
-    
-
     
 
     private void OnEnable()
