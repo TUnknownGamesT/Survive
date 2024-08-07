@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using ConstantsValues;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
@@ -69,9 +70,13 @@ public class PatrolState : IState
         Vector3 direction =  GameManager.playerBaseRef.position - enemyBody.position;
         if (Physics.Raycast(enemyBody.position, direction, out hit, Mathf.Infinity, Constants.instance.baseLayer))
         {
-            Debug.Log("Base in View");
-            GameObject playerBaseHitPoint = new GameObject();
-            playerBaseHitPoint.transform.position = hit.point;
+            GameObject playerBaseHitPoint = new GameObject
+            {
+                transform =
+                {
+                    position = new Vector3(hit.point.x,0, hit.point.z)
+                }
+            };
             enemyBody.gameObject.GetComponent<AIBrain>().BaseInView(playerBaseHitPoint.transform);
         }
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ConstantsValues;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,7 +12,7 @@ public class AIBrain : MonoBehaviour, IAIBrain
     public static Action onEnemyDeath;
     
     [Header("Enemy Type")]
-    public Constants.EnemyType enemyType;
+    public ConstantsValues.EnemyType enemyType;
     
     [Header("Movement Settings")]
     public List<Transform> travelPoints =new();
@@ -62,14 +63,16 @@ public class AIBrain : MonoBehaviour, IAIBrain
     {
         EnemyType mockEnemyType = EnemyInitiator.instance.GetEnemyStats(enemyType);
         mockEnemyType.armSpawnPoint = armSpawnPoint;
+        FactoryObjects.instance.CreateObject(new FactoryObject<EnemyWeaponInstructions>
+            (FactoryObjectsType.EnemyWeapon,new EnemyWeaponInstructions(ConstantsValues.EnemyType.Melee, armSpawnPoint)));
         mockEnemyType.soundComponent = _soundComponent;
         mockEnemyType.aiBody = gameObject;
         mockEnemyType.navMeshAgent = GetComponent<NavMeshAgent>();
         mockEnemyType.navMeshAgent.speed = mockEnemyType.speed;
         mockEnemyType.travelPoints = travelPoints;
+        mockEnemyType.armPrefab = armSpawnPoint.GetChild(0).gameObject;
         mockEnemyType.armPrefab.GetComponent<Weapon>().SetArmHandler(_enemyAnimations);
-        FactoryObjects.instance.CreateObject(new FactoryObject<EnemyWeaponInstructions>
-            (FactoryObjectsType.EnemyWeapon,new EnemyWeaponInstructions(Constants.EnemyType.Melee, armSpawnPoint)));
+        
 
         _stoppingDistance = mockEnemyType.stoppingDistance;
 
@@ -95,16 +98,13 @@ public class AIBrain : MonoBehaviour, IAIBrain
             if (_activeTargetInView &&  Vector3.Distance(transform.position, _currentTarget.position) <= _stoppingDistance)
             {
                 ChangeState(_attackState);
-                Debug.LogWarning("Attack State" + _currentTarget.gameObject.name);
             }else if(_activeTargetInView &&Vector3.Distance(transform.position, _currentTarget.position) > _stoppingDistance)
             {
                 ChangeState(_followTargetState);
-                Debug.LogWarning("Follow Player State");
             }
             else if(!_activeTargetInView)
             {
                 ChangeState(_patrolState);
-                Debug.LogWarning("Patrol State");
             }
         }
     }

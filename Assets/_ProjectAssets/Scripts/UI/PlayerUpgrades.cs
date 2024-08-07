@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ConstantsValues;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,15 +18,20 @@ public class PlayerUpgrades : MonoBehaviour
     public static Action<float> onSpeedUpgrade;
     public static Action<UpgradeType> onPlayerUpgradeSelected;
 
-
+    [Header("Player Upgrades Parameters")]
     public float speedAmountToAdd;
     public int lifeAmountToAdd;
-    public float backpackAmountToAdd;
+
+    [Header("References")] 
+    public Image mainImage;
     public TextMeshProUGUI upgradeText;
     public Button upgradeButton;
-    public AudioClip upgradeSound;
-    public SoundComponent soundComponent;
-  
+
+
+    [Header("Player Upgrades Options Image")]
+    public  Sprite healthImage;
+    public  Sprite speedImage;
+    public Sprite defaultImage;
     
     private readonly List<PlayerUpgradesOptions> _playerUpgradesOptions = new ();
     private float _upgradedStatus;
@@ -53,7 +59,6 @@ public class PlayerUpgrades : MonoBehaviour
     public void GetRandomUpgrade()
     {
         _randomUpgrade = _playerUpgradesOptions[UnityEngine.Random.Range(0, _playerUpgradesOptions.Count)];
-        soundComponent.PlaySound(upgradeSound);
         switch (_randomUpgrade)
         {
             case PlayerUpgradesOptions.Speed:
@@ -74,6 +79,14 @@ public class PlayerUpgrades : MonoBehaviour
         upgradeText.gameObject.SetActive(true);
         upgradeText.text = $"+ {_upgradedStatus} {_randomUpgrade.ToString()}";
         upgradeButton.gameObject.SetActive(false);
+        
+        mainImage.sprite = _randomUpgrade switch
+        {
+            PlayerUpgradesOptions.Speed => speedImage,
+            PlayerUpgradesOptions.Life => healthImage,
+            _ => defaultImage
+        };
+        mainImage.SetNativeSize();
     }
 
 
@@ -81,5 +94,7 @@ public class PlayerUpgrades : MonoBehaviour
     {
         upgradeText.gameObject.SetActive(false);
         upgradeButton.gameObject.SetActive(true);
+        mainImage.sprite = defaultImage;
+        mainImage.SetNativeSize();
     }
 }

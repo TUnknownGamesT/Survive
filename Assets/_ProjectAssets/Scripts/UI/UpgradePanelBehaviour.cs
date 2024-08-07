@@ -1,24 +1,25 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.VFX;
+using ConstantsValues;
 
-public enum UpgradeType
-{
-    Player,
-    Guns,
-    Base,
-    Enemy
-}
 
 public class UpgradePanelBehaviour : MonoBehaviour
 {
+    public static Action<UpgradeType> onUpgradeCardInFront;
+    
     public RectTransform playerCard;
     public RectTransform gunsCard;
     public RectTransform baseCard;
     public RectTransform enemyCard;
+    public VisualEffect sparks;
 
     public static Action onSecondaryCardDisappear;
     public static Action onPanelDisappear;
+    
+    private UpgradeType currentUpgradeType;
 
     private void OnEnable()
     {
@@ -34,72 +35,108 @@ public class UpgradePanelBehaviour : MonoBehaviour
         BaseUpgrade.onBaseUpgradeSelected -= UpgradeSelected;
     }
 
-    
+
     public void Activate()
     {
+        sparks.Play();
         LeanTween.value(0, 1, 1f).setOnUpdate(val =>
         {
             playerCard.localScale = new Vector3(val, val, val);
             gunsCard.localScale = new Vector3(val, val, val);
             baseCard.localScale = new Vector3(val, val, val);
             Cursor.visible = true;
-        }).setEaseInOutElastic();
+        }).setEaseInElastic();
+        UniTask.Void(async () =>
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(0.6f));
+            CameraController.ShakeCamera(0.3f, 25f);
+        });
     }
 
 
     private void UpgradeSelected(UpgradeType upgradeType)
     {
+        currentUpgradeType = upgradeType;
         switch (upgradeType)
         {
             case UpgradeType.Player:
-                UpgradeEffect(new List<RectTransform> {playerCard,enemyCard}
-                    , new List<RectTransform> {gunsCard, baseCard});
+                UpgradeEffect(new List<RectTransform> { playerCard, enemyCard }
+                    , new List<RectTransform> { gunsCard, baseCard });
                 break;
             case UpgradeType.Guns:
-                UpgradeEffect(new List<RectTransform> {gunsCard,enemyCard}
-                    , new List<RectTransform> {playerCard, baseCard});
+                UpgradeEffect(new List<RectTransform> { gunsCard, enemyCard }
+                    , new List<RectTransform> { playerCard, baseCard });
                 break;
             case UpgradeType.Base:
-                UpgradeEffect(new List<RectTransform> {baseCard,enemyCard}
-                    , new List<RectTransform> {playerCard, gunsCard});
+                UpgradeEffect(new List<RectTransform> { baseCard, enemyCard }
+                    , new List<RectTransform> { playerCard, gunsCard });
                 break;
         }
     }
 
 
-    private void UpgradeEffect(List<RectTransform> cardsRemain, List<RectTransform> cardToDisappear) 
+    private void UpgradeEffect(List<RectTransform> cardsRemain, List<RectTransform> cardToDisappear)
     {
-        LeanTween.value(1,0,1f).setOnUpdate(val =>
+        LeanTween.value(1, 0, 1.2f).setOnUpdate(value =>
         {
-            playerCard.localScale = new Vector3(val, val, val);
-            gunsCard.localScale = new Vector3(val, val, val);
-            baseCard.localScale = new Vector3(val, val, val);
+            cardToDisappear.ForEach(card => card.localScale = new Vector3(value, value, value));
+        }).setEaseInOutElastic();
+        
+        LeanTween.value(1f, 0,1f).setOnUpdate(val =>
+        {
+            cardsRemain[0].localScale = new Vector3(val, val, val);
             Cursor.visible = false;
         }).setEaseInOutElastic().setOnComplete(() =>
         {
             enemyCard.gameObject.SetActive(true);
             onSecondaryCardDisappear?.Invoke();
             cardToDisappear.ForEach(card => card.gameObject.SetActive(false));
+            UniTask.Void(async () =>
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(0.55f));
+                CameraController.ShakeCamera(0.3f, 25f);
+            });
             LeanTween.value(0, 1, 1f).setOnUpdate(value =>
             {
                 cardsRemain.ForEach(card => card.localScale = new Vector3(value, value, value));
             }).setEaseInOutElastic().setOnComplete(() =>
             {
-                LeanTween.value(1, 0, 1f).setOnUpdate(value =>
+                onUpgradeCardInFront?.Invoke(currentUpgradeType);
+                LeanTween.value(1, 1.5f, 0.5f).setOnUpdate(value =>
                 {
-                    cardsRemain.ForEach(card => card.localScale = new Vector3(value, value, value));
-                }).setEaseInOutElastic().setDelay(1f).setOnComplete(() =>
+                    cardsRemain[0].localScale = new Vector3(value, value, value);
+                    cardsRemain[1].localScale = new Vector3(1 - value + 1, 1 - value + 1, 1 - value + 1);
+                }).setEaseInOutElastic().setOnComplete(() =>
                 {
-                    cardToDisappear.ForEach(card => card.gameObject.SetActive(true));
-                    onPanelDisappear?.Invoke();
-                    enemyCard.gameObject.SetActive(false);
+                     onUpgradeCardInFront?.Invoke(UpgradeType.Enemy);
+                    LeanTween.value(1.5f, 0.5f, 1f).setOnUpdate(value =>
+                    {
+                        cardsRemain[0].localScale = new Vector3(value, value, value);
+                        cardsRemain[1].localScale =
+                            new Vector3(0.5f + 1.5f - value, 0.5f + 1.5f - value, 0.5f + 1.5f - value);
+                    }).setEaseInOutElastic().setDelay(0.3f).setOnComplete(() =>
+                    {
+                        LeanTween.value(0.5f, 1, 0.3f).setOnUpdate(value =>
+                        {
+                            cardsRemain[0].localScale = new Vector3(value, value, value);
+                            cardsRemain[1].localScale = new Vector3(1.5f - value+0.5f, 1.5f - value +0.5f, 1.5f - value+0.5f);
+                        }).setEaseInQuad().setDelay(0.3f).setOnComplete(() =>
+                        {
+                            LeanTween.value(1, 0, 1f).setOnUpdate(value =>
+                            {
+                                cardsRemain.ForEach(card => card.localScale = new Vector3(value, value, value));
+                            }).setEaseInOutElastic().setDelay(1f).setOnComplete(() =>
+                            {
+                                sparks.Stop();
+                                cardToDisappear.ForEach(card => card.gameObject.SetActive(true));
+                                onPanelDisappear?.Invoke();
+                                enemyCard.gameObject.SetActive(false);
+                            });
+                        });
+                    });
                 });
             });
         });
     }
-    
-
-    
-
-   
 }
+

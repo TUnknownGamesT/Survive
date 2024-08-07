@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using ConstantsValues;
 
 public class UIManager : MonoBehaviour
 {
@@ -23,10 +24,6 @@ public class UIManager : MonoBehaviour
     }
 
     #endregion
-
-
-    public static Action<Constants.Resources> onSliderFull;
-    public static Action onSliderEmpty;
 
     public Canvas playerCanvas;
     public Canvas pauseMenuCanvas;
@@ -49,12 +46,6 @@ public class UIManager : MonoBehaviour
     public Image grenade;
     public List<IWeaponDisplayer> weaponDisplayer = new();
     private int _currentWeaponIndex = 0;
-
-    [Header("Resources UI")] 
-    public Slider computerSlider;
-    public Slider engineSlider;
-    public Slider pressureSlider;
-    private Slider currentResource;
 
     [Header("Upgrade UI")]
     public UpgradePanelBehaviour upgradePanel;
@@ -105,6 +96,8 @@ public class UIManager : MonoBehaviour
 
     public void Back()
     {
+        if(history.Count == 0) return;
+        
         if (history.Count == 1)
         {
             DeactivateCanvas(history[^1]);
@@ -263,117 +256,6 @@ public class UIManager : MonoBehaviour
         Color c = grenade.color;
         c.a = 0.2f;
         grenade.color=c;
-    }
-
-    #endregion
-
-    #region Resources UI
-
-    
-    public float GetSliderValue(Constants.Resources resource)
-    {
-        switch (resource)
-        {
-            case Constants.Resources.ComputerBoard:
-                return computerSlider.value;
-            case Constants.Resources.Engine:
-                return engineSlider.value;
-            case Constants.Resources.Pressure:
-                return pressureSlider.value;
-        }
-        return 0;
-    }
-
-    private void HighLightResource(Constants.Resources resource)
-    {
-        switch (resource)
-        {
-            case Constants.Resources.ComputerBoard:
-                HighLightSlider(computerSlider);
-                break;
-            case Constants.Resources.Engine:
-                HighLightSlider(engineSlider);
-                break;
-            case Constants.Resources.Pressure:
-                HighLightSlider(pressureSlider);
-                break;
-        }
-    }
-
-    private void HighLightSlider(Slider slider)
-    {
-        if (currentResource != null)
-        {
-            currentResource.GetComponent<CanvasGroup>().alpha = 0.5f;
-            currentResource.GetComponent<RectTransform>().localScale = Vector3.one;
-            currentResource.gameObject.SetActive(false);
-        }
-        
-        currentResource = slider;
-        
-        currentResource.gameObject.SetActive(true);
-        currentResource.GetComponent<CanvasGroup>().alpha = 1;
-        currentResource.GetComponent<RectTransform>().localScale = Vector3.one;
-
-       
-    }
-    
-    public void AddSlidersValue(Constants.Resources resource,float value)
-    {
-        
-        Debug.Log(value);
-        switch (resource)
-        {
-            case Constants.Resources.ComputerBoard:
-                AddSliderValue(value,computerSlider);
-                break;
-            case Constants.Resources.Engine:
-                AddSliderValue(value,engineSlider);
-                break;
-            case Constants.Resources.Pressure:
-                AddSliderValue(value,pressureSlider);
-                break;
-        }
-    }
-    
-    private void AddSliderValue(float value,Slider slider)
-    {
-        slider.value += value;
-        if(computerSlider.value >= computerSlider.maxValue)
-            onSliderFull?.Invoke(Constants.Resources.ComputerBoard);
-    }
-    
-    public void SetSlidersValue(Constants.Resources resource,float value)
-    {
-        switch (resource)
-        {
-            case Constants.Resources.ComputerBoard:
-                SetSliderValue(value,computerSlider,Constants.Resources.ComputerBoard);
-                break;
-            case Constants.Resources.Engine:
-                SetSliderValue(value,engineSlider,Constants.Resources.Engine);
-                break;
-            case Constants.Resources.Pressure:
-                SetSliderValue(value,pressureSlider,Constants.Resources.Pressure);
-                break;
-        }
-    }
-
-    private void SetSliderValue(float value,Slider slider,Constants.Resources resource)
-    {
-        Debug.Log(Mathf.Floor(value));
-        if (value > slider.maxValue)
-            return;
-        
-        slider.value = value;
-        if (slider.value == 0)
-        {
-            onSliderEmpty?.Invoke();
-        }else if (Mathf.Floor(value) >= slider.maxValue)
-        {
-            onSliderFull?.Invoke(resource);
-        }
-
     }
 
     #endregion

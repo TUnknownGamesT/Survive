@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using ConstantsValues;
 
 
 public enum BaseUpgradesOptions
@@ -21,18 +22,17 @@ public class BaseUpgrade : MonoBehaviour
     
     [Header("References")]
     public TextMeshProUGUI upgradeText;
-    public Image upgradeImage;
     public Button upgradeButton;
-    public AudioClip upgradeSound;
-    public SoundComponent soundComponent;
-    public GameObject title;
+    public Image mainImage;
 
-    [Header("Items Images")]
+    [Header("Upgrades Images")]
     public Sprite wallImage;
     public Sprite amoImage;
     public Sprite madKitImage;
+    public Sprite defaultImage;
+    public Sprite repairImage;
     
-    [Header("Upgrades")]
+    [Header("Upgrades Parameters")]
     public float wallUpgrade;
     public float amoUpgrade;
     public float madKitUpgrade;
@@ -63,7 +63,6 @@ public class BaseUpgrade : MonoBehaviour
     public void GetRandomUpgrade()
     {
         _randomUpgrade = _baseUpgradesOptions[UnityEngine.Random.Range(0, _baseUpgradesOptions.Count)];
-        soundComponent.PlaySound(upgradeSound);
         switch (_randomUpgrade)
         {
             case BaseUpgradesOptions.Wall:
@@ -88,23 +87,22 @@ public class BaseUpgrade : MonoBehaviour
         upgradeText.gameObject.SetActive(true);
         upgradeText.text = $"+ {_upgradedStatus} {_randomUpgrade.ToString()}";
         upgradeButton.gameObject.SetActive(false);
-        upgradeImage.gameObject.SetActive(true);
-        upgradeImage.sprite = _randomUpgrade switch
+        mainImage.sprite = _randomUpgrade switch
         {
             BaseUpgradesOptions.Wall => wallImage,
             BaseUpgradesOptions.Amo => amoImage,
             BaseUpgradesOptions.MadKit => madKitImage,
             _ => throw new ArgumentOutOfRangeException()
         };
-        title.gameObject.SetActive(false);
+        mainImage.SetNativeSize();
     }
     
     private void SwitchCardToIdle()
     {
+        mainImage.sprite = defaultImage;
         upgradeText.gameObject.SetActive(false);
         upgradeButton.gameObject.SetActive(true);
-        upgradeImage.gameObject.SetActive(false);
-        title.gameObject.SetActive(true);
+        mainImage.SetNativeSize();
     }
 
    
