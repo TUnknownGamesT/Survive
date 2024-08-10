@@ -1,4 +1,5 @@
 using UnityEngine;
+using ConstantsValues;
 
 public class WalkingStateGroup : IState
 {

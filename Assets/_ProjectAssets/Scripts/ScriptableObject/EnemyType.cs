@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ConstantsValues;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,7 +8,7 @@ using UnityEngine.AI;
 public class EnemyType : ScriptableObject
 {
     public GameObject armPrefab;
-    public Constants.EnemyType enemyType;
+    public ConstantsValues.EnemyType enemyType;
     public int health;
     public float damping;
     public float stoppingDistance;

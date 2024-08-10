@@ -79,7 +79,7 @@ public class FactoryObjects : MonoBehaviour
                CreateBlood(factoryObject.Instructions);
                break;
            case FactoryObjectsType.EnemyWeapon:
-               CreateEnemyEnemyWeapon(factoryObject.Instructions);
+               CreateEnemyWeapon(factoryObject.Instructions);
                break;
            default:
                Debug.LogWarning("FactoryObject type not found!");
@@ -96,7 +96,7 @@ public class FactoryObjects : MonoBehaviour
             Instantiate(blood, collision.contacts[0].point, Quaternion.identity);
     }
 
-    private void CreateEnemyEnemyWeapon<T>(T instructions)
+    private void CreateEnemyWeapon<T>(T instructions)
     {
         if (instructions is EnemyWeaponInstructions enemyDetails)
         {

@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class AttackState : IState
 {
-    private Transform _armSpawnPoint;
     private float _spread;
     private bool _reloading;
     private Weapon _armPrefab;
@@ -18,12 +17,10 @@ public class AttackState : IState
     {
         if(gameObject is EnemyType enemyType)
         {
-            _armSpawnPoint = enemyType.armSpawnPoint;
             _aiBody = enemyType.aiBody;
             _damping = enemyType.damping;
-            
+            _armPrefab = enemyType.armPrefab.GetComponent<Weapon>();
             _enemyAnimations = _aiBody.GetComponent<ZombieAnimationManager>();
-            _armPrefab = Object.Instantiate(enemyType.armPrefab, _armSpawnPoint.position, Quaternion.identity, _armSpawnPoint.transform).GetComponent<Weapon>();
             _armPrefab.transform.localPosition = Vector3.zero;
             _armPrefab.transform.localRotation = Quaternion.identity;
             _armPrefab.GetComponent<BoxCollider>().enabled = false;

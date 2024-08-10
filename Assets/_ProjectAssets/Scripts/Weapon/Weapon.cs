@@ -1,4 +1,5 @@
 using System;
+using ConstantsValues;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -8,7 +9,7 @@ public class Weapon : MonoBehaviour
     
     public float damage;
     public float reloadTime;
-    public Constants.EnemyType enemyType;
+    public ConstantsValues.EnemyType enemyType;
     public Sprite weaponIcon;
     public VisualEffect vfx;
     protected float timeSinceLastShot;

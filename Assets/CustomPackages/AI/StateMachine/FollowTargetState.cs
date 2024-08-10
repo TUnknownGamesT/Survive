@@ -24,13 +24,15 @@ public class FollowTargetState : IState
 
     public void OnEnter()
     {
-       _zombieAnimations.SetSpeed(1);
+        Debug.Log("Follow Target State");
+        _zombieAnimations.SetSpeed(1);
     }
 
-    public void OnUpdate()
+    public void OnUpdate() 
     {
         if (Vector3.Distance(_enemyBody.position, _currentTarget.transform.position) > _stoppingDistance)
         {
+            Debug.Log("Following Target");
             _navMeshAgent.destination = _currentTarget.position;
         }
     }

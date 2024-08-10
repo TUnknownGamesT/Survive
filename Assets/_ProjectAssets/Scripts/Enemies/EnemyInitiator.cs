@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ConstantsValues;
 using UnityEngine;
 
 public class EnemyInitiator : MonoBehaviour
@@ -40,7 +41,7 @@ public class EnemyInitiator : MonoBehaviour
     }
 
 
-    public EnemyType GetEnemyStats(Constants.EnemyType enemy)
+    public EnemyType GetEnemyStats(ConstantsValues.EnemyType enemy)
     {
         return mockUpEnemys.Find(x => x.enemyType == enemy);
     }

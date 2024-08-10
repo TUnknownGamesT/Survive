@@ -1,28 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public class Constants : MonoBehaviour
+namespace ConstantsValues
 {
-   #region Singleton
-
-   public static Constants instance;
-
-   private void Awake()
-   {
-      instance = FindObjectOfType<Constants>();
-      
-      if (instance == null)
-      {
-         instance = this;
-      }
-   }
-
-   #endregion
-
-
+   
    public enum Resources
    {
       Engine,
@@ -30,20 +10,22 @@ public class Constants : MonoBehaviour
       ComputerBoard,
       None
    }
-
-   public enum Upgrades
+   
+   public enum UpgradeType
    {
       Player,
-      Weapon
+      Guns,
+      Base,
+      Enemy
    }
-   
+      
    public enum Tags
    {
       Player,
       Walls,
       Blocks
    }
-   
+      
    public enum EnemyType
    {
       Melee=0,
@@ -53,7 +35,7 @@ public class Constants : MonoBehaviour
       Sniper=4,
       Minion=5,
    }
-   
+      
    public enum GunsType
    {
       Pistol=0,
@@ -62,7 +44,27 @@ public class Constants : MonoBehaviour
       Sniper=3,
    }
 
-
-   public LayerMask baseLayer;
    
+   public class Constants : MonoBehaviour
+   {
+      #region Singleton
+   
+      public static Constants instance;
+   
+      private void Awake()
+      {
+         instance = FindObjectOfType<Constants>();
+         
+         if (instance == null)
+         {
+            instance = this;
+         }
+      }
+   
+      #endregion
+      public LayerMask baseLayer;
+      
+   }
 }
+
+
