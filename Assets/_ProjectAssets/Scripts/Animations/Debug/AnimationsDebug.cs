@@ -32,4 +32,10 @@ public class AnimationsDebug : MonoBehaviour
     {
         animationsManager.SetSpeed(speed);
     }
+    [Button("Die")]
+    public void Die()
+    {
+        animationsManager.SetSpeed(speed);
+        animationsManager.Die();
+    }
 }
