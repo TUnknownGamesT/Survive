@@ -1,6 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI%20Toolkit/CustomControls.uss?fileID=7433441132597879392&amp;guid=2e685a817c722594587191beadadb20e&amp;type=3#CustomControls" />
-    <ui:VisualElement name="PlayerCanvas" style="width: 100%; height: 100%;">
-        <ui:Slider picking-mode="Ignore" label="Slider" value="42" high-value="100" show-input-field="false" direction="Horizontal" inverted="false" name="PlayerHP" style="width: 10%; height: 2%; top: 96%; left: 1%; opacity: 1; background-image: none;" />
-    </ui:VisualElement>
-</ui:UXML>

@@ -6,11 +6,11 @@ using UnityEngine.VFX;
 [RequireComponent(typeof(SoundComponent))]
 public abstract class Firearm : Weapon
 {
-    
-    public  Action onShoot;
-    public  Action<int,int> onFinishReload;
-    
-    [Range(0,1f)]
+
+    public Action onShoot;
+    public Action<int, int> onFinishReload;
+
+    [Range(0, 1f)]
     public float spread;
     [Header("Reloading")]
     public int magSize;
@@ -20,16 +20,16 @@ public abstract class Firearm : Weapon
     [Header("References")]
     public Transform bulletSpawnPoint;
     public GameObject bulletPrefab;
-  
+
     public AudioClip shootSound;
     public AudioClip reloadSound;
 
     protected SoundComponent _soundComponent;
     public int currentAmunition;
-    
-    
+
+
     private int bulletRezerSize;
-    
+
     private void Awake()
     {
         currentAmunition = magSize;
@@ -52,27 +52,27 @@ public abstract class Firearm : Weapon
         {
             _animationManager = animationManager as PlayerAnimationsManager;
         }
-        
-        if(animationManager as ZombieAnimationManager != null)
+
+        if (animationManager as ZombieAnimationManager != null)
         {
             _animationManager = animationManager as ZombieAnimationManager;
         }
-        
-    } 
-    
+
+    }
+
     public override bool CanShoot() => !reloading && timeSinceLastShot > 1f / (fireRate / 60f);
-    
+
     public override void Shoot()
     {
 
-        if(currentAmunition>0&& CanShoot())
+        if (currentAmunition > 0 && CanShoot())
         {
-            
+
             float xSpread = UnityEngine.Random.Range(-spread, spread);
             float YSpread = UnityEngine.Random.Range(-spread, spread);
-            
-            Transform bullet  =  Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation).transform;
-            bullet.GetComponent<Rigidbody>().AddRelativeForce((Vector3.forward + new Vector3(xSpread,YSpread,0)) * bulletSpeed, ForceMode.Impulse);
+
+            Transform bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation).transform;
+            bullet.GetComponent<Rigidbody>().AddRelativeForce((Vector3.forward + new Vector3(xSpread, YSpread, 0)) * bulletSpeed, ForceMode.Impulse);
             bullet.GetComponent<BulletBehaviour>().damage = damage;
             vfx.Play();
             currentAmunition--;
@@ -80,9 +80,9 @@ public abstract class Firearm : Weapon
             _soundComponent.PlaySound(shootSound);
             _animationManager.Attack();
             onShoot?.Invoke();
-            CameraController.ShakeCamera(0.2f,2f);
+            CameraController.ShakeCamera(0.2f, 2f);
         }
-        else if(currentAmunition<=0 && rezervAmo>0)
+        else if (currentAmunition <= 0 && rezervAmo > 0)
         {
             if (!reloading)
             {
@@ -102,7 +102,7 @@ public abstract class Firearm : Weapon
             reloading = false;
 
             int difference = magSize - currentAmunition;
-            if ( rezervAmo - difference >= 0)
+            if (rezervAmo - difference >= 0)
             {
                 currentAmunition += difference;
                 rezervAmo -= difference;
@@ -112,15 +112,15 @@ public abstract class Firearm : Weapon
                 currentAmunition = rezervAmo;
                 rezervAmo = 0;
             }
-            
-            onFinishReload?.Invoke(currentAmunition,rezervAmo);
+
+            onFinishReload?.Invoke(currentAmunition, rezervAmo);
         });
     }
-    
+
 
     public override void RefillAmmunition(int amount)
     {
-        if(rezervAmo+amount<=bulletRezerSize)
+        if (rezervAmo + amount <= bulletRezerSize)
         {
             rezervAmo += amount;
         }
@@ -128,6 +128,6 @@ public abstract class Firearm : Weapon
         {
             rezervAmo = bulletRezerSize;
         }
-        onFinishReload?.Invoke(currentAmunition,rezervAmo);
+        onFinishReload?.Invoke(currentAmunition, rezervAmo);
     }
 }

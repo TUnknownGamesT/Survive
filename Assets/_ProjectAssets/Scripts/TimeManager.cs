@@ -4,38 +4,56 @@ using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
-    public GameObject son;
+    public GameObject sonGameObject;
+    public Color lightColor;
+    public Color nightColor;
+
+    private Light son;
+
+
+
+    void Awake()
+    {
+        son = sonGameObject.GetComponent<Light>();
+    }
+
 
     private void OnEnable()
     {
-        EnemySpawner.onPauseStart += StartCycle;
+        EnemySpawner.onPauseStart += LowerSon;
+        EnemySpawner.onAllEnemiesDead += RiseSon;
     }
 
     private void OnDisable()
     {
-        EnemySpawner.onPauseStart -= StartCycle;
-    }
-
-
-    private void StartCycle(float pauseTime)
-    {
-        UniTask.Void(async () =>
-        {
-            RiseSon();
-            await UniTask.Delay(TimeSpan.FromSeconds(pauseTime));
-            LowerSon();
-        });
+        EnemySpawner.onPauseStart -= LowerSon;
+        EnemySpawner.onAllEnemiesDead -= RiseSon;
     }
 
     [ContextMenu("RiseSon")]
     public void RiseSon()
     {
-        LeanTween.rotateX(son,45,1f).setEase(LeanTweenType.easeOutBounce);
+        LeanTween.rotateX(sonGameObject, 45, 2f).setEase(LeanTweenType.easeOutBounce);
+        LerpColors(son.color, lightColor, 2f);
     }
-    
+
     [ContextMenu("LowerSon")]
-    public void LowerSon()
+    public void LowerSon(float pauseDuration)
     {
-        LeanTween.rotateX(son,-20,1f).setEase(LeanTweenType.easeOutBounce);
+        UniTask.Void(async () =>
+        {
+            LerpColors(son.color, nightColor, pauseDuration);
+            LeanTween.rotateX(sonGameObject, 0, pauseDuration).setEaseInQuad();
+        });
+
     }
+
+    private void LerpColors(Color currentCulor, Color targetColor, float duration)
+    {
+        LeanTween.value(0, 1, duration).setOnUpdate((float val) =>
+        {
+            son.color = Color.Lerp(currentCulor, targetColor, val);
+        }).setEaseInQuad();
+    }
+
 }
