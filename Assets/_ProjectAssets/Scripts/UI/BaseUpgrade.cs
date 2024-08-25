@@ -10,16 +10,17 @@ public enum BaseUpgradesOptions
 {
     Wall,
     Amo,
-    MadKit
+    MadKit,
+    RepariBack
 }
 
 public class BaseUpgrade : MonoBehaviour
 {
 
-    public static Action<BaseUpgradesOptions,float> onBaseUpgraded;
+    public static Action<BaseUpgradesOptions, float> onBaseUpgraded;
     public static Action<UpgradeType> onBaseUpgradeSelected;
 
-    
+
     [Header("References")]
     public TextMeshProUGUI upgradeText;
     public Button upgradeButton;
@@ -31,29 +32,29 @@ public class BaseUpgrade : MonoBehaviour
     public Sprite madKitImage;
     public Sprite defaultImage;
     public Sprite repairImage;
-    
+
     [Header("Upgrades Parameters")]
     public float wallUpgrade;
     public float amoUpgrade;
     public float madKitUpgrade;
 
-    private readonly List<BaseUpgradesOptions> _baseUpgradesOptions = new ();
+    private readonly List<BaseUpgradesOptions> _baseUpgradesOptions = new();
     private float _upgradedStatus;
     private BaseUpgradesOptions _randomUpgrade;
-    
+
     private void Awake()
     {
         _baseUpgradesOptions.Add(BaseUpgradesOptions.Wall);
         _baseUpgradesOptions.Add(BaseUpgradesOptions.Amo);
         _baseUpgradesOptions.Add(BaseUpgradesOptions.MadKit);
     }
-    
+
     private void OnEnable()
     {
         UpgradePanelBehaviour.onSecondaryCardDisappear += AddCardUpgradeAttribute;
         UpgradePanelBehaviour.onPanelDisappear += SwitchCardToIdle;
     }
-    
+
     private void OnDisable()
     {
         UpgradePanelBehaviour.onSecondaryCardDisappear -= AddCardUpgradeAttribute;
@@ -66,19 +67,19 @@ public class BaseUpgrade : MonoBehaviour
         switch (_randomUpgrade)
         {
             case BaseUpgradesOptions.Wall:
-                onBaseUpgraded?.Invoke(BaseUpgradesOptions.Wall,wallUpgrade);
+                onBaseUpgraded?.Invoke(BaseUpgradesOptions.Wall, wallUpgrade);
                 _upgradedStatus = wallUpgrade;
                 break;
             case BaseUpgradesOptions.Amo:
-                onBaseUpgraded?.Invoke(BaseUpgradesOptions.Amo ,amoUpgrade);
+                onBaseUpgraded?.Invoke(BaseUpgradesOptions.Amo, amoUpgrade);
                 _upgradedStatus = amoUpgrade;
                 break;
             case BaseUpgradesOptions.MadKit:
-                onBaseUpgraded?.Invoke(BaseUpgradesOptions.MadKit ,madKitUpgrade);
+                onBaseUpgraded?.Invoke(BaseUpgradesOptions.MadKit, madKitUpgrade);
                 _upgradedStatus = madKitUpgrade;
                 break;
         }
-        
+
         onBaseUpgradeSelected?.Invoke(UpgradeType.Base);
     }
 
@@ -94,9 +95,10 @@ public class BaseUpgrade : MonoBehaviour
             BaseUpgradesOptions.MadKit => madKitImage,
             _ => throw new ArgumentOutOfRangeException()
         };
-        mainImage.SetNativeSize();
+        if (_randomUpgrade != BaseUpgradesOptions.Amo)
+            mainImage.SetNativeSize();
     }
-    
+
     private void SwitchCardToIdle()
     {
         mainImage.sprite = defaultImage;
@@ -105,5 +107,5 @@ public class BaseUpgrade : MonoBehaviour
         mainImage.SetNativeSize();
     }
 
-   
+
 }

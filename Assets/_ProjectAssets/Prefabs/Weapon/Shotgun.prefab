@@ -592,21 +592,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7030881331475948485, guid: 5d56969fe6c450e46ad954d0265999d6,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7030881331475948485, guid: 5d56969fe6c450e46ad954d0265999d6,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7030881331475948485, guid: 5d56969fe6c450e46ad954d0265999d6,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7030881331475948485, guid: 5d56969fe6c450e46ad954d0265999d6,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.003014151
       objectReference: {fileID: 0}
@@ -653,31 +638,6 @@ PrefabInstance:
     - target: {fileID: 7030881331475948485, guid: 5d56969fe6c450e46ad954d0265999d6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7030881331475948485, guid: 5d56969fe6c450e46ad954d0265999d6,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7030881331475948491, guid: 5d56969fe6c450e46ad954d0265999d6,
-        type: 3}
-      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7030881331475948491, guid: 5d56969fe6c450e46ad954d0265999d6,
-        type: 3}
-      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.x
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 7030881331475948491, guid: 5d56969fe6c450e46ad954d0265999d6,
-        type: 3}
-      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.y
-      value: 8.219705
-      objectReference: {fileID: 0}
-    - target: {fileID: 7030881331475948491, guid: 5d56969fe6c450e46ad954d0265999d6,
-        type: 3}
-      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.z
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -10,7 +10,6 @@ public class EnemyRotation : MonoBehaviour
     public float pauseBetweenRotation;
 
     private bool _staringAtPlayer;
-    private bool _lookAround = true;
     private float _angle;
     private bool _rotationDirection;
     private Quaternion _rotation;
@@ -42,7 +41,7 @@ public class EnemyRotation : MonoBehaviour
         {
             RotateTowardThePlayer();
         }
-        
+
     }
 
     public void StopLookingAround()
@@ -50,20 +49,20 @@ public class EnemyRotation : MonoBehaviour
         _cts.Cancel();
         _cts = new CancellationTokenSource();
     }
-    
+
     public void StartLookingAround()
     {
 
         _cts = new CancellationTokenSource();
-        
+
         _dynamicRotation.x = transform.rotation.eulerAngles.y + rotationAngles.x;
         _dynamicRotation.y = transform.rotation.eulerAngles.y - rotationAngles.y;
-        
-         // NailAngle(ref _dynamicRotation.x);
-         // NailAngle(ref _dynamicRotation.y);
-        
+
+        // NailAngle(ref _dynamicRotation.x);
+        // NailAngle(ref _dynamicRotation.y);
+
         _angle = _dynamicRotation.x;
-        
+
         RotateAround();
     }
 
@@ -88,15 +87,15 @@ public class EnemyRotation : MonoBehaviour
         {
             try
             {
-                float angle = Mathf.SmoothDampAngle( transform.eulerAngles.y, _angle, ref _rotationVelocity, 1f);
-                transform.rotation = Quaternion.Euler( transform.eulerAngles.x, angle,  transform.eulerAngles.z);
+                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, _angle, ref _rotationVelocity, 1f);
+                transform.rotation = Quaternion.Euler(transform.eulerAngles.x, angle, transform.eulerAngles.z);
                 if (Math.Abs(ReturnIn360Range(_angle) - transform.rotation.eulerAngles.y) < 3)
                 {
                     await UniTask.Delay(TimeSpan.FromSeconds(pauseBetweenRotation), cancellationToken: _cts.Token);
                     _angle = _rotationDirection ? _dynamicRotation.y : _dynamicRotation.x;
-                    _rotationDirection= !_rotationDirection;
+                    _rotationDirection = !_rotationDirection;
                 }
-            
+
                 await UniTask.Delay(TimeSpan.FromSeconds(0), cancellationToken: _cts.Token);
 
                 RotateAround();
@@ -106,16 +105,16 @@ public class EnemyRotation : MonoBehaviour
                 Console.WriteLine(e);
                 Debug.Log("Thread miss reference");
             }
-           
+
         });
     }
 
 
-    private void NailAngle(ref float  angleToNail)
+    private void NailAngle(ref float angleToNail)
     {
-        while(angleToNail > 180)
+        while (angleToNail > 180)
             angleToNail -= 180;
-        while (angleToNail <-180)
+        while (angleToNail < -180)
             angleToNail += 180;
     }
 
@@ -128,5 +127,5 @@ public class EnemyRotation : MonoBehaviour
 
         return angle;
     }
-    
+
 }

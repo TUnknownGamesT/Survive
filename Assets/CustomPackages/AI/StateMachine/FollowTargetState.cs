@@ -13,7 +13,7 @@ public class FollowTargetState : IState
 
     public void OnInitState<T>(T gameObject)
     {
-        if(gameObject is EnemyType enemyStats)
+        if (gameObject is EnemyType enemyStats)
         {
             _navMeshAgent = enemyStats.navMeshAgent;
             _enemyBody = enemyStats.aiBody.transform;
@@ -24,15 +24,13 @@ public class FollowTargetState : IState
 
     public void OnEnter()
     {
-        Debug.Log("Follow Target State");
         _zombieAnimations.SetSpeed(1);
     }
 
-    public void OnUpdate() 
+    public void OnUpdate()
     {
         if (Vector3.Distance(_enemyBody.position, _currentTarget.transform.position) > _stoppingDistance)
         {
-            Debug.Log("Following Target");
             _navMeshAgent.destination = _currentTarget.position;
         }
     }
@@ -45,7 +43,7 @@ public class FollowTargetState : IState
 
     public void SetTarget(Transform targetPosition)
     {
-        _currentTarget= targetPosition;
+        _currentTarget = targetPosition;
     }
-    
+
 }

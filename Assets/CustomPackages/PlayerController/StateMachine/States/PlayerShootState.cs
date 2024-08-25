@@ -6,7 +6,7 @@ public class PlayerShootState : IState
 
     public void OnInitState<T>(T gameObject)
     {
-        if(gameObject is GameObject player)
+        if (gameObject is GameObject player)
         {
             currentArm = player.GetComponent<UpperBodyStateMachine>().currentArm;
         }
@@ -14,16 +14,16 @@ public class PlayerShootState : IState
 
     public void OnEnter()
     {
-        
+
     }
 
     public void OnUpdate()
     {
-        currentArm.Shoot();
+        currentArm.Tick(true);
     }
 
     public void OnExit()
     {
-        
+        currentArm.Tick(false);
     }
 }

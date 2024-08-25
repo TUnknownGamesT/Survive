@@ -11,7 +11,7 @@ using ConstantsValues;
 public class UIManager : MonoBehaviour
 {
     #region Singleton
-    
+
     public static UIManager instance;
 
     private void Awake()
@@ -30,18 +30,19 @@ public class UIManager : MonoBehaviour
     public Canvas deathMenuCanvas;
     public Canvas mainMenuCanvas;
     public Canvas optionsCanvas;
-    
+
     [Header("Player UI")]
     public Slider playerHealthBar;
     public Slider baseHealthBar;
     public Image lifeBar;
     public Gradient lifeBarColor;
     public bool isPaused = false;
+    public Image counterBackground;
     public TextMeshProUGUI counter;
     [Header("Player Death Menu")]
     public TextMeshProUGUI score;
 
-    [Header("Weapon UI")] 
+    [Header("Weapon UI")]
     public GameObject gunsWrapper;
     public Image grenade;
     public List<IWeaponDisplayer> weaponDisplayer = new();
@@ -49,24 +50,24 @@ public class UIManager : MonoBehaviour
 
     [Header("Upgrade UI")]
     public UpgradePanelBehaviour upgradePanel;
-    
-    
-    private  bool inMainMenu = true;
-    private List<Canvas> history = new ();
+
+
+    private bool inMainMenu = true;
+    private List<Canvas> history = new();
     private bool playerDied;
 
     private void OnEnable()
     {
         EnemySpawner.onPauseStart += DisplayCounter;
         BaseBehaviour.onBaseHPCHnage += SetBaseSliderHP;
-        BaseBehaviour.onBaseMaxHealthChanged += SetBaseSliderMax; 
+        BaseBehaviour.onBaseMaxHealthChanged += SetBaseSliderMax;
         EnemySpawner.onAllEnemiesDead += ShowUpgradeUI;
         PlayerHealth.onPlayerHealthChanged += SetPlayerHP;
         GameManager.onGameEnd += PlayerDie;
-        
+
     }
 
-    
+
     private void OnDisable()
     {
         EnemySpawner.onPauseStart -= DisplayCounter;
@@ -84,20 +85,18 @@ public class UIManager : MonoBehaviour
         {
             weaponDisplayer.Add(element.GetComponent<IWeaponDisplayer>());
         }
-        
+
         weaponDisplayer.Reverse();
 
         UserInputController._pause.started += Pause;
     }
-    
-    
 
     #region UI Menu
 
     public void Back()
     {
-        if(history.Count == 0) return;
-        
+        if (history.Count == 0) return;
+
         if (history.Count == 1)
         {
             DeactivateCanvas(history[^1]);
@@ -117,7 +116,7 @@ public class UIManager : MonoBehaviour
         ActivateCanvas(pauseMenuCanvas);
         //ScenesManager.instance.ReloadCurrentScene();
     }
-    
+
     public void UnPause()
     {
         Back();
@@ -125,7 +124,7 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = !isPaused;
     }
-    
+
     private void Pause(InputAction.CallbackContext obj)
     {
         if (playerDied) return;
@@ -150,7 +149,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void EnableOptionsMenu()
-    {       
+    {
         Cursor.visible = true;
         ActivateCanvas(optionsCanvas);
         history.Add(optionsCanvas);
@@ -163,13 +162,13 @@ public class UIManager : MonoBehaviour
         Back();
         //ActivateCanvas(inMainMenu ? mainMenuCanvas : pauseMenuCanvas);
     }
-    
-    
+
+
     public void ExitMainMenu()
     {
         Cursor.visible = false;
         DeactivateCanvas(mainMenuCanvas);
-        inMainMenu= false;
+        inMainMenu = false;
     }
 
     private void PlayerDie()
@@ -183,12 +182,12 @@ public class UIManager : MonoBehaviour
     private void SetScore()
     {
         UniTask.Void(async () =>
-        {  
-            await  UniTask.Delay(TimeSpan.FromSeconds(0.4f));
-           LeanTween.value(0,ScoreKeeper.Score,1f).setOnUpdate((float value) =>
-           {
-               score.text = Mathf.RoundToInt(value).ToString();
-           }).setEaseInQuad();
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(0.4f));
+            LeanTween.value(0, ScoreKeeper.Score, 1f).setOnUpdate((float value) =>
+            {
+                score.text = Mathf.RoundToInt(value).ToString();
+            }).setEaseInQuad();
         });
     }
 
@@ -197,7 +196,7 @@ public class UIManager : MonoBehaviour
         UnPause();
         SceneManager.LoadScene(0);
     }
-    
+
     #endregion
 
     #region Player UI
@@ -205,6 +204,7 @@ public class UIManager : MonoBehaviour
     private void DisplayCounter(float value)
     {
         float secondsRemains = value;
+        counterBackground.enabled = true;
         counter.text = secondsRemains.ToString();
         UniTask.Void(async () =>
         {
@@ -213,13 +213,14 @@ public class UIManager : MonoBehaviour
                 await UniTask.Delay(TimeSpan.FromSeconds(1));
                 secondsRemains--;
                 counter.text = secondsRemains.ToString();
-                if(secondsRemains == 0)
+                if (secondsRemains == 0)
                     counter.text = "";
             } while (secondsRemains != 0);
-        });  
+            counterBackground.enabled = false;
+        });
     }
-    
-    
+
+
     public void ChangeWeaponIcon(int index)
     {
         weaponDisplayer[_currentWeaponIndex].Deactivate();
@@ -233,29 +234,29 @@ public class UIManager : MonoBehaviour
         playerHealthBar.value = value;
         lifeBar.color = lifeBarColor.Evaluate((playerHealthBar.normalizedValue));
     }
-    
+
     private void SetBaseSliderMax(int value)
     {
         baseHealthBar.maxValue = value;
     }
-    
+
     private void SetBaseSliderHP(float value)
     {
         baseHealthBar.value = value;
     }
-    
+
     public void HasGrenade()
     {
         Color c = grenade.color;
         c.a = 1;
-        grenade.color=c;
+        grenade.color = c;
     }
-    
+
     public void NoGrenade()
     {
         Color c = grenade.color;
         c.a = 0.2f;
-        grenade.color=c;
+        grenade.color = c;
     }
 
     #endregion
@@ -264,9 +265,9 @@ public class UIManager : MonoBehaviour
 
     public void ShowUpgradeUI()
     {
-       upgradePanel.Activate();
+        upgradePanel.Activate();
     }
-    
+
 
     #endregion
 

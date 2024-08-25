@@ -1,7 +1,11 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.VFX;
+using Random = UnityEngine.Random;
+
 
 [RequireComponent(typeof(SoundComponent))]
 public abstract class Firearm : Weapon
@@ -28,7 +32,7 @@ public abstract class Firearm : Weapon
     public int currentAmunition;
 
 
-    private int bulletRezerSize;
+    protected int bulletRezerSize;
 
     private void Awake()
     {
@@ -62,19 +66,23 @@ public abstract class Firearm : Weapon
 
     public override bool CanShoot() => !reloading && timeSinceLastShot > 1f / (fireRate / 60f);
 
-    public override void Shoot()
+    public virtual void Shoot()
     {
+
 
         if (currentAmunition > 0 && CanShoot())
         {
 
-            float xSpread = UnityEngine.Random.Range(-spread, spread);
-            float YSpread = UnityEngine.Random.Range(-spread, spread);
+            spreadAmount += 0.1f;
+            CrossHairWrapper.instance.IncreaseScaleMultiplayer(0.3f);
+
+            Vector3 spread = GetSpread(Mathf.Lerp(0, maxSpreadAmount, Mathf.Clamp01(spreadAmount / maxSpreadAmount)));
 
             Transform bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation).transform;
-            bullet.GetComponent<Rigidbody>().AddRelativeForce((Vector3.forward + new Vector3(xSpread, YSpread, 0)) * bulletSpeed, ForceMode.Impulse);
+            bullet.GetComponent<Rigidbody>().AddRelativeForce((Vector3.forward + new Vector3(spread.x, spread.y, 0)) * bulletSpeed, ForceMode.Impulse);
             bullet.GetComponent<BulletBehaviour>().damage = damage;
             vfx.Play();
+            vfx.transform.GetChild(0).GetComponent<ParticleSystem>().Play();
             currentAmunition--;
             timeSinceLastShot = 0;
             _soundComponent.PlaySound(shootSound);
@@ -90,6 +98,32 @@ public abstract class Firearm : Weapon
             }
         }
     }
+
+    private Vector3 GetSpread(float shootTime = 0)
+    {
+        Vector3 spread = Vector3.Lerp(Vector3.zero,
+        new Vector3(Random.Range(-this.spread, this.spread), Random.Range(-this.spread, this.spread),
+        Random.Range(-this.spread, this.spread)),
+        Mathf.Clamp01(shootTime));
+
+        //Debug.Log($"{shootTime} / {maxSpreadTime} = {shootTime / maxSpreadTime}");
+
+        return spread;
+    }
+
+    public override void Tick(bool wantsToAttack)
+    {
+        if (wantsToAttack)
+        {
+            Shoot();
+        }
+        else
+        {
+            spreadAmount = 0;
+        }
+    }
+
+
 
     public override void Reload()
     {

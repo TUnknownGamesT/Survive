@@ -11,13 +11,15 @@ public class Shotgun : Firearm
     {
         if (currentAmunition > 0 && CanShoot())
         {
-            
+
+
+            CrossHairWrapper.instance.IncreaseScaleMultiplayer(1f);
             _animationManager.Attack();
             for (int i = 0; i < numberOfBulletsPerShoot; i++)
             {
                 float xSpread = UnityEngine.Random.Range(-spread, spread);
                 float YSpread = UnityEngine.Random.Range(-spread, spread);
-                
+
                 Rigidbody rb = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation)
                     .GetComponent<Rigidbody>();
                 rb.AddRelativeForce((Vector3.forward + new Vector3(xSpread, YSpread, 0)) * bulletSpeed,
@@ -25,9 +27,10 @@ public class Shotgun : Firearm
             }
 
             vfx.Play();
+            vfx.transform.GetChild(0).GetComponent<ParticleSystem>().Play();
             currentAmunition--;
             timeSinceLastShot = 0;
-            CameraController.ShakeCamera(0.2f,2);
+            CameraController.ShakeCamera(0.2f, 2);
             _soundComponent.PlaySound(shootSound);
             onShoot?.Invoke();
         }
@@ -39,5 +42,5 @@ public class Shotgun : Firearm
             }
         }
     }
-    
+
 }

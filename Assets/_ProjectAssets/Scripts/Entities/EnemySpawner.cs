@@ -38,7 +38,7 @@ public class EnemySpawner : MonoBehaviour
         AIBrain.onEnemyDeath += EnemyDied;
         AIGroupBrain.onEnemyDeath += EnemyDied;
     }
-    
+
     private void OnDisable()
     {
         GunsUpgrade.onGunsUpgradeSelected -= StartSpawning;
@@ -70,12 +70,11 @@ public class EnemySpawner : MonoBehaviour
         roundPassed++;
         if (roundPassed == roundsToPass)
         {
-            enemies+=enemiesPerRoundIncrease;
+            enemies += enemiesPerRoundIncrease;
             roundPassed = 0;
         }
         UniTask.Void(async () =>
         {
-            Debug.LogWarning("Spawning");
             onPauseStart?.Invoke(pauseTime);
             await UniTask.Delay(TimeSpan.FromSeconds(pauseTime));
             enemySpawned = enemies;
@@ -84,10 +83,10 @@ public class EnemySpawner : MonoBehaviour
                 Debug.Log("Spawned");
                 Transform spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)];
                 FactoryObjects.instance.CreateObject(new FactoryObject<Transform>(
-                    FactoryObjectsType.Enemy,spawnPoint));
+                    FactoryObjectsType.Enemy, spawnPoint));
             }
         });
-        
+
     }
 
     private void EnemyDied()
@@ -98,7 +97,7 @@ public class EnemySpawner : MonoBehaviour
             onAllEnemiesDead?.Invoke();
         }
     }
-    
-    
-    
+
+
+
 }

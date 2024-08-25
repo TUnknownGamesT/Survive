@@ -1,5 +1,6 @@
-using System.Threading; 
+using System.Threading;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class AttackState : IState
 {
@@ -15,7 +16,7 @@ public class AttackState : IState
 
     public void OnInitState<T>(T gameObject)
     {
-        if(gameObject is EnemyType enemyType)
+        if (gameObject is EnemyType enemyType)
         {
             _aiBody = enemyType.aiBody;
             _damping = enemyType.damping;
@@ -27,8 +28,8 @@ public class AttackState : IState
             _armPrefab.GetComponent<Rigidbody>().useGravity = false;
         }
     }
-    
-    
+
+
     public void OnEnter()
     {
         _cts = new CancellationTokenSource();
@@ -37,14 +38,11 @@ public class AttackState : IState
 
     public void OnUpdate()
     {
-        if (_armPrefab.CanShoot())
-        {
-            _armPrefab.Shoot();
-        }
-        
+        _armPrefab.Tick(Mouse.current.leftButton.isPressed);
+
         RotateTowardThePlayer();
     }
-    
+
     private void RotateTowardThePlayer()
     {
         var lookPos = _currentTarget.position - _aiBody.transform.position;
@@ -52,18 +50,19 @@ public class AttackState : IState
         var rotation = Quaternion.LookRotation(lookPos);
         _aiBody.transform.rotation = Quaternion.Slerp(_aiBody.transform.rotation, rotation, Time.deltaTime * _damping);
     }
-    
-    
+
+
     public void OnExit()
     {
+        _armPrefab.Tick(false);
         _cts.Cancel();
     }
-    
+
     public void SetTarget(Transform target)
     {
         _currentTarget = target;
     }
-    
+
     public void DropArm()
     {
         _armPrefab.GetComponent<BoxCollider>().enabled = true;

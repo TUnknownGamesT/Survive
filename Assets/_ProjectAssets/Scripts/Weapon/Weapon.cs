@@ -3,10 +3,10 @@ using ConstantsValues;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class Weapon : MonoBehaviour
+public abstract class Weapon : MonoBehaviour
 {
-    
-    
+
+
     public float damage;
     public float reloadTime;
     public ConstantsValues.EnemyType enemyType;
@@ -14,19 +14,22 @@ public class Weapon : MonoBehaviour
     public VisualEffect vfx;
     protected float timeSinceLastShot;
     protected AnimationManager _animationManager;
-    
+
     public float fireRate;
 
-    public virtual bool  CanShoot()
+    public float maxSpreadAmount;
+
+    public float spreadAmount;
+
+    protected float recoilRecoverySpread = 2f;
+
+    public virtual bool CanShoot()
     {
         throw new NotImplementedException();
     }
-    
-    public virtual void Shoot()
-    {
-        throw new NotImplementedException();
-    }
-    
+
+    public abstract void Tick(bool wantsToAttack);
+
     public virtual void Reload()
     {
         Debug.Log("Not implemented");
@@ -36,7 +39,7 @@ public class Weapon : MonoBehaviour
     {
         _animationManager = arm;
     }
-    
+
     public virtual void RefillAmmunition(int amount)
     {
         Debug.Log("Not implemented");

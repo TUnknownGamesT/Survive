@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
-   #region Singleton  
-    
+    #region Singleton  
+
     public static CameraController instance;
-    
-    
+
+
     private void Awake()
     {
 
@@ -19,19 +19,19 @@ public class CameraController : MonoBehaviour
         {
             instance = this;
         }
-        
+
         _cameraTransform = gameObject.transform;
         _cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
         _cinemachineCameraOffset = GetComponent<CinemachineCameraOffset>();
         virtualCamera = GetComponent<CinemachineVirtualCamera>();
     }
-    
+
 
     #endregion
-    
+
     [Header("Shaking")]
-    public static  CinemachineVirtualCamera virtualCamera;
-    public static  float shakeDuration = 0.15f;
+    public static CinemachineVirtualCamera virtualCamera;
+    public static float shakeDuration = 0.15f;
     public static float shakeAmplitude = 2f;
     public RawImage whiteEdge;
     public RawImage bloodyEdge;
@@ -41,7 +41,7 @@ public class CameraController : MonoBehaviour
     private static float shakeTimeRemain;
     private static Transform _cameraTransform;
     private static CinemachineCameraOffset _cinemachineCameraOffset;
-    private  CinemachineVirtualCamera _cinemachineVirtualCamera;
+    private CinemachineVirtualCamera _cinemachineVirtualCamera;
     private Vector3 velocity;
 
 
@@ -49,7 +49,7 @@ public class CameraController : MonoBehaviour
     {
         AIBrain.onEnemyDeath += KillEffect;
     }
-    
+
     private void OnDisable()
     {
         AIBrain.onEnemyDeath -= KillEffect;
@@ -63,7 +63,7 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if(shakeTimeRemain >0)
+        if (shakeTimeRemain > 0)
         {
             shakeTimeRemain -= Time.deltaTime;
             if (shakeTimeRemain <= 0)
@@ -73,35 +73,34 @@ public class CameraController : MonoBehaviour
                 cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
             }
         }
-        
-        
+
     }
 
     private void LateUpdate()
     {
-         MoveCamera();
+        MoveCamera();
     }
 
     private void MoveCamera()
     {
         Vector3 newPosition = GetCenterPosition().center;
-        cameraTarget.position = Vector3.SmoothDamp(cameraTarget.position,newPosition,ref velocity,smoothTime);
+        cameraTarget.position = Vector3.SmoothDamp(cameraTarget.position, newPosition, ref velocity, smoothTime);
     }
-    
-    
+
+
     private Bounds GetCenterPosition()
     {
-        Bounds  bounds = new Bounds(GameManager.playerRef.position, Vector3.zero);
+        Bounds bounds = new Bounds(GameManager.playerRef.position, Vector3.zero);
         bounds.Encapsulate(GameManager.crossHairRef.position);
 
         return bounds;
     }
-    
+
     public static void ShakeCamera(float shakeDuration, float shakeAmplitude)
     {
         CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin =
             virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        
+
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = shakeAmplitude;
         shakeTimeRemain = shakeDuration;
 
@@ -115,26 +114,26 @@ public class CameraController : MonoBehaviour
             await UniTask.Delay(TimeSpan.FromSeconds(0.02f));
             Time.timeScale = 1f;
         });
-       
+
     }
 
     public static void ExplosionCameraShake()
     {
-        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin = 
+        CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin =
             virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        
+
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 8f;
         shakeTimeRemain = 1f;
     }
-    
+
 
     public void KillEffect()
     {
-        LeanTween.value(0,0.7f , 0.05f).setOnUpdate((float value) =>
+        LeanTween.value(0, 0.7f, 0.05f).setOnUpdate((float value) =>
         {
             Color c = whiteEdge.color;
             c.a = value;
-            whiteEdge.color = c;    
+            whiteEdge.color = c;
         }).setEaseInQuad().setOnComplete(() =>
         {
             LeanTween.value(0.7f, 0, 0.05f).setOnUpdate((float value) =>
@@ -148,11 +147,11 @@ public class CameraController : MonoBehaviour
 
     public void TakeDamageEffect()
     {
-        LeanTween.value(0,0.3f , 0.1f).setOnUpdate((float value) =>
+        LeanTween.value(0, 0.3f, 0.1f).setOnUpdate((float value) =>
         {
             Color c = bloodyEdge.color;
             c.a = value;
-            bloodyEdge.color = c;    
+            bloodyEdge.color = c;
         }).setEaseInQuad().setOnComplete(() =>
         {
             LeanTween.value(0.3f, 0, 0.1f).setOnUpdate((float value) =>

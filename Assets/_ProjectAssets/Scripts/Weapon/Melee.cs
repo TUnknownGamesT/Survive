@@ -8,7 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class Melee : Weapon
 {
-    
+
     private BoxCollider _collider;
     private CancellationTokenSource _cts;
 
@@ -25,13 +25,13 @@ public class Melee : Weapon
 
     public override bool CanShoot() => timeSinceLastShot > 1f / (fireRate / 60f);
 
-    public override void Shoot()
+    public void Shoot()
     {
         if (CanShoot())
-        { 
+        {
             timeSinceLastShot = 0;
-           Attack();
-           //_animationManager.Attack();
+            Attack();
+            //_animationManager.Attack();
         }
     }
 
@@ -50,7 +50,7 @@ public class Melee : Weapon
                 _cts.Cancel();
                 _cts = new CancellationTokenSource();
             }
-          
+
         });
     }
 
@@ -61,5 +61,20 @@ public class Melee : Weapon
         {
             damageable.TakeDamage(damage);
         }
+    }
+
+    public override void Tick(bool wantsToAttack)
+    {
+        // if (wantsToAttack)
+        // {
+        //     lastAttackFrame = true;
+        //     Shoot();
+        // }
+        // else
+        // {
+        //     stopAttackTime = Time.time;
+        //     lastAttackFrame = false;
+        // }
+        Shoot();
     }
 }
