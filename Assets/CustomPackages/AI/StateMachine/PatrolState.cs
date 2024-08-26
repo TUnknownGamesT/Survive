@@ -99,9 +99,9 @@ public class PatrolState : IState
 
                 _travelPointIndex = Random.Range(0, travelPoints.Count);
 
-                await UniTask.WaitUntil(() => Vector3.Distance(enemyBody.position, _navMeshAgent.destination) <= stoppingDistance, cancellationToken: _cts.Token);
+                await UniTask.WaitUntil(() => Vector3.Distance(enemyBody.position, _navMeshAgent.destination) <= stoppingDistance).WithCancellation(_cts.Token);
 
-                await UniTask.Delay(TimeSpan.FromSeconds(pauseBetweenMovement), cancellationToken: _cts.Token);
+                await UniTask.Delay(TimeSpan.FromSeconds(pauseBetweenMovement)).WithCancellation(_cts.Token);
 
                 if (travelPoints.Contains(GameObject.FindWithTag("Player").transform))
                     travelPoints.Remove(GameObject.FindWithTag("Player").transform);
@@ -111,8 +111,7 @@ public class PatrolState : IState
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                Debug.Log("Miss Reference");
+                Debug.Log(e);
             }
         });
     }

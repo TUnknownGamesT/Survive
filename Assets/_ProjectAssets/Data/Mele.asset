@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80efef4e5200bdb45817fc5a3fb2c43f, type: 3}
   m_Name: Mele
   m_EditorClassIdentifier: 
-  armPrefab: {fileID: 1389793772019306325, guid: bf7e14e838e3ce346a76480bd2d967d9,
-    type: 3}
+  armPrefab: {fileID: 0}
   enemyType: 0
   health: 2
   damping: 200
-  stoppingDistance: 4
+  stoppingDistance: 2
   pauseBetweenMovement: 3
   speed: 8
   soundComponent: {fileID: 0}

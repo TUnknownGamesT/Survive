@@ -32,14 +32,14 @@ public class AttackState : IState
 
     public void OnEnter()
     {
+        Debug.Log(_currentTarget.name);
         _cts = new CancellationTokenSource();
         _enemyAnimations.Attack();
     }
 
     public void OnUpdate()
     {
-        _armPrefab.Tick(Mouse.current.leftButton.isPressed);
-
+        _armPrefab.Tick(true);
         RotateTowardThePlayer();
     }
 

@@ -6,17 +6,17 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class AIGroupBrain : MonoBehaviour,IAIBrain
+public class AIGroupBrain : IAIBrain
 {
     public static Action onEnemyDeath;
-    
+
     #region Formation
 
     [HideInInspector]
     public FormationBase _formation;
     [SerializeField] private GameObject _unitPrefab;
     public float _unitSpeed = 2;
-    
+
     public readonly List<Minion> _spawnedUnits = new List<Minion>();
     public List<Vector3> _points = new List<Vector3>();
     public Transform _parent;
@@ -30,7 +30,7 @@ public class AIGroupBrain : MonoBehaviour,IAIBrain
     AttackStateGroup attackStateGroup = new AttackStateGroup();
 
     #endregion
-    
+
     public float _stoppingDistance;
     private IState _currentState;
     private bool _activeTargetInView;
@@ -38,8 +38,9 @@ public class AIGroupBrain : MonoBehaviour,IAIBrain
     private bool _alreadyNoticed;
     public Transform _currentTarget;
     public Transform basePoint;
-    
-    private void Awake() {
+
+    private void Awake()
+    {
         _formation = GetComponent<FormationBase>();
         _parent = new GameObject("Unit Parent").transform;
     }
@@ -48,45 +49,30 @@ public class AIGroupBrain : MonoBehaviour,IAIBrain
     {
         _currentTarget = GameManager.playerBaseRef;
         _points = _formation.EvaluatePoints().ToList();
-        
-        if (_points.Count > _spawnedUnits.Count) {
+
+        if (_points.Count > _spawnedUnits.Count)
+        {
             var remainingPoints = _points.Skip(_spawnedUnits.Count);
             Spawn(remainingPoints);
         }
-        // else if (_points.Count < _spawnedUnits.Count) {
-        //     Kill(_spawnedUnits.Count - _points.Count);
-        // }
-        
+
         walkingStateGroup.OnInitState(this);
         attackStateGroup.OnInitState(this);
-        
+
         ChangeState(walkingStateGroup);
     }
 
-    private void Update() {
+    private void Update()
+    {
         _currentState?.OnUpdate();
         MakeDecision();
     }
-    
+
     private void MakeDecision()
     {
         SetFormation();
         if (_alive)
         {
-            // if (_activeTargetInView &&  Vector3.Distance(transform.position, _currentTarget.position) <= _stoppingDistance)
-            // {
-            //     ChangeState(_attackState);
-            //     Debug.LogWarning("Attack State" + _currentTarget.gameObject.name);
-            // }else if(_activeTargetInView &&Vector3.Distance(transform.position, _currentTarget.position) > _stoppingDistance)
-            // {
-            //     ChangeState(_followTargetState);
-            //     Debug.LogWarning("Follow Player State");
-            // }
-            // else if(!_activeTargetInView)
-            // {
-            //     ChangeState(walkingStateGroup);
-            //     Debug.LogWarning("walking State");
-            // }
 
             if (_activeTargetInView &&
                 Vector3.Distance(transform.position, _currentTarget.position) <= _stoppingDistance)
@@ -99,18 +85,20 @@ public class AIGroupBrain : MonoBehaviour,IAIBrain
             }
         }
     }
-    
-    
-    private void SetFormation() {
+
+
+    private void SetFormation()
+    {
         _points = _formation.EvaluatePoints().ToList();
-        
-        for (var i = 0; i < _spawnedUnits.Count; i++) {
-            _spawnedUnits[i].transform.position = Vector3.MoveTowards(_spawnedUnits[i].transform.position, 
+
+        for (var i = 0; i < _spawnedUnits.Count; i++)
+        {
+            _spawnedUnits[i].transform.position = Vector3.MoveTowards(_spawnedUnits[i].transform.position,
                 _currentTarget.position + _points[i], _unitSpeed * Time.deltaTime);
         }
         transform.position = _spawnedUnits.Aggregate(Vector3.zero, (acc, unit) => acc + unit.transform.position) / _spawnedUnits.Count;
     }
-    
+
     private void ChangeState(IState newState)
     {
         if (_currentState != newState)
@@ -120,9 +108,11 @@ public class AIGroupBrain : MonoBehaviour,IAIBrain
             _currentState?.OnEnter();
         }
     }
-    
-    private void Spawn(IEnumerable<Vector3> points) {
-        foreach (var pos in points) {
+
+    private void Spawn(IEnumerable<Vector3> points)
+    {
+        foreach (var pos in points)
+        {
             var unit = Instantiate(_unitPrefab, transform.position + pos, Quaternion.identity, _parent);
             unit.GetComponent<Minion>().SetParent(this);
             _spawnedUnits.Add(unit.GetComponent<Minion>());
@@ -131,17 +121,18 @@ public class AIGroupBrain : MonoBehaviour,IAIBrain
 
     public void Kill(Minion minion)
     {
-        if(_spawnedUnits.Contains(minion))
+        if (_spawnedUnits.Contains(minion))
             _spawnedUnits.Remove(minion);
         if (_spawnedUnits.Count == 0)
         {
+            base.Death();
             onEnemyDeath?.Invoke();
             Destroy(gameObject);
         }
     }
 
 
-    public void BaseInView(Transform basePoint)
+    public override void BaseInView(Transform basePoint)
     {
         this.basePoint = basePoint;
         _currentTarget = basePoint;
@@ -150,7 +141,7 @@ public class AIGroupBrain : MonoBehaviour,IAIBrain
         // _followTargetState.SetTarget(basePoint);
     }
 
-    public void PlayerInView()
+    public override void PlayerInView()
     {
         Debug.LogWarning("Player in view");
         _activeTargetInView = true;
@@ -159,12 +150,12 @@ public class AIGroupBrain : MonoBehaviour,IAIBrain
         // _followTargetState.SetTarget(GameManager.playerRef);
     }
 
-    public void PlayerOutOfView()
+    public override void PlayerOutOfView()
     {
         _currentTarget = GameManager.playerBaseRef;
         Debug.LogWarningFormat("<color=reed>Add last seen target not player every time SOLVE</color>");
         _activeTargetInView = false;
     }
-    
-    
+
+
 }

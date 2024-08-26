@@ -2,7 +2,6 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Triggers;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
@@ -54,10 +53,12 @@ public class Melee : Weapon
         });
     }
 
+
+    //TODO make mele to effect zombi, base and player based on the posesor
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out IDamageable damageable)
-            && other.gameObject.CompareTag("Player"))
+            && other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("PlayerBase"))
         {
             damageable.TakeDamage(damage);
         }

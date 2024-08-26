@@ -2,10 +2,17 @@
 using System;
 using UnityEngine;
 
-public interface IAIBrain
+public abstract class IAIBrain : MonoBehaviour
 {
 
-    public void BaseInView(Transform basePoint);
-    public void PlayerInView();
-    public void PlayerOutOfView();
+    public Action onLocalEnemyDeath;
+
+    public abstract void BaseInView(Transform basePoint);
+    public abstract void PlayerInView();
+    public abstract void PlayerOutOfView();
+
+    public virtual void Death()
+    {
+        onLocalEnemyDeath?.Invoke();
+    }
 }
