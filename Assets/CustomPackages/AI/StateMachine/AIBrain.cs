@@ -1,6 +1,6 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using ConstantsValues;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,7 +10,6 @@ public class AIBrain : IAIBrain
 {
 
     public static Action onEnemyDeath;
-    public Action onLocalEnemyDeath;
 
     [Header("Enemy Type")]
     public ConstantsValues.EnemyType enemyType;
@@ -21,6 +20,7 @@ public class AIBrain : IAIBrain
 
     private float _stoppingDistance;
     [Header("References")]
+    public VisibleChecker visibleChecker;
     public Transform armSpawnPoint;
     private ZombieAnimationManager _enemyAnimations;
     private AIHealth _aiHealth;
@@ -28,7 +28,6 @@ public class AIBrain : IAIBrain
 
     private IState _currentState;
     private bool _activeTargetInView;
-    private bool _alive = true;
     private bool _alreadyNoticed;
     private Transform _currentTarget;
     public Transform basePoint;
@@ -57,7 +56,6 @@ public class AIBrain : IAIBrain
         _followTargetState = new FollowTargetState();
         _attackState = new AttackState();
     }
-
 
     // Start is called before the first frame update
     void Start()
@@ -88,30 +86,34 @@ public class AIBrain : IAIBrain
 
     private void Update()
     {
-        MakeDecision();
-        _currentState?.OnUpdate();
+        if (!_alive && !visibleChecker.isVisible)
+        {
+            Destroy(gameObject);
+        }
+        else if (_alive)
+        {
+            MakeDecision();
+            _currentState?.OnUpdate();
+        }
+
     }
 
     private void MakeDecision()
     {
-        if (_alive)
+
+        if (_activeTargetInView && Vector3.Distance(transform.position, _currentTarget.position) <= _stoppingDistance)
         {
-            if (_activeTargetInView && Vector3.Distance(transform.position, _currentTarget.position) <= _stoppingDistance)
-            {
-                ChangeState(_attackState);
-                Debug.LogWarning("Attack State");
-            }
-            else if (_activeTargetInView && Vector3.Distance(transform.position, _currentTarget.position) > _stoppingDistance)
-            {
-                ChangeState(_followTargetState);
-                Debug.LogWarning("Follow State");
-            }
-            else if (!_activeTargetInView)
-            {
-                ChangeState(_patrolState);
-                Debug.LogWarning("Patrol State");
-            }
+            ChangeState(_attackState);
         }
+        else if (_activeTargetInView && Vector3.Distance(transform.position, _currentTarget.position) > _stoppingDistance)
+        {
+            ChangeState(_followTargetState);
+        }
+        else if (!_activeTargetInView)
+        {
+            ChangeState(_patrolState);
+        }
+
     }
 
 
@@ -147,15 +149,20 @@ public class AIBrain : IAIBrain
     {
         if (_alive)
         {
+            ChangeState(_deadState);
             base.Death();
             _alive = false;
             onEnemyDeath?.Invoke();
             CameraController.SlowMotion(0.2f);
             _enemyAnimations.Die();
-            enabled = false;
-            ChangeState(_deadState);
-            Destroy(gameObject, 1f);
+            StartCoroutine(DestroyGameObject());
         }
+    }
+
+    IEnumerator DestroyGameObject()
+    {
+        yield return new WaitForSeconds(5);
+        Destroy(gameObject);
     }
 
     public override void BaseInView(Transform basePoint)

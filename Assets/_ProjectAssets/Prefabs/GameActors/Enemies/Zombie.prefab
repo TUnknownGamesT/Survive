@@ -84,6 +84,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyType: 0
   travelPoints: []
+  visibleChecker: {fileID: 915881438566064727}
   armSpawnPoint: {fileID: 1827186632398295991}
   basePoint: {fileID: 0}
 --- !u!114 &1827186632662338062
@@ -326,6 +327,25 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5658725713866112926}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6325778484810372692 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1823530182056995274, guid: 99df780c519a56b449980f2a24bc719f,
+    type: 3}
+  m_PrefabInstance: {fileID: 5658725713866112926}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &915881438566064727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6325778484810372692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8da3e9d16c5f9e4886ce5ba0160196f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isVisible: 0
 --- !u!114 &6935880543214872032 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3370635998647425662, guid: 99df780c519a56b449980f2a24bc719f,

@@ -145,6 +145,7 @@ public class CameraController : MonoBehaviour
         });
     }
 
+    [ContextMenu("TakeDamageEffect")]
     public void TakeDamageEffect()
     {
         LeanTween.value(0, 0.3f, 0.1f).setOnUpdate((float value) =>

@@ -5,16 +5,31 @@ using UnityEngine;
 
 public class Minion : MonoBehaviour, IDamageable
 {
+
     public BoxCollider boxCollider;
     public float timeBetweenAttacks = 1f;
     public float damage;
     public static float cumulateDmg;
     public AIGroupBrain parent;
-    
-    private bool _timeToAttack=true;
-    private CancellationTokenSource _cancellationTokenSource;
-    
+    public bool isAlive = true;
 
+    private bool _timeToAttack = true;
+    private CancellationTokenSource _cancellationTokenSource;
+
+    private VisibleChecker _visibleChecker;
+
+    void Awake()
+    {
+        _visibleChecker = GetComponent<VisibleChecker>();
+    }
+
+    void Update()
+    {
+        if (!isAlive && !_visibleChecker.isVisible)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -41,10 +56,10 @@ public class Minion : MonoBehaviour, IDamageable
         {
             _cancellationTokenSource = new CancellationTokenSource();
             await UniTask.Delay(TimeSpan.FromSeconds(timeBetweenAttacks), cancellationToken: _cancellationTokenSource.Token);
-            _timeToAttack = true; 
+            _timeToAttack = true;
         });
     }
-    
+
     public void SetParent(AIGroupBrain parent)
     {
         this.parent = parent;
@@ -53,6 +68,5 @@ public class Minion : MonoBehaviour, IDamageable
     public void TakeDamage(float damage)
     {
         parent.Kill(this);
-        Destroy(gameObject);
     }
 }
