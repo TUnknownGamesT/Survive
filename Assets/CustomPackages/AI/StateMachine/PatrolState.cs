@@ -33,7 +33,6 @@ public class PatrolState : IState
             enemyBody = enemyStats.aiBody.transform;
             _zombieAnimations = enemyStats.aiBody.GetComponent<ZombieAnimationManager>();
         }
-
     }
 
     public void OnEnter()
@@ -77,6 +76,7 @@ public class PatrolState : IState
                     position = new Vector3(hit.point.x,0, hit.point.z)
                 }
             };
+            Debug.Log($"<color= #00FF00>Base point seen</color>");
             enemyBody.gameObject.GetComponent<AIBrain>().BaseInView(playerBaseHitPoint.transform);
         }
     }

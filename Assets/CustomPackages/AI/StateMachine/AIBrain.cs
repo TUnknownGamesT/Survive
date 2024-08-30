@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 
 public class AIBrain : IAIBrain
@@ -30,7 +31,6 @@ public class AIBrain : IAIBrain
     private bool _activeTargetInView;
     private bool _alreadyNoticed;
     private Transform _currentTarget;
-    public Transform basePoint;
 
 
 
@@ -57,7 +57,7 @@ public class AIBrain : IAIBrain
         _attackState = new AttackState();
     }
 
-    // Start is called before the first frame update
+
     void Start()
     {
         EnemyType mockEnemyType = EnemyInitiator.instance.GetEnemyStats(enemyType);
@@ -117,22 +117,6 @@ public class AIBrain : IAIBrain
     }
 
 
-    public void Notice()
-    {
-        if (!_alreadyNoticed)
-        {
-            _patrolState.AddTravelPoint(GameManager.playerRef.transform);
-        }
-        else
-        {
-            UniTask.Void(async () =>
-            {
-                await UniTask.Delay(TimeSpan.FromSeconds(4));
-                _alreadyNoticed = false;
-            });
-        }
-    }
-
     private void ChangeState(IState newState)
     {
         if (newState != _currentState)
@@ -167,7 +151,6 @@ public class AIBrain : IAIBrain
 
     public override void BaseInView(Transform basePoint)
     {
-        this.basePoint = basePoint;
         _currentTarget = basePoint;
         _activeTargetInView = true;
         _attackState.SetTarget(basePoint);
@@ -176,18 +159,33 @@ public class AIBrain : IAIBrain
 
     public override void PlayerInView()
     {
-        if (_currentTarget != GameManager.playerRef.transform)
-            Destroy(_currentTarget.gameObject);
-        _currentTarget = GameManager.playerRef.transform;
-        _attackState.SetTarget(GameManager.playerRef);
-        _followTargetState.SetTarget(GameManager.playerRef);
+
+        if (_currentTarget != null)
+        {
+            _attackState.SetTarget(GameManager.playerRef);
+            _followTargetState.SetTarget(GameManager.playerRef);
+            if (_currentTarget != GameManager.playerRef.transform)
+            {
+                Transform mock = _currentTarget;
+                _currentTarget = GameManager.playerRef.transform;
+                Destroy(mock.gameObject);
+            }
+        }
+        else
+        {
+            _currentTarget = GameManager.playerRef.transform;
+            _attackState.SetTarget(GameManager.playerRef);
+            _followTargetState.SetTarget(GameManager.playerRef);
+        }
+
         _activeTargetInView = true;
+
     }
 
     public override void PlayerOutOfView()
     {
-        Debug.LogWarningFormat("<color=reed>Add last seen target not player every time SOLVE</color>");
+        Debug.Log("<color=yellow>Player out of view</color>");
         _activeTargetInView = false;
-        _patrolState.AddTravelPoint(GameManager.playerRef);
+        //_patrolState.AddTravelPoint(GameManager.playerRef);
     }
 }

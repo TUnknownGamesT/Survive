@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81a39a96f97ba64f938a3e50cee2c77, type: 3}
   m_Name: Lvl1
   m_EditorClassIdentifier: 
-  enemiesToSpawn: 2
+  enemiesToSpawn: 1
   pauseBetweenRounds: 1
   roundsToPass: 3
   enemiesPerRoundIncrease: 2

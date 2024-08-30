@@ -56,54 +56,54 @@ public class FieldOfView : MonoBehaviour
     private void FiledOfViewCheck()
     {
         UniTask.Void(async () =>
-        {
+       {
 
-            try
-            {
-                await UniTask.Delay(TimeSpan.FromSeconds(0.05f)).WithCancellation(_cts.Token);
+           try
+           {
+               await UniTask.Delay(TimeSpan.FromSeconds(0.05f)).WithCancellation(_cts.Token);
 
-                Collider[] rangeChecks =
-                    Physics.OverlapSphere(transform.position, radius, targetMask, QueryTriggerInteraction.Collide);
+               Collider[] rangeChecks =
+                   Physics.OverlapSphere(transform.position, radius, targetMask, QueryTriggerInteraction.Collide);
 
-                if (rangeChecks.Length != 0)
-                {
-                    Transform target = rangeChecks[0].transform;
-                    Vector3 directionToTarget = (target.position - transform.position).normalized;
+               if (rangeChecks.Length != 0)
+               {
+                   Transform target = rangeChecks[0].transform;
+                   Vector3 directionToTarget = (target.position - transform.position).normalized;
 
-                    if (Vector3.Angle(transform.forward, directionToTarget) < angle / 2)
-                    {
-                        float distanceToTarget = Vector3.Distance(transform.position, target.position);
-                        targetInView = !Physics.Raycast(transform.position, directionToTarget, distanceToTarget,
-                            obstructionMask);
+                   if (Vector3.Angle(transform.forward, directionToTarget) < angle / 2)
+                   {
+                       float distanceToTarget = Vector3.Distance(transform.position, target.position);
+                       targetInView = !Physics.Raycast(transform.position, directionToTarget, distanceToTarget,
+                           obstructionMask);
 
-                        if (targetInView && !_alreadyInView)
-                        {
-                            Debug.LogWarning("Player in View");
-                            _aiBrain.PlayerInView();
-                            _alreadyInView = true;
-                        }
-                    }
-                    else if (_alreadyInView)
-                    {
-                        targetInView = false;
-                        _alreadyInView = false;
-                        _aiBrain.PlayerOutOfView();
-                    }
-                }
-                else if (_alreadyInView)
-                {
-                    targetInView = false;
-                    _alreadyInView = false;
-                    _aiBrain.PlayerOutOfView();
-                }
+                       if (targetInView && !_alreadyInView)
+                       {
+                           Debug.LogWarning("Player in View");
+                           _aiBrain.PlayerInView();
+                           _alreadyInView = true;
+                       }
+                   }
+                   else if (_alreadyInView)
+                   {
+                       targetInView = false;
+                       _alreadyInView = false;
+                       _aiBrain.PlayerOutOfView();
+                   }
+               }
+               else if (_alreadyInView)
+               {
+                   targetInView = false;
+                   _alreadyInView = false;
+                   _aiBrain.PlayerOutOfView();
+               }
 
-                FiledOfViewCheck();
-            }
-            catch (Exception e)
-            {
-                Debug.Log(e);
-                _cts.Cancel();
-            }
-        });
+               FiledOfViewCheck();
+           }
+           catch (Exception e)
+           {
+               Debug.Log(e);
+               _cts.Cancel();
+           }
+       });
     }
 }

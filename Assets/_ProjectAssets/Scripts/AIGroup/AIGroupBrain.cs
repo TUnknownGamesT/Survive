@@ -34,7 +34,6 @@ public class AIGroupBrain : IAIBrain
     public float _stoppingDistance;
     private IState _currentState;
     private bool _activeTargetInView;
-    private bool _alive = true;
     private bool _alreadyNoticed;
     public Transform _currentTarget;
     public Transform basePoint;
