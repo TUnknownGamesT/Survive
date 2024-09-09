@@ -37,7 +37,7 @@ public class PlayerXP : MonoBehaviour
     
     private void IncreaseLevelXpThreshold()
     {
-        levelXpThreshold += 100 * (currentLevel / 2) ;
+        levelXpThreshold += 50 * currentLevel;
         onPlayerXpThresholdChanged.Invoke(levelXpThreshold);
     }
 
