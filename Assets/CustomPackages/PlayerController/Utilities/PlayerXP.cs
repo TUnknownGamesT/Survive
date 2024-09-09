@@ -5,6 +5,7 @@ public class PlayerXP : MonoBehaviour
 {
     public static Action<float> onPlayerXpChanged;
     public static Action<int> onPlayerLevelUp;
+    public static Action<float> onPlayerXpThresholdChanged;
 
     public float currentXp = 0.0f;
     public int currentLevel = 1;
@@ -37,6 +38,7 @@ public class PlayerXP : MonoBehaviour
     private void IncreaseLevelXpThreshold()
     {
         levelXpThreshold += 100 * (currentLevel / 2) ;
+        onPlayerXpThresholdChanged.Invoke(levelXpThreshold);
     }
 
     private void ResetXp()

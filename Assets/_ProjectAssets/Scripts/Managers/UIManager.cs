@@ -65,8 +65,9 @@ public class UIManager : MonoBehaviour
         BaseBehaviour.onBaseMaxHealthChanged += SetBaseSliderMax;
         EnemySpawner.onAllEnemiesDead += ShowUpgradeUI;
         PlayerHealth.onPlayerHealthChanged += SetPlayerHP;
-        PlayerXP.onPlayerXpChanged += SetPlayerXP;
+        PlayerXP.onPlayerXpChanged += SetPlayerXp;
         PlayerXP.onPlayerLevelUp += SetPlayerLevel;
+        PlayerXP.onPlayerXpThresholdChanged += SetPlayerXpThreshold;
         GameManager.onGameEnd += PlayerDie;
 
     }
@@ -79,8 +80,9 @@ public class UIManager : MonoBehaviour
         PlayerHealth.onPlayerHealthChanged -= SetPlayerHP;
         BaseBehaviour.onBaseHPCHnage -= SetBaseSliderHP;
         BaseBehaviour.onBaseMaxHealthChanged -= SetBaseSliderMax;
-        PlayerXP.onPlayerXpChanged += SetPlayerXP;
-        PlayerXP.onPlayerLevelUp += SetPlayerLevel;
+        PlayerXP.onPlayerXpChanged -= SetPlayerXp;
+        PlayerXP.onPlayerLevelUp -= SetPlayerLevel;
+        PlayerXP.onPlayerXpThresholdChanged -= SetPlayerXpThreshold;
         UserInputController._pause.started -= Pause;
         GameManager.onGameEnd -= PlayerDie;
     }
@@ -241,9 +243,14 @@ public class UIManager : MonoBehaviour
         lifeBar.color = lifeBarColor.Evaluate((playerHealthBar.normalizedValue));
     }
 
-    private void SetPlayerXP(float value)
+    private void SetPlayerXp(float value)
     {
         playerXpBar.value = value;
+    }
+
+    private void SetPlayerXpThreshold(float value)
+    {
+        playerXpBar.maxValue = value;
     }
 
     private void SetPlayerLevel(int value)
