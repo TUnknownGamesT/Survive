@@ -8,7 +8,8 @@ public enum FactoryObjectsType
     KillingText,
     Enemy,
     Blood,
-    EnemyWeapon
+    EnemyWeapon,
+    XPItem
 }
 
 
@@ -52,6 +53,7 @@ public class FactoryObjects : MonoBehaviour
     public List<Weapon> enemyGuns;
 
     public GameObject blood;
+    public GameObject xpItem;
 
     [Header("Text")] 
     [ColorUsage(true,true)]
@@ -81,6 +83,9 @@ public class FactoryObjects : MonoBehaviour
            case FactoryObjectsType.EnemyWeapon:
                CreateEnemyWeapon(factoryObject.Instructions);
                break;
+           case FactoryObjectsType.XPItem:
+               CreateXpItem(factoryObject.Instructions);
+               break;
            default:
                Debug.LogWarning("FactoryObject type not found!");
                break;
@@ -104,7 +109,14 @@ public class FactoryObjects : MonoBehaviour
                 enemyDetails.parent.position, Quaternion.identity, enemyDetails.parent);
         }
     }
-    
+
+    private void CreateXpItem<T>(T position)
+    {
+        if (position is Vector3 castedPosition)
+            Instantiate(xpItem, castedPosition, Quaternion.identity);
+    }
+
+
     private void UpgradeEnemyArms(float amount)
     {
         foreach (var gun in enemyGuns)

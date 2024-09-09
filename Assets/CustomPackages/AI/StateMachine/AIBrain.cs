@@ -156,6 +156,11 @@ public class AIBrain : IAIBrain
             CameraController.SlowMotion(0.2f);
             _enemyAnimations.Die();
             StartCoroutine(DestroyGameObject());
+            FactoryObjects.instance.CreateObject(
+                new FactoryObject<Vector3>(
+                    FactoryObjectsType.XPItem, 
+                    gameObject.transform.position
+                    ));
         }
     }
 
