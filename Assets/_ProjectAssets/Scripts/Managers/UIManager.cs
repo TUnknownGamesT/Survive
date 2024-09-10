@@ -63,10 +63,9 @@ public class UIManager : MonoBehaviour
         EnemySpawner.onPauseStart += DisplayCounter;
         BaseBehaviour.onBaseHPCHnage += SetBaseSliderHP;
         BaseBehaviour.onBaseMaxHealthChanged += SetBaseSliderMax;
-        EnemySpawner.onAllEnemiesDead += ShowUpgradeUI;
         PlayerHealth.onPlayerHealthChanged += SetPlayerHP;
         PlayerXP.onPlayerXpChanged += SetPlayerXp;
-        PlayerXP.onPlayerLevelUp += SetPlayerLevel;
+        PlayerXP.onPlayerLevelUp += ShowUpgradeUI;
         PlayerXP.onPlayerXpThresholdChanged += SetPlayerXpThreshold;
         GameManager.onGameEnd += PlayerDie;
 
@@ -76,12 +75,11 @@ public class UIManager : MonoBehaviour
     private void OnDisable()
     {
         EnemySpawner.onPauseStart -= DisplayCounter;
-        EnemySpawner.onAllEnemiesDead -= ShowUpgradeUI;
         PlayerHealth.onPlayerHealthChanged -= SetPlayerHP;
         BaseBehaviour.onBaseHPCHnage -= SetBaseSliderHP;
         BaseBehaviour.onBaseMaxHealthChanged -= SetBaseSliderMax;
         PlayerXP.onPlayerXpChanged -= SetPlayerXp;
-        PlayerXP.onPlayerLevelUp -= SetPlayerLevel;
+        PlayerXP.onPlayerLevelUp -= ShowUpgradeUI;
         PlayerXP.onPlayerXpThresholdChanged -= SetPlayerXpThreshold;
         UserInputController._pause.started -= Pause;
         GameManager.onGameEnd -= PlayerDie;
@@ -252,13 +250,6 @@ public class UIManager : MonoBehaviour
     {
         playerXpBar.maxValue = value;
     }
-
-    private void SetPlayerLevel(int value)
-    {
-        //TODO: implement this
-        Debug.Log("Implement this!!");
-    }
-
 
     private void SetBaseSliderMax(int value)
     {
