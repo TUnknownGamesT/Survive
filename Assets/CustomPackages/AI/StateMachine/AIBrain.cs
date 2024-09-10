@@ -14,10 +14,6 @@ public class AIBrain : IAIBrain
     public static Action onEnemyDeath;
 
 
-    //TODO delete this after prototyping
-    [Header("Enemy Prototype")]
-    private bool prototypeEnemy;
-
     [Header("Enemy Type")]
     public ConstantsValues.EnemyType enemyType;
 
@@ -69,34 +65,14 @@ public class AIBrain : IAIBrain
     {
         EnemyType mockEnemyType = EnemyInitiator.instance.GetEnemyStats(enemyType);
         mockEnemyType.armSpawnPoint = armSpawnPoint;
-        prototypeEnemy = mockEnemyType.prototypeEnemy;
-
-        if (prototypeEnemy)
-        {
-            _enemyAnimations = GetComponent<EnemyAnimations>();
-        }
-        else
-        {
-            _enemyAnimations = GetComponent<ZombieAnimationManager>();
-        }
-
-
-        if (!prototypeEnemy)
-        {
-            FactoryObjects.instance.CreateObject(new FactoryObject<EnemyWeaponInstructions>
-                (FactoryObjectsType.EnemyWeapon, new EnemyWeaponInstructions(ConstantsValues.EnemyType.Mele, armSpawnPoint)));
-            mockEnemyType.armPrefab = armSpawnPoint.GetChild(0).gameObject;
-            mockEnemyType.armPrefab.GetComponent<Weapon>().SetArmHandler(_enemyAnimations);
-        }
+        _enemyAnimations = GetComponent<EnemyAnimations>();
 
         mockEnemyType.soundComponent = _soundComponent;
         mockEnemyType.aiBody = gameObject;
         mockEnemyType.navMeshAgent = GetComponent<NavMeshAgent>();
         mockEnemyType.navMeshAgent.speed = mockEnemyType.speed;
         mockEnemyType.travelPoints = travelPoints;
-        mockEnemyType.prototypeEnemy = prototypeEnemy;
-
-
+        armSpawnPoint.GetComponent<EnemyArmBehaviour>().damage = mockEnemyType.damage;
 
         _stoppingDistance = mockEnemyType.stoppingDistance;
 
@@ -178,7 +154,7 @@ public class AIBrain : IAIBrain
             StartCoroutine(DestroyGameObject());
             FactoryObjects.instance.CreateObject(
                 new FactoryObject<Vector3>(
-                    FactoryObjectsType.XPItem, 
+                    FactoryObjectsType.XPItem,
                     gameObject.transform.position
                     ));
         }

@@ -17,9 +17,6 @@ public class EnemyType : ScriptableObject
     public float pauseBteweenAttacks;
     public float damage;
 
-    //TODO delete this after prototyping
-    public bool prototypeEnemy;
-
     //References to be set in the AIBrain and pass forward to
     // to states
     [HideInInspector]

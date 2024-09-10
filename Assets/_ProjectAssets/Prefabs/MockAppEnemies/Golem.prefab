@@ -346,8 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _alive: 1
-  prototypeEnemy: 1
-  enemyType: 0
+  enemyType: 6
   travelPoints: []
   ragDollComponent: {fileID: 1835234086303116847}
   visibleChecker: {fileID: 5405445960509947801}
@@ -1333,6 +1332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463b047a8187c6e4a964fe679dca07c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 0
 --- !u!65 &3899066761726113855
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1342,7 +1342,7 @@ BoxCollider:
   m_GameObject: {fileID: 3899066761726113843}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}

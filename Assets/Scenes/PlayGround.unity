@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2138677392}
-  m_IndirectSpecularColor: {r: 394.53735, g: 296.0874, b: 284.17822, a: 1}
+  m_IndirectSpecularColor: {r: 394.07446, g: 295.8662, b: 284.3838, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1978,6 +1978,7 @@ MonoBehaviour:
   enemyGuns:
   - {fileID: 1802433526}
   blood: {fileID: 4374889160124429497, guid: 052eae1ec7c048349832e63a5b56713e, type: 3}
+  xpItem: {fileID: 8869505319439823882, guid: d4cdf126fe592d344b4fbd0869824e19, type: 3}
   colors: []
   texts: []
 --- !u!114 &755864695
@@ -3156,7 +3157,12 @@ PrefabInstance:
     - target: {fileID: 1311637112075416733, guid: 18fc946fd5cdb4f4dba1371a5460c727,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1835234086303116837, guid: 18fc946fd5cdb4f4dba1371a5460c727,
+        type: 3}
+      propertyPath: enemyType
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1835234086303116839, guid: 18fc946fd5cdb4f4dba1371a5460c727,
         type: 3}
@@ -3364,6 +3370,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3374348190043655216, guid: d7f06e8e66c753f48bf8159df083b62d,
         type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3374348190043655216, guid: d7f06e8e66c753f48bf8159df083b62d,
+        type: 3}
       propertyPath: _unitPrefab
       value: 
       objectReference: {fileID: 50196166473077885, guid: 6b60c64c9a75a1a41acad6fc754ad7e7,
@@ -3386,7 +3397,7 @@ PrefabInstance:
     - target: {fileID: 3374348190043655219, guid: d7f06e8e66c753f48bf8159df083b62d,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3374348190043655231, guid: d7f06e8e66c753f48bf8159df083b62d,
         type: 3}
@@ -4340,6 +4351,11 @@ PrefabInstance:
     - target: {fileID: 2561534057428311082, guid: a8c699ffe98cfca4c95e3f153a01998c,
         type: 3}
       propertyPath: m_UiScaleMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2773972214926160363, guid: a8c699ffe98cfca4c95e3f153a01998c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3062551351595517517, guid: a8c699ffe98cfca4c95e3f153a01998c,

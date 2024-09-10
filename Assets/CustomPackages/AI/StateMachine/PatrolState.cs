@@ -33,17 +33,14 @@ public class PatrolState : IState
             stoppingDistance = enemyStats.stoppingDistance;
             enemyBody = enemyStats.aiBody.transform;
 
-            if (enemyBody.GetComponent<ZombieAnimationManager>() == null)
-                _enemyAnimations = enemyBody.gameObject.GetComponent<EnemyAnimations>();
-            else
-                _enemyAnimations = enemyStats.aiBody.GetComponent<ZombieAnimationManager>();
+            _enemyAnimations = enemyBody.gameObject.GetComponent<EnemyAnimations>();
+
         }
     }
 
     public void OnEnter()
     {
         _cts = new CancellationTokenSource();
-        _enemyAnimations.SetSpeed(1);
         _enemyAnimations.SetIsWalking(true);
         if (travelPoints.Count > 0)
         {
@@ -66,7 +63,6 @@ public class PatrolState : IState
         if (travelPoints.Contains(GameObject.FindWithTag("Player").transform))
             travelPoints.Remove(GameObject.FindWithTag("Player").transform);
         _navMeshAgent.destination = enemyBody.position;
-        _enemyAnimations.SetSpeed(0);
         _enemyAnimations.SetIsWalking(true);
     }
 

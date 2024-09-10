@@ -13,8 +13,6 @@ public class AttackState : IState
     private float _pauseBetweenAttacks;
     private float _time;
 
-    //TODO delete this after prototyping
-    private bool _prototypeEnemy;
     private BoxCollider boxCollider;
 
     public void OnInitState<T>(T gameObject)
@@ -23,58 +21,32 @@ public class AttackState : IState
         {
             _aiBody = enemyType.aiBody;
             _damping = enemyType.damping;
-            _prototypeEnemy = enemyType.prototypeEnemy;
             _pauseBetweenAttacks = enemyType.pauseBteweenAttacks;
-
-            if (!_prototypeEnemy)
-            {
-                _armPrefab = enemyType.armPrefab.GetComponent<Weapon>();
-                _armPrefab.transform.localPosition = Vector3.zero;
-                _armPrefab.transform.localRotation = Quaternion.identity;
-                _armPrefab.GetComponent<BoxCollider>().enabled = false;
-                _armPrefab.GetComponent<Rigidbody>().useGravity = false;
-            }
-            else
-            {
-                boxCollider = enemyType.armSpawnPoint.GetComponent<BoxCollider>();
-            }
-
-
-            if (_aiBody.GetComponent<ZombieAnimationManager>())
-                _enemyAnimations = _aiBody.GetComponent<ZombieAnimationManager>();
-            else
-                _enemyAnimations = _aiBody.gameObject.GetComponent<EnemyAnimations>();
-
-
+            boxCollider = enemyType.armSpawnPoint.GetComponent<BoxCollider>();
+            _enemyAnimations = _aiBody.gameObject.GetComponent<EnemyAnimations>();
         }
     }
 
 
     public void OnEnter()
     {
-        Debug.Log(_currentTarget.name);
         _cts = new CancellationTokenSource();
     }
 
     public void OnUpdate()
     {
-        if (!_prototypeEnemy)
+
+        if (_time + _pauseBetweenAttacks < Time.time)
         {
-            _armPrefab.Tick(true);
+            _enemyAnimations.SetIdle(false);
+            _time = Time.time;
+            _enemyAnimations.Attack();
         }
         else
         {
-            if (_time + _pauseBetweenAttacks < Time.time)
-            {
-                _enemyAnimations.SetIdle(false);
-                _time = Time.time;
-                _enemyAnimations.Attack();
-            }
-            else
-            {
-                _enemyAnimations.SetIdle(true);
-            }
+            _enemyAnimations.SetIdle(true);
         }
+
 
         RotateTowardThePlayer();
     }
@@ -100,8 +72,6 @@ public class AttackState : IState
 
     public void OnExit()
     {
-        if (!_prototypeEnemy)
-            _armPrefab.Tick(false);
         _cts.Cancel();
         _enemyAnimations.SetIdle(false);
         _enemyAnimations.ResetTriger("T_Attack");

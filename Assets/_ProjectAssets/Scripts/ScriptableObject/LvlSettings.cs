@@ -1,13 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+
+
+[System.Serializable]
+public struct EnemiPair
+{
+    public GameObject enemyToSpawn;
+    public int roundStartSpawning;
+}
 
 [CreateAssetMenu(fileName = "LvlSettings", menuName = "ScriptableObjects/LvlSettings", order = 3)]
 public class LvlSettings : ScriptableObject
 {
-    public int enemiesToSpawn;
+    public EnemiPair[] enemies;
     public float pauseBetweenRounds;
-    [Tooltip("How many rounds to pass to increase the number of enemies per round")]
-    public int roundsToPass;
+    public int enemiesToSpawn;
     public int enemiesPerRoundIncrease;
+    public int enemyToSpawnIncreaseRate;
+    public float pauseBetweenSpawns;
 }
