@@ -1,18 +1,21 @@
 using System.Threading;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class AttackState : IState
 {
-    private float _spread;
-    private bool _reloading;
     private Weapon _armPrefab;
-    private SoundComponent soundComponent;
     private GameObject _aiBody;
     private CancellationTokenSource _cts;
-    private ZombieAnimationManager _enemyAnimations;
+    private AnimationManager _enemyAnimations;
     private float _damping;
     private Transform _currentTarget;
+
+    private float _pauseBetweenAttacks;
+    private float _time;
+
+    //TODO delete this after prototyping
+    private bool _prototypeEnemy;
+    private BoxCollider boxCollider;
 
     public void OnInitState<T>(T gameObject)
     {
@@ -20,12 +23,29 @@ public class AttackState : IState
         {
             _aiBody = enemyType.aiBody;
             _damping = enemyType.damping;
-            _armPrefab = enemyType.armPrefab.GetComponent<Weapon>();
-            _enemyAnimations = _aiBody.GetComponent<ZombieAnimationManager>();
-            _armPrefab.transform.localPosition = Vector3.zero;
-            _armPrefab.transform.localRotation = Quaternion.identity;
-            _armPrefab.GetComponent<BoxCollider>().enabled = false;
-            _armPrefab.GetComponent<Rigidbody>().useGravity = false;
+            _prototypeEnemy = enemyType.prototypeEnemy;
+            _pauseBetweenAttacks = enemyType.pauseBteweenAttacks;
+
+            if (!_prototypeEnemy)
+            {
+                _armPrefab = enemyType.armPrefab.GetComponent<Weapon>();
+                _armPrefab.transform.localPosition = Vector3.zero;
+                _armPrefab.transform.localRotation = Quaternion.identity;
+                _armPrefab.GetComponent<BoxCollider>().enabled = false;
+                _armPrefab.GetComponent<Rigidbody>().useGravity = false;
+            }
+            else
+            {
+                boxCollider = enemyType.armSpawnPoint.GetComponent<BoxCollider>();
+            }
+
+
+            if (_aiBody.GetComponent<ZombieAnimationManager>())
+                _enemyAnimations = _aiBody.GetComponent<ZombieAnimationManager>();
+            else
+                _enemyAnimations = _aiBody.gameObject.GetComponent<EnemyAnimations>();
+
+
         }
     }
 
@@ -34,12 +54,28 @@ public class AttackState : IState
     {
         Debug.Log(_currentTarget.name);
         _cts = new CancellationTokenSource();
-        _enemyAnimations.Attack();
     }
 
     public void OnUpdate()
     {
-        _armPrefab.Tick(true);
+        if (!_prototypeEnemy)
+        {
+            _armPrefab.Tick(true);
+        }
+        else
+        {
+            if (_time + _pauseBetweenAttacks < Time.time)
+            {
+                _enemyAnimations.SetIdle(false);
+                _time = Time.time;
+                _enemyAnimations.Attack();
+            }
+            else
+            {
+                _enemyAnimations.SetIdle(true);
+            }
+        }
+
         RotateTowardThePlayer();
     }
 
@@ -52,10 +88,24 @@ public class AttackState : IState
     }
 
 
+    public void EnableArmCollider()
+    {
+        boxCollider.enabled = true;
+    }
+
+    public void DisableArmCollider()
+    {
+        boxCollider.enabled = false;
+    }
+
     public void OnExit()
     {
-        _armPrefab.Tick(false);
+        if (!_prototypeEnemy)
+            _armPrefab.Tick(false);
         _cts.Cancel();
+        _enemyAnimations.SetIdle(false);
+        _enemyAnimations.ResetTriger("T_Attack");
+        _enemyAnimations.SetIsWalking(true);
     }
 
     public void SetTarget(Transform target)

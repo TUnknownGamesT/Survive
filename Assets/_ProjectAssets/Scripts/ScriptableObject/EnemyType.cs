@@ -14,6 +14,11 @@ public class EnemyType : ScriptableObject
     public float stoppingDistance;
     public float pauseBetweenMovement;
     public float speed;
+    public float pauseBteweenAttacks;
+    public float damage;
+
+    //TODO delete this after prototyping
+    public bool prototypeEnemy;
 
     //References to be set in the AIBrain and pass forward to
     // to states
@@ -25,7 +30,7 @@ public class EnemyType : ScriptableObject
     public GameObject aiBody;
     [HideInInspector]
     public NavMeshAgent navMeshAgent;
-    [HideInInspector] 
+    [HideInInspector]
     public List<Transform> travelPoints = new();
 
 

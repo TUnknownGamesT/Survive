@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class Melee : Weapon
+public class Mele : Weapon
 {
 
     private BoxCollider _collider;

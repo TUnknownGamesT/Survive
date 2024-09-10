@@ -4,12 +4,19 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 
+[RequireComponent(typeof(AIHealth), typeof(FieldOfView), typeof(NavMeshAgent))]
 public class AIBrain : IAIBrain
 {
 
     public static Action onEnemyDeath;
+
+
+    //TODO delete this after prototyping
+    [Header("Enemy Prototype")]
+    private bool prototypeEnemy;
 
     [Header("Enemy Type")]
     public ConstantsValues.EnemyType enemyType;
@@ -20,9 +27,11 @@ public class AIBrain : IAIBrain
 
     private float _stoppingDistance;
     [Header("References")]
+
+    public RagDollComponent ragDollComponent;
     public VisibleChecker visibleChecker;
     public Transform armSpawnPoint;
-    private ZombieAnimationManager _enemyAnimations;
+    private AnimationManager _enemyAnimations;
     private AIHealth _aiHealth;
     private SoundComponent _soundComponent;
 
@@ -30,8 +39,8 @@ public class AIBrain : IAIBrain
     private bool _activeTargetInView;
     private bool _alreadyNoticed;
     private Transform _currentTarget;
-    public Transform basePoint;
 
+    private bool _canSwitchState = true;
 
 
     #region State Initialization
@@ -47,8 +56,6 @@ public class AIBrain : IAIBrain
     private void Awake()
     {
         travelPoints.Add(GameManager.playerBaseRef);
-        _enemyAnimations = GetComponent<ZombieAnimationManager>();
-
         _aiHealth = GetComponent<AIHealth>();
 
         _patrolState = new PatrolState();
@@ -57,20 +64,38 @@ public class AIBrain : IAIBrain
         _attackState = new AttackState();
     }
 
-    // Start is called before the first frame update
+
     void Start()
     {
         EnemyType mockEnemyType = EnemyInitiator.instance.GetEnemyStats(enemyType);
         mockEnemyType.armSpawnPoint = armSpawnPoint;
-        FactoryObjects.instance.CreateObject(new FactoryObject<EnemyWeaponInstructions>
-            (FactoryObjectsType.EnemyWeapon, new EnemyWeaponInstructions(ConstantsValues.EnemyType.Melee, armSpawnPoint)));
+        prototypeEnemy = mockEnemyType.prototypeEnemy;
+
+        if (prototypeEnemy)
+        {
+            _enemyAnimations = GetComponent<EnemyAnimations>();
+        }
+        else
+        {
+            _enemyAnimations = GetComponent<ZombieAnimationManager>();
+        }
+
+
+        if (!prototypeEnemy)
+        {
+            FactoryObjects.instance.CreateObject(new FactoryObject<EnemyWeaponInstructions>
+                (FactoryObjectsType.EnemyWeapon, new EnemyWeaponInstructions(ConstantsValues.EnemyType.Mele, armSpawnPoint)));
+            mockEnemyType.armPrefab = armSpawnPoint.GetChild(0).gameObject;
+            mockEnemyType.armPrefab.GetComponent<Weapon>().SetArmHandler(_enemyAnimations);
+        }
+
         mockEnemyType.soundComponent = _soundComponent;
         mockEnemyType.aiBody = gameObject;
         mockEnemyType.navMeshAgent = GetComponent<NavMeshAgent>();
         mockEnemyType.navMeshAgent.speed = mockEnemyType.speed;
         mockEnemyType.travelPoints = travelPoints;
-        mockEnemyType.armPrefab = armSpawnPoint.GetChild(0).gameObject;
-        mockEnemyType.armPrefab.GetComponent<Weapon>().SetArmHandler(_enemyAnimations);
+        mockEnemyType.prototypeEnemy = prototypeEnemy;
+
 
 
         _stoppingDistance = mockEnemyType.stoppingDistance;
@@ -81,7 +106,7 @@ public class AIBrain : IAIBrain
         _deadState.OnInitState(mockEnemyType);
         _followTargetState.OnInitState(mockEnemyType);
         _attackState.OnInitState(mockEnemyType);
-        _attackState.SetTarget(GameManager.playerBaseRef);
+        _attackState.SetTarget(GameManager.playerBaseRef); ;
     }
 
     private void Update()
@@ -101,7 +126,11 @@ public class AIBrain : IAIBrain
     private void MakeDecision()
     {
 
-        if (_activeTargetInView && Vector3.Distance(transform.position, _currentTarget.position) <= _stoppingDistance)
+        if (!_activeTargetInView)
+        {
+            ChangeState(_patrolState);
+        }
+        else if (_activeTargetInView && Vector3.Distance(transform.position, _currentTarget.position) <= _stoppingDistance)
         {
             ChangeState(_attackState);
         }
@@ -109,33 +138,13 @@ public class AIBrain : IAIBrain
         {
             ChangeState(_followTargetState);
         }
-        else if (!_activeTargetInView)
-        {
-            ChangeState(_patrolState);
-        }
 
     }
 
-
-    public void Notice()
-    {
-        if (!_alreadyNoticed)
-        {
-            _patrolState.AddTravelPoint(GameManager.playerRef.transform);
-        }
-        else
-        {
-            UniTask.Void(async () =>
-            {
-                await UniTask.Delay(TimeSpan.FromSeconds(4));
-                _alreadyNoticed = false;
-            });
-        }
-    }
 
     private void ChangeState(IState newState)
     {
-        if (newState != _currentState)
+        if (newState != _currentState && _canSwitchState)
         {
             _currentState?.OnExit();
             _currentState = newState;
@@ -143,6 +152,16 @@ public class AIBrain : IAIBrain
         }
     }
 
+
+    public void FalseSwitchState()
+    {
+        _canSwitchState = false;
+    }
+
+    public void TrueSwitchState()
+    {
+        _canSwitchState = true;
+    }
 
 
     public override void Death()
@@ -155,6 +174,7 @@ public class AIBrain : IAIBrain
             onEnemyDeath?.Invoke();
             CameraController.SlowMotion(0.2f);
             _enemyAnimations.Die();
+            ragDollComponent.ActivateRagDoll();
             StartCoroutine(DestroyGameObject());
             FactoryObjects.instance.CreateObject(
                 new FactoryObject<Vector3>(
@@ -172,7 +192,7 @@ public class AIBrain : IAIBrain
 
     public override void BaseInView(Transform basePoint)
     {
-        this.basePoint = basePoint;
+        Debug.Log("<color=yellow>Base in View</color>");
         _currentTarget = basePoint;
         _activeTargetInView = true;
         _attackState.SetTarget(basePoint);
@@ -181,18 +201,46 @@ public class AIBrain : IAIBrain
 
     public override void PlayerInView()
     {
-        if (_currentTarget != GameManager.playerRef.transform)
-            Destroy(_currentTarget.gameObject);
-        _currentTarget = GameManager.playerRef.transform;
-        _attackState.SetTarget(GameManager.playerRef);
-        _followTargetState.SetTarget(GameManager.playerRef);
+
+        if (_currentTarget != null)
+        {
+            _attackState.SetTarget(GameManager.playerRef);
+            _followTargetState.SetTarget(GameManager.playerRef);
+            if (_currentTarget != GameManager.playerRef.transform)
+            {
+                Destroy(_currentTarget.gameObject);
+                _currentTarget = GameManager.playerRef.transform;
+            }
+        }
+        else
+        {
+            _currentTarget = GameManager.playerRef.transform;
+            _attackState.SetTarget(GameManager.playerRef);
+            _followTargetState.SetTarget(GameManager.playerRef);
+        }
+
         _activeTargetInView = true;
     }
 
     public override void PlayerOutOfView()
     {
-        Debug.LogWarningFormat("<color=reed>Add last seen target not player every time SOLVE</color>");
+        Debug.Log("<color=yellow>Player out of view</color>");
         _activeTargetInView = false;
-        _patrolState.AddTravelPoint(GameManager.playerRef);
+        //_patrolState.AddTravelPoint(GameManager.playerRef);
     }
+
+    #region prototype
+    //TODO make it happends in attackState
+    public void EnableArmCollider()
+    {
+        _attackState.EnableArmCollider();
+    }
+
+    public void DisableArmCollider()
+    {
+        _attackState.DisableArmCollider();
+    }
+
+    #endregion
+
 }

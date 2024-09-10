@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80efef4e5200bdb45817fc5a3fb2c43f, type: 3}
-  m_Name: Mele
+  m_Name: Zombie
   m_EditorClassIdentifier: 
   armPrefab: {fileID: 0}
-  enemyType: 0
-  health: 2
-  damping: 1
+  enemyType: 7
+  health: 10
+  damping: 300
   stoppingDistance: 2
   pauseBetweenMovement: 3
   speed: 8
+  pauseBteweenAttacks: 3
   prototypeEnemy: 1
   soundComponent: {fileID: 0}
   armSpawnPoint: {fileID: 0}
   aiBody: {fileID: 0}
   navMeshAgent: {fileID: 0}
-  travelPoints:
-  - {fileID: 0}
+  travelPoints: []

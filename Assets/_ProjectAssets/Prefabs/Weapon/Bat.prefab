@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7481823310595633127}
   - component: {fileID: 8556258299818641891}
   - component: {fileID: 8278832694581849676}
-  - component: {fileID: 1967161606449419454}
+  - component: {fileID: 5099728806191333237}
   m_Layer: 0
   m_Name: Bat
   m_TagString: Bullet
@@ -174,7 +174,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5347595, y: 3.0933228, z: 0.95236206}
   m_Center: {x: -0.17607117, y: 0.62942505, z: 0.17167664}
---- !u!114 &1967161606449419454
+--- !u!114 &5099728806191333237
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -183,15 +183,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1389793772019306325}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 513e3f004a70dbb44bb161adf2a327aa, type: 3}
+  m_Script: {fileID: 11500000, guid: 00b8394ce13fe5a41898ca276577f1cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0
-  reloadTime: 0
+  damage: 2
+  reloadTime: 3
   enemyType: 0
   weaponIcon: {fileID: 21300000, guid: 02a1d37aaeb99e745bc0f8348da2f893, type: 3}
   vfx: {fileID: 0}
-  fireRate: 160
+  fireRate: 200
+  maxSpreadAmount: 3
+  spreadAmount: 3
 --- !u!1001 &8835851707777841813
 PrefabInstance:
   m_ObjectHideFlags: 0
