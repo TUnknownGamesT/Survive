@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using ConstantsValues;
+using UnityEngine.Serialization;
 
 public class UIManager : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Player UI")]
     public Slider playerHealthBar;
+    public Slider playerXpBar;
     public Slider baseHealthBar;
     public Image lifeBar;
     public Gradient lifeBarColor;
@@ -63,6 +65,9 @@ public class UIManager : MonoBehaviour
         BaseBehaviour.onBaseMaxHealthChanged += SetBaseSliderMax;
         EnemySpawner.onAllEnemiesDead += ShowUpgradeUI;
         PlayerHealth.onPlayerHealthChanged += SetPlayerHP;
+        PlayerXP.onPlayerXpChanged += SetPlayerXp;
+        PlayerXP.onPlayerLevelUp += SetPlayerLevel;
+        PlayerXP.onPlayerXpThresholdChanged += SetPlayerXpThreshold;
         GameManager.onGameEnd += PlayerDie;
 
     }
@@ -75,6 +80,9 @@ public class UIManager : MonoBehaviour
         PlayerHealth.onPlayerHealthChanged -= SetPlayerHP;
         BaseBehaviour.onBaseHPCHnage -= SetBaseSliderHP;
         BaseBehaviour.onBaseMaxHealthChanged -= SetBaseSliderMax;
+        PlayerXP.onPlayerXpChanged -= SetPlayerXp;
+        PlayerXP.onPlayerLevelUp -= SetPlayerLevel;
+        PlayerXP.onPlayerXpThresholdChanged -= SetPlayerXpThreshold;
         UserInputController._pause.started -= Pause;
         GameManager.onGameEnd -= PlayerDie;
     }
@@ -234,6 +242,23 @@ public class UIManager : MonoBehaviour
         playerHealthBar.value = value;
         lifeBar.color = lifeBarColor.Evaluate((playerHealthBar.normalizedValue));
     }
+
+    private void SetPlayerXp(float value)
+    {
+        playerXpBar.value = value;
+    }
+
+    private void SetPlayerXpThreshold(float value)
+    {
+        playerXpBar.maxValue = value;
+    }
+
+    private void SetPlayerLevel(int value)
+    {
+        //TODO: implement this
+        Debug.Log("Implement this!!");
+    }
+
 
     private void SetBaseSliderMax(int value)
     {
