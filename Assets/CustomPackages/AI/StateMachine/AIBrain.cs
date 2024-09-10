@@ -176,6 +176,11 @@ public class AIBrain : IAIBrain
             _enemyAnimations.Die();
             ragDollComponent.ActivateRagDoll();
             StartCoroutine(DestroyGameObject());
+            FactoryObjects.instance.CreateObject(
+                new FactoryObject<Vector3>(
+                    FactoryObjectsType.XPItem, 
+                    gameObject.transform.position
+                    ));
         }
     }
 
