@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Minion : MonoBehaviour, IDamageable
 {
@@ -13,14 +14,34 @@ public class Minion : MonoBehaviour, IDamageable
     public AIGroupBrain parent;
     public bool isAlive = true;
 
+    public BoxCollider armCollider;
+
     private bool _timeToAttack = true;
     private CancellationTokenSource _cancellationTokenSource;
 
+    private EnemyAnimations _enemyAnimations;
+
     private VisibleChecker _visibleChecker;
+
+    private RagDollComponent _ragDollComponent;
+
+    private float health;
+
+    private Transform _currentTarget;
+
+    private NavMeshAgent _navMeshAgent;
 
     void Awake()
     {
         _visibleChecker = GetComponent<VisibleChecker>();
+        _enemyAnimations = GetComponent<EnemyAnimations>();
+        _ragDollComponent = GetComponent<RagDollComponent>();
+        _navMeshAgent = GetComponent<NavMeshAgent>();
+    }
+
+    void OnDisable()
+    {
+        parent.onTargetChange -= SetTarget;
     }
 
     void Update()
@@ -29,6 +50,12 @@ public class Minion : MonoBehaviour, IDamageable
         {
             Destroy(gameObject);
         }
+        else
+        {
+            RotateTowardsTarget();
+        }
+
+
     }
 
     private void Start()
@@ -37,14 +64,37 @@ public class Minion : MonoBehaviour, IDamageable
         boxCollider = GetComponent<BoxCollider>();
     }
 
+    public void OnInitValues(EnemyType enemyType)
+    {
+        health = enemyType.health;
+        damage = enemyType.damage;
+        _navMeshAgent.speed = enemyType.speed;
+        _navMeshAgent.angularSpeed = enemyType.damping;
+    }
+
+
+    private void RotateTowardsTarget()
+    {
+        if (_currentTarget != null)
+        {
+            Vector3 direction = (_currentTarget.position - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        }
+    }
+
+    public void SetTarget(Transform target)
+    {
+        _currentTarget = target;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         Debug.LogWarning(other.gameObject.name);
         if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("PlayerBase")
             && _timeToAttack)
         {
-            Debug.LogWarning("Player/Base hit");
-            other.GetComponent<IDamageable>().TakeDamage(damage);
+            _enemyAnimations.Attack();
             _timeToAttack = false;
             Rest();
         }
@@ -63,10 +113,30 @@ public class Minion : MonoBehaviour, IDamageable
     public void SetParent(AIGroupBrain parent)
     {
         this.parent = parent;
+        parent.onTargetChange += SetTarget;
     }
 
     public void TakeDamage(float damage)
     {
-        parent.Kill(this);
+        health -= damage;
+        if (health <= 0)
+        {
+            _enemyAnimations.Die();
+            _ragDollComponent.ActivateRagDoll();
+            GetComponent<NavMeshAgent>().enabled = false;
+            boxCollider.enabled = false;
+            parent.Kill(this);
+            this.enabled = false;
+        }
+    }
+
+    public void EnableArmCollider()
+    {
+        armCollider.enabled = true;
+    }
+
+    public void DisableArmCollider()
+    {
+        armCollider.enabled = false;
     }
 }

@@ -6,6 +6,7 @@ public abstract class IAIBrain : MonoBehaviour
 {
 
     public Action onLocalEnemyDeath;
+    [HideInInspector]
     public bool _alive = true;
 
     public abstract void BaseInView(Transform basePoint);

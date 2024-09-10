@@ -6,7 +6,7 @@ public class FollowTargetState : IState
     private NavMeshAgent _navMeshAgent;
     private Transform _enemyBody;
     private float _stoppingDistance;
-    private ZombieAnimationManager _zombieAnimations;
+    private AnimationManager _enemyAnimations;
 
     private Transform _currentTarget;
 
@@ -16,15 +16,22 @@ public class FollowTargetState : IState
         if (gameObject is EnemyType enemyStats)
         {
             _navMeshAgent = enemyStats.navMeshAgent;
+            _navMeshAgent.speed = enemyStats.speed;
+            _navMeshAgent.angularSpeed = enemyStats.damping;
+            _navMeshAgent.stoppingDistance = enemyStats.stoppingDistance;
             _enemyBody = enemyStats.aiBody.transform;
             _stoppingDistance = enemyStats.stoppingDistance;
-            _zombieAnimations = enemyStats.aiBody.GetComponent<ZombieAnimationManager>();
+            if (_enemyBody.GetComponent<ZombieAnimationManager>() == null)
+                _enemyAnimations = _enemyBody.gameObject.GetComponent<EnemyAnimations>();
+            else
+                _enemyAnimations = enemyStats.aiBody.GetComponent<ZombieAnimationManager>();
         }
     }
 
     public void OnEnter()
     {
-        _zombieAnimations.SetSpeed(1);
+        _enemyAnimations.SetSpeed(1);
+        _enemyAnimations.SetIsWalking(true);
     }
 
     public void OnUpdate()
@@ -38,7 +45,8 @@ public class FollowTargetState : IState
     public void OnExit()
     {
         _navMeshAgent.destination = _enemyBody.position;
-        _zombieAnimations.SetSpeed(0);
+        _enemyAnimations.SetSpeed(0);
+        _enemyAnimations.SetIsWalking(false);
     }
 
     public void SetTarget(Transform targetPosition)

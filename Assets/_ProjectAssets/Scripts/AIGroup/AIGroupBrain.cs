@@ -1,14 +1,14 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
+using ConstantsValues;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class AIGroupBrain : IAIBrain
 {
     public static Action onEnemyDeath;
+
+    public Action<Transform> onTargetChange;
 
     #region Formation
 
@@ -20,6 +20,8 @@ public class AIGroupBrain : IAIBrain
     public readonly List<Minion> _spawnedUnits = new List<Minion>();
     public List<Vector3> _points = new List<Vector3>();
     public Transform _parent;
+
+    public ConstantsValues.EnemyType minionsType;
 
 
     #endregion
@@ -46,7 +48,7 @@ public class AIGroupBrain : IAIBrain
 
     private void Start()
     {
-        _currentTarget = GameManager.playerBaseRef;
+        SetTarget(GameManager.playerBaseRef);
         _points = _formation.EvaluatePoints().ToList();
 
         if (_points.Count > _spawnedUnits.Count)
@@ -54,6 +56,9 @@ public class AIGroupBrain : IAIBrain
             var remainingPoints = _points.Skip(_spawnedUnits.Count);
             Spawn(remainingPoints);
         }
+
+        EnemyType mockEnemyType = EnemyInitiator.instance.GetEnemyStats(minionsType);
+        _spawnedUnits.ForEach(unit => unit.OnInitValues(mockEnemyType));
 
         walkingStateGroup.OnInitState(this);
         attackStateGroup.OnInitState(this);
@@ -134,7 +139,7 @@ public class AIGroupBrain : IAIBrain
     public override void BaseInView(Transform basePoint)
     {
         this.basePoint = basePoint;
-        _currentTarget = basePoint;
+        SetTarget(basePoint);
         _activeTargetInView = true;
         // _attackState.SetTarget(basePoint);
         // _followTargetState.SetTarget(basePoint);
@@ -144,10 +149,17 @@ public class AIGroupBrain : IAIBrain
     {
         Debug.LogWarning("Player in view");
         _activeTargetInView = true;
-        _currentTarget = GameManager.playerRef;
+        SetTarget(GameManager.playerRef);
         // _attackState.SetTarget(GameManager.playerRef);
         // _followTargetState.SetTarget(GameManager.playerRef);
     }
+
+    public void SetTarget(Transform target)
+    {
+        _currentTarget = target;
+        onTargetChange?.Invoke(target);
+    }
+
 
     public override void PlayerOutOfView()
     {
