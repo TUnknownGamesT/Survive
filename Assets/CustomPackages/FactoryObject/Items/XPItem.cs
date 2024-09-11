@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class XPItem : MonoBehaviour
 {
-   public float xpValue = 10;
+   public float xpValue = 50;
    private void OnTriggerEnter(Collider other)
    {
       PlayerXP playerXp = other.GetComponent<PlayerXP>();

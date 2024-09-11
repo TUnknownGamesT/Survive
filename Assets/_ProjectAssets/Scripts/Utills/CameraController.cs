@@ -90,8 +90,18 @@ public class CameraController : MonoBehaviour
 
     private Bounds GetCenterPosition()
     {
-        Bounds bounds = new Bounds(GameManager.playerRef.position, Vector3.zero);
-        bounds.Encapsulate(GameManager.crossHairRef.position);
+        var playerPos = GameManager.playerRef.position;
+        var crossHairPos = GameManager.crossHairRef.position;
+        Bounds bounds = new Bounds(playerPos, Vector3.zero);
+        
+        const float diff = 20;
+        bounds.Encapsulate(
+            new Vector3(
+                Mathf.Clamp(crossHairPos.x, playerPos.x - diff, playerPos.x + diff),
+                crossHairPos.y,
+                Mathf.Clamp(crossHairPos.z, playerPos.z - diff, playerPos.z + diff)
+                )
+            );
 
         return bounds;
     }

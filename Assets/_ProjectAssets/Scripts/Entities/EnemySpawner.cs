@@ -32,26 +32,22 @@ public class EnemySpawner : MonoBehaviour
 
     private void OnEnable()
     {
-        GunsUpgrade.onGunsUpgradeSelected += StartSpawning;
-        PlayerUpgrades.onPlayerUpgradeSelected += StartSpawning;
-        BaseUpgrade.onBaseUpgradeSelected += StartSpawning;
+        EnemySpawner.onAllEnemiesDead += StartSpawning;
         AIBrain.onEnemyDeath += EnemyDied;
         AIGroupBrain.onEnemyDeath += EnemyDied;
     }
 
     private void OnDisable()
     {
-        GunsUpgrade.onGunsUpgradeSelected -= StartSpawning;
-        PlayerUpgrades.onPlayerUpgradeSelected -= StartSpawning;
+        EnemySpawner.onAllEnemiesDead += StartSpawning;
         AIBrain.onEnemyDeath -= EnemyDied;
         AIGroupBrain.onEnemyDeath -= EnemyDied;
-        BaseUpgrade.onBaseUpgradeSelected -= StartSpawning;
     }
 
     private void Start()
     {
         Init();
-        StartSpawning(UpgradeType.Base);
+        StartSpawning();
     }
 
     private void Init()
@@ -64,7 +60,7 @@ public class EnemySpawner : MonoBehaviour
     }
 
     //Schimbat pe viitor sa nu mai fie nevoie de Upgrade Type
-    private void StartSpawning(UpgradeType upgradeType)
+    private void StartSpawning()
     {
         Debug.Log("Start Spawning");
         roundPassed++;
