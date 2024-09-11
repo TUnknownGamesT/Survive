@@ -22,15 +22,13 @@ public static class XPItemExtensions
 
 public class XPItem : MonoBehaviour
 {
-   public float xpValue = 10;
 
+   public float xpValue = 10;
 
    private void Start()
    {
       transform.DOMoveInTargetLocalSpace(GameManager.playerRef, Vector3.zero, 1f).SetEase(Ease.InElastic);
    }
-
-
 
 
    private void OnTriggerEnter(Collider other)
