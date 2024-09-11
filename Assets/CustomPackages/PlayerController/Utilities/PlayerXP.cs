@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerXP : MonoBehaviour
 {
     public static Action<float> onPlayerXpChanged;
-    public static Action<int> onPlayerLevelUp;
+    public static Action onPlayerLevelUp;
     public static Action<float> onPlayerXpThresholdChanged;
 
     public float currentXp = 0.0f;
@@ -27,7 +27,7 @@ public class PlayerXP : MonoBehaviour
         currentLevel += 1;
         IncreaseLevelXpThreshold();
         ResetXp();
-        onPlayerLevelUp.Invoke(currentLevel);
+        onPlayerLevelUp.Invoke();
     }
 
     private bool ShouldLevelUp()

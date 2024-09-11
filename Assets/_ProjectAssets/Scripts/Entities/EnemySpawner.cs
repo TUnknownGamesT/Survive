@@ -29,26 +29,23 @@ public class EnemySpawner : MonoBehaviour
 
     private void OnEnable()
     {
-        GunsUpgrade.onGunsUpgradeSelected += StartSpawning;
-        PlayerUpgrades.onPlayerUpgradeSelected += StartSpawning;
-        BaseUpgrade.onBaseUpgradeSelected += StartSpawning;
+        EnemySpawner.onAllEnemiesDead += StartSpawning;
         AIBrain.onEnemyDeath += EnemyDied;
         AIGroupBrain.onEnemyDeath += EnemyDied;
     }
 
     private void OnDisable()
     {
-        GunsUpgrade.onGunsUpgradeSelected -= StartSpawning;
-        PlayerUpgrades.onPlayerUpgradeSelected -= StartSpawning;
+        EnemySpawner.onAllEnemiesDead += StartSpawning;
         AIBrain.onEnemyDeath -= EnemyDied;
         AIGroupBrain.onEnemyDeath -= EnemyDied;
-        BaseUpgrade.onBaseUpgradeSelected -= StartSpawning;
     }
 
     private void Start()
     {
         StartSpawning(UpgradeType.Base);
         InitEnemiToSpawn();
+
     }
 
     private void InitEnemiToSpawn()
