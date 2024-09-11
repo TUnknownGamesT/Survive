@@ -40,7 +40,6 @@ public abstract class AnimationManager : MonoBehaviour
         ragDollController.ActivateRagdoll();
     }
 
-    //TODO remove this letter
     public void SetIsWalking(bool isWalking)
     {
         _animator.SetBool("T_Walking", isWalking);

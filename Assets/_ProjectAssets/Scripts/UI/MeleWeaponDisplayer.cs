@@ -11,7 +11,8 @@ public class MeleWeaponDisplayer : MonoBehaviour, IWeaponDisplayer
     // Start is called before the first frame update
     void Start()
     {
-        armIcon.sprite = arm.GetComponent<Weapon>().weaponIcon;
+        if (armIcon.sprite != null)
+            armIcon.sprite = arm.GetComponent<Weapon>().weaponIcon;
         _canvasGroup = GetComponent<CanvasGroup>();
     }
 

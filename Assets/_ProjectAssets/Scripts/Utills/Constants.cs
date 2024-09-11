@@ -29,13 +29,8 @@ namespace ConstantsValues
    public enum EnemyType
    {
       Mele = 0,
-      Pistol = 1,
-      AK = 2,
-      Shotgun = 3,
-      Sniper = 4,
       Minion = 5,
       Golem = 6,
-
       Zombie = 7,
    }
 

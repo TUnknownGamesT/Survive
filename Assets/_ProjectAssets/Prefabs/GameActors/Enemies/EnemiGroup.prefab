@@ -47,12 +47,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 965eff4e267ef9e498d112e7a54b6e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _alive: 1
   _formation: {fileID: 0}
-  _unitPrefab: {fileID: 1535149909801921107, guid: 1abfde1e2774ac14aa61ae66bf296391,
+  _unitPrefab: {fileID: 50196166473077885, guid: 6b60c64c9a75a1a41acad6fc754ad7e7,
     type: 3}
   _unitSpeed: 2
   _points: []
   _parent: {fileID: 0}
+  minionsType: 0
   _stoppingDistance: 5
   _currentTarget: {fileID: 0}
   basePoint: {fileID: 0}

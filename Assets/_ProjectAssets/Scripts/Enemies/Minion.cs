@@ -70,6 +70,7 @@ public class Minion : MonoBehaviour, IDamageable
         damage = enemyType.damage;
         _navMeshAgent.speed = enemyType.speed;
         _navMeshAgent.angularSpeed = enemyType.damping;
+        armCollider.GetComponent<EnemyArmBehaviour>().damage = damage;
     }
 
 
@@ -125,6 +126,7 @@ public class Minion : MonoBehaviour, IDamageable
             _ragDollComponent.ActivateRagDoll();
             GetComponent<NavMeshAgent>().enabled = false;
             boxCollider.enabled = false;
+            armCollider.enabled = false;
             parent.Kill(this);
             this.enabled = false;
         }

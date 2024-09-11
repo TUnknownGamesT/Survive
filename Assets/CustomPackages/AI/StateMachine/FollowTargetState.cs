@@ -30,7 +30,6 @@ public class FollowTargetState : IState
 
     public void OnEnter()
     {
-        _enemyAnimations.SetSpeed(1);
         _enemyAnimations.SetIsWalking(true);
     }
 
@@ -45,7 +44,6 @@ public class FollowTargetState : IState
     public void OnExit()
     {
         _navMeshAgent.destination = _enemyBody.position;
-        _enemyAnimations.SetSpeed(0);
         _enemyAnimations.SetIsWalking(false);
     }
 

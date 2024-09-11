@@ -11,16 +11,13 @@ public class EnemySpawner : MonoBehaviour
     public static Action<float> onPauseStart;
 
     public GameObject spawnPointsParent;
-    [Tooltip("The amount of enemies to spawn per round")]
-    public int enemies;
-    [Tooltip("The amount of time between each round")]
-    public float pauseTime;
-    public int roundsToPass;
-    public int enemiesPerRoundIncrease;
-
     private List<Transform> spawnPoints = new();
+    private List<GameObject> enemiesToSpawn = new();
     private int enemySpawned = 0;
     private int roundPassed;
+
+    private int roundsPassedUntilNextUpgrade;
+    private int enemyToSpawnAdaosd;
 
     private void Awake()
     {
@@ -46,40 +43,45 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-        Init();
         StartSpawning();
+        InitEnemiToSpawn();
     }
 
-    private void Init()
+    private void InitEnemiToSpawn()
     {
-        LvlSettings lvlSettings = GameManager.instance.LvlSettings;
-        enemies = lvlSettings.enemiesToSpawn;
-        pauseTime = lvlSettings.pauseBetweenRounds;
-        roundsToPass = lvlSettings.roundsToPass;
-        enemiesPerRoundIncrease = lvlSettings.enemiesPerRoundIncrease;
+        enemiesToSpawn.Clear();
+        foreach (var enemy in GameManager.instance.LvlSettings.enemies)
+        {
+            if (enemy.roundStartSpawning <= roundPassed)
+            {
+                enemiesToSpawn.Add(enemy.enemyToSpawn);
+            }
+        }
     }
+
 
     //Schimbat pe viitor sa nu mai fie nevoie de Upgrade Type
     private void StartSpawning()
+
     {
-        Debug.Log("Start Spawning");
         roundPassed++;
-        if (roundPassed == roundsToPass)
+        roundsPassedUntilNextUpgrade++;
+        if (roundsPassedUntilNextUpgrade >= GameManager.instance.LvlSettings.enemiesPerRoundIncrease)
         {
-            enemies += enemiesPerRoundIncrease;
-            roundPassed = 0;
+            roundsPassedUntilNextUpgrade = 0;
+            enemyToSpawnAdaosd += GameManager.instance.LvlSettings.enemyToSpawnIncreaseRate;
         }
         UniTask.Void(async () =>
         {
-            onPauseStart?.Invoke(pauseTime);
-            await UniTask.Delay(TimeSpan.FromSeconds(pauseTime));
-            enemySpawned = enemies;
-            for (int i = 0; i < enemies; i++)
+            onPauseStart?.Invoke(GameManager.instance.LvlSettings.pauseBetweenRounds);
+            await UniTask.Delay(TimeSpan.FromSeconds(GameManager.instance.LvlSettings.pauseBetweenRounds));
+            enemySpawned = GameManager.instance.LvlSettings.enemiesToSpawn;
+            for (int i = 0; i < enemySpawned + enemyToSpawnAdaosd; i++)
             {
-                Debug.Log("Spawned");
                 Transform spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)];
-                FactoryObjects.instance.CreateObject(new FactoryObject<Transform>(
-                    FactoryObjectsType.Enemy, spawnPoint));
+                FactoryObjects.instance.CreateObject(new FactoryObject<EnemyInstructions>(FactoryObjectsType.Enemy
+                , new EnemyInstructions(spawnPoint.position, enemiesToSpawn[UnityEngine.Random.Range(0, enemiesToSpawn.Count)])));
+                await UniTask.Delay(TimeSpan.FromSeconds(GameManager.instance.LvlSettings.pauseBetweenSpawns));
             }
         });
 

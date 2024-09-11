@@ -14,15 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   armPrefab: {fileID: 0}
   enemyType: 6
-  health: 20
+  health: 50
   damping: 300
   stoppingDistance: 3
   pauseBetweenMovement: 2
-  speed: 8
+  speed: 2
   pauseBteweenAttacks: 6
-  prototypeEnemy: 1
+  damage: 2
   soundComponent: {fileID: 0}
   armSpawnPoint: {fileID: 0}
   aiBody: {fileID: 0}
   navMeshAgent: {fileID: 0}
-  travelPoints: []
+  travelPoints:
+  - {fileID: 0}

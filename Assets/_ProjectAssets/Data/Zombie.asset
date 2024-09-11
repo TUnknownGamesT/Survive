@@ -18,11 +18,12 @@ MonoBehaviour:
   damping: 300
   stoppingDistance: 2
   pauseBetweenMovement: 3
-  speed: 8
+  speed: 5
   pauseBteweenAttacks: 3
-  prototypeEnemy: 1
+  damage: 2
   soundComponent: {fileID: 0}
   armSpawnPoint: {fileID: 0}
   aiBody: {fileID: 0}
   navMeshAgent: {fileID: 0}
-  travelPoints: []
+  travelPoints:
+  - {fileID: 0}

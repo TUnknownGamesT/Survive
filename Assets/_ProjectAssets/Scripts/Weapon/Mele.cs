@@ -30,7 +30,6 @@ public class Mele : Weapon
         {
             timeSinceLastShot = 0;
             Attack();
-            //_animationManager.Attack();
         }
     }
 
@@ -46,6 +45,7 @@ public class Mele : Weapon
             }
             catch (Exception e)
             {
+                Debug.Log($"<color = green> {e} </color>");
                 _cts.Cancel();
                 _cts = new CancellationTokenSource();
             }
