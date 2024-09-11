@@ -30,7 +30,6 @@ public class XPItem : MonoBehaviour
       transform.DOMoveInTargetLocalSpace(GameManager.playerRef, Vector3.zero, 1f).SetEase(Ease.InElastic);
    }
 
-
    private void OnTriggerEnter(Collider other)
    {
       PlayerXP playerXp = other.GetComponent<PlayerXP>();

@@ -43,9 +43,8 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-
-        InitEnemiToSpawn();
         StartSpawning();
+        InitEnemiToSpawn();
     }
 
     private void InitEnemiToSpawn()
@@ -63,6 +62,7 @@ public class EnemySpawner : MonoBehaviour
 
     //Schimbat pe viitor sa nu mai fie nevoie de Upgrade Type
     private void StartSpawning()
+
     {
         roundPassed++;
         roundsPassedUntilNextUpgrade++;
