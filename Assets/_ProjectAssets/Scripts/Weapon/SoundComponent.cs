@@ -3,13 +3,15 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class SoundComponent : MonoBehaviour
 {
-    
+
     private AudioSource _audioSource;
-    
+
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
-        _audioSource.minDistance = 15.80656f;
+        _audioSource.maxDistance = 20f;
+        _audioSource.minDistance = 1;
+
     }
 
     public void OnEnable()
@@ -19,7 +21,7 @@ public class SoundComponent : MonoBehaviour
 
     public void OnDisable()
     {
-        OptionsMenu.onSoundEffectVolumeValueChanged -= SetSoundEffectsSound; 
+        OptionsMenu.onSoundEffectVolumeValueChanged -= SetSoundEffectsSound;
     }
 
     public void PlaySound(AudioClip sound)

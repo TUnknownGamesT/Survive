@@ -8,6 +8,7 @@ using UnityEngine.Rendering;
 
 
 [RequireComponent(typeof(AIHealth), typeof(FieldOfView), typeof(NavMeshAgent))]
+[RequireComponent(typeof(SoundComponent))]
 public class AIBrain : IAIBrain
 {
 
@@ -29,7 +30,9 @@ public class AIBrain : IAIBrain
     public Transform armSpawnPoint;
     private AnimationManager _enemyAnimations;
     private AIHealth _aiHealth;
-    private SoundComponent _soundComponent;
+    private NavMeshAgent _navMeshAgent;
+    [HideInInspector]
+    public SoundComponent _soundComponent;
 
     private IState _currentState;
     private bool _activeTargetInView;
@@ -37,6 +40,8 @@ public class AIBrain : IAIBrain
     private Transform _currentTarget;
 
     private bool _canSwitchState = true;
+
+    private FootStepsSound _footStepsSound;
 
 
     #region State Initialization
@@ -53,6 +58,9 @@ public class AIBrain : IAIBrain
     {
         travelPoints.Add(GameManager.playerBaseRef);
         _aiHealth = GetComponent<AIHealth>();
+        _footStepsSound = GetComponent<FootStepsSound>();
+        _soundComponent = GetComponent<SoundComponent>();
+        _navMeshAgent = GetComponent<NavMeshAgent>();
 
         _patrolState = new PatrolState();
         _deadState = new DeadState();
@@ -94,9 +102,22 @@ public class AIBrain : IAIBrain
         else if (_alive)
         {
             MakeDecision();
+            MakeFootStepsSounds();
             _currentState?.OnUpdate();
         }
 
+    }
+
+    private void MakeFootStepsSounds()
+    {
+        if (_navMeshAgent.velocity.magnitude > 1f)
+        {
+            _footStepsSound.StartWalking();
+        }
+        else
+        {
+            _footStepsSound.StopWalking();
+        }
     }
 
     private void MakeDecision()
@@ -144,6 +165,7 @@ public class AIBrain : IAIBrain
     {
         if (_alive)
         {
+            SoundManager.instance.PlaySoundEffect(enemyType, _soundComponent, SoundEffects.Death);
             ChangeState(_deadState);
             base.Death();
             _alive = false;

@@ -9,7 +9,7 @@ using ConstantsValues;
 public class UpgradePanelBehaviour : MonoBehaviour
 {
     public static Action<UpgradeType> onUpgradeCardInFront;
-    
+
     public RectTransform playerCard;
     public RectTransform gunsCard;
     public RectTransform baseCard;
@@ -18,7 +18,7 @@ public class UpgradePanelBehaviour : MonoBehaviour
 
     public static Action onSecondaryCardDisappear;
     public static Action onPanelDisappear;
-    
+
     private UpgradeType currentUpgradeType;
 
     private void OnEnable()
@@ -38,6 +38,7 @@ public class UpgradePanelBehaviour : MonoBehaviour
 
     public void Activate()
     {
+        Time.timeScale = 0;
         sparks.Play();
         LeanTween.value(0, 1, 1f).setOnUpdate(val =>
         {
@@ -45,11 +46,11 @@ public class UpgradePanelBehaviour : MonoBehaviour
             gunsCard.localScale = new Vector3(val, val, val);
             baseCard.localScale = new Vector3(val, val, val);
             Cursor.visible = true;
-        }).setEaseInElastic();
+        }).setEaseInElastic().setIgnoreTimeScale(true);
         UniTask.Void(async () =>
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(0.6f));
-            CameraController.ShakeCamera(0.3f, 25f);
+            await UniTask.Delay(TimeSpan.FromSeconds(0.6f), ignoreTimeScale: true);
+            CameraController.ShakeCameraAsync(0.3f, 25f);
         });
     }
 
@@ -80,57 +81,58 @@ public class UpgradePanelBehaviour : MonoBehaviour
         LeanTween.value(1, 0, 1.2f).setOnUpdate(value =>
         {
             cardToDisappear.ForEach(card => card.localScale = new Vector3(value, value, value));
-        }).setEaseInOutElastic();
-        
-        LeanTween.value(1f, 0,1f).setOnUpdate(val =>
+        }).setEaseInOutElastic().setIgnoreTimeScale(true);
+
+        LeanTween.value(1f, 0, 1f).setOnUpdate(val =>
         {
             cardsRemain[0].localScale = new Vector3(val, val, val);
             Cursor.visible = false;
-        }).setEaseInOutElastic().setOnComplete(() =>
+        }).setIgnoreTimeScale(true).setEaseInOutElastic().setOnComplete(() =>
         {
             enemyCard.gameObject.SetActive(true);
             onSecondaryCardDisappear?.Invoke();
             cardToDisappear.ForEach(card => card.gameObject.SetActive(false));
             UniTask.Void(async () =>
             {
-                await UniTask.Delay(TimeSpan.FromSeconds(0.55f));
-                CameraController.ShakeCamera(0.3f, 25f);
+                await UniTask.Delay(TimeSpan.FromSeconds(0.55f), ignoreTimeScale: true);
+                CameraController.ShakeCameraAsync(0.3f, 25f);
             });
             LeanTween.value(0, 1, 1f).setOnUpdate(value =>
             {
                 cardsRemain.ForEach(card => card.localScale = new Vector3(value, value, value));
-            }).setEaseInOutElastic().setOnComplete(() =>
+            }).setIgnoreTimeScale(true).setEaseInOutElastic().setOnComplete(() =>
             {
                 onUpgradeCardInFront?.Invoke(currentUpgradeType);
                 LeanTween.value(1, 1.5f, 0.5f).setOnUpdate(value =>
                 {
                     cardsRemain[0].localScale = new Vector3(value, value, value);
                     cardsRemain[1].localScale = new Vector3(1 - value + 1, 1 - value + 1, 1 - value + 1);
-                }).setEaseInOutElastic().setOnComplete(() =>
+                }).setIgnoreTimeScale(true).setEaseInOutElastic().setOnComplete(() =>
                 {
-                     onUpgradeCardInFront?.Invoke(UpgradeType.Enemy);
+                    onUpgradeCardInFront?.Invoke(UpgradeType.Enemy);
                     LeanTween.value(1.5f, 0.5f, 1f).setOnUpdate(value =>
                     {
                         cardsRemain[0].localScale = new Vector3(value, value, value);
                         cardsRemain[1].localScale =
                             new Vector3(0.5f + 1.5f - value, 0.5f + 1.5f - value, 0.5f + 1.5f - value);
-                    }).setEaseInOutElastic().setDelay(0.3f).setOnComplete(() =>
+                    }).setIgnoreTimeScale(true).setEaseInOutElastic().setDelay(0.3f).setOnComplete(() =>
                     {
                         LeanTween.value(0.5f, 1, 0.3f).setOnUpdate(value =>
                         {
                             cardsRemain[0].localScale = new Vector3(value, value, value);
-                            cardsRemain[1].localScale = new Vector3(1.5f - value+0.5f, 1.5f - value +0.5f, 1.5f - value+0.5f);
-                        }).setEaseInQuad().setDelay(0.3f).setOnComplete(() =>
+                            cardsRemain[1].localScale = new Vector3(1.5f - value + 0.5f, 1.5f - value + 0.5f, 1.5f - value + 0.5f);
+                        }).setIgnoreTimeScale(true).setEaseInQuad().setDelay(0.3f).setOnComplete(() =>
                         {
                             LeanTween.value(1, 0, 1f).setOnUpdate(value =>
                             {
                                 cardsRemain.ForEach(card => card.localScale = new Vector3(value, value, value));
-                            }).setEaseInOutElastic().setDelay(1f).setOnComplete(() =>
+                            }).setIgnoreTimeScale(true).setEaseInOutElastic().setDelay(1f).setOnComplete(() =>
                             {
                                 sparks.Stop();
                                 cardToDisappear.ForEach(card => card.gameObject.SetActive(true));
                                 onPanelDisappear?.Invoke();
                                 enemyCard.gameObject.SetActive(false);
+                                Time.timeScale = 1;
                             });
                         });
                     });

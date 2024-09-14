@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ public class OptionMenuBehaviour : MonoBehaviour
    #region Singleton
 
    public static OptionMenuBehaviour instance;
-   
+
    private void Awake()
    {
       instance = FindObjectOfType<OptionMenuBehaviour>();
@@ -18,44 +19,42 @@ public class OptionMenuBehaviour : MonoBehaviour
       {
          instance = this;
       }
-      
-      canvas = GetComponent<Canvas>();
-      graphicRaycaster = GetComponent<GraphicRaycaster>();
 
-      ambientVolumeSlider.value = OptionsMenu.AmbientMusicVolume;
-      soundEffectsVolumeSlider.value = OptionsMenu.SoundEffectVolume;
    }
 
    #endregion
-   
-   public Slider ambientVolumeSlider;
-   public Slider soundEffectsVolumeSlider;
    public OptionsMenu OptionsMenu;
 
-   private Canvas canvas;
-   private GraphicRaycaster graphicRaycaster;
-   
-   
-   public void AmbientVolumeChange()
+   public TextMeshProUGUI ambientVolumeText;
+   public TextMeshProUGUI soundEffectVolumeText;
+
+
+   void Start()
    {
-      OptionsMenu.SetAmbientSound(ambientVolumeSlider.value);
+      ambientVolumeText.text = $"{OptionsMenu.AmbientMusicVolume * 100}%";
+      soundEffectVolumeText.text = $"{OptionsMenu.SoundEffectVolume * 100}%";
    }
 
-   public void SoundEffectChange()
+   public void SetAmbientVolume(float volume)
    {
-      OptionsMenu.SetSoundEffectVolume(soundEffectsVolumeSlider.value);
+      OptionsMenu.SetAmbientSound(volume);
+      ambientVolumeText.text = $"{OptionsMenu.AmbientMusicVolume * 100}%";
    }
-   
+
+   public void SetSoundEffectVolume(float volume)
+   {
+      OptionsMenu.SetSoundEffectVolume(volume);
+      soundEffectVolumeText.text = $"{OptionsMenu.SoundEffectVolume * 100}%";
+   }
+
    public void DisableMainMenu()
    {
-      canvas.enabled = false;
-      graphicRaycaster.enabled = false;
+
    }
 
    public void EnableMainMenu()
    {
-      canvas.enabled = true;
-      graphicRaycaster.enabled = true;
+
    }
-   
+
 }

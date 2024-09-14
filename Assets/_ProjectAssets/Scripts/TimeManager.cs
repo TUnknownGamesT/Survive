@@ -17,18 +17,11 @@ public class TimeManager : MonoBehaviour
         son = sonGameObject.GetComponent<Light>();
     }
 
-
-    private void OnEnable()
+    void Start()
     {
-        EnemySpawner.onPauseStart += LowerSon;
-        EnemySpawner.onAllEnemiesDead += RiseSon;
+        LowerSon();
     }
 
-    private void OnDisable()
-    {
-        EnemySpawner.onPauseStart -= LowerSon;
-        EnemySpawner.onAllEnemiesDead -= RiseSon;
-    }
 
     [ContextMenu("RiseSon")]
     public void RiseSon()
@@ -38,12 +31,12 @@ public class TimeManager : MonoBehaviour
     }
 
     [ContextMenu("LowerSon")]
-    public void LowerSon(float pauseDuration)
+    public void LowerSon()
     {
         UniTask.Void(async () =>
         {
-            LerpColors(son.color, nightColor, pauseDuration);
-            LeanTween.rotateX(sonGameObject, 0, pauseDuration).setEaseInQuad();
+            LerpColors(son.color, nightColor, 1f);
+            LeanTween.rotateX(sonGameObject, 0, 1f).setEaseInQuad();
         });
 
     }

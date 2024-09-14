@@ -22,7 +22,12 @@ public class Mele : Weapon
         timeSinceLastShot += Time.deltaTime;
     }
 
-    public override bool CanShoot() => timeSinceLastShot > 1f / (fireRate / 60f);
+    public override bool CanShoot()
+    {
+        if (GameManager.instance._isPaused) return false;
+
+        return timeSinceLastShot > 1f / (fireRate / 60f);
+    }
 
     public void Shoot()
     {

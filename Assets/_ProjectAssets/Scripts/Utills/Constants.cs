@@ -31,7 +31,7 @@ namespace ConstantsValues
       Mele = 0,
       Minion = 5,
       Golem = 6,
-      Zombie = 7,
+      Goblin = 7,
    }
 
    public enum GunsType

@@ -10,8 +10,12 @@ public class AttackState : IState
     private float _damping;
     private Transform _currentTarget;
 
+    private SoundComponent _soundComponent;
+
     private float _pauseBetweenAttacks;
     private float _time;
+
+    private ConstantsValues.EnemyType _enemyType;
 
     private BoxCollider boxCollider;
 
@@ -24,6 +28,8 @@ public class AttackState : IState
             _pauseBetweenAttacks = enemyType.pauseBteweenAttacks;
             boxCollider = enemyType.armSpawnPoint.GetComponent<BoxCollider>();
             _enemyAnimations = _aiBody.gameObject.GetComponent<EnemyAnimations>();
+            _soundComponent = enemyType.soundComponent;
+            _enemyType = enemyType.enemyType;
         }
     }
 
@@ -38,6 +44,7 @@ public class AttackState : IState
 
         if (_time + _pauseBetweenAttacks < Time.time)
         {
+            SoundManager.instance.PlaySoundEffect(_enemyType, _soundComponent, SoundEffects.Hit);
             _enemyAnimations.SetIdle(false);
             _time = Time.time;
             _enemyAnimations.Attack();
