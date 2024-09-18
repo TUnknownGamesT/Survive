@@ -3,9 +3,9 @@ using UnityEngine.InputSystem;
 
 public class UserInputController : MonoBehaviour
 {
-    
+
     private static PlayerInput _playerMovement;
-    
+
     public static InputAction _mousePosition;
     public static InputAction _movementAction;
     public static InputAction _leftClick;
@@ -20,7 +20,7 @@ public class UserInputController : MonoBehaviour
     {
         _playerMovement = new();
         _playerMovement.Enable();
-        
+
         _mousePosition = _playerMovement.Player.MousePosition;
         _movementAction = _playerMovement.Player.Movement;
         _leftClick = _playerMovement.Player.LeftClick;
@@ -32,5 +32,5 @@ public class UserInputController : MonoBehaviour
         _mouseScrollY = _playerMovement.Player.MouseScroll;
 
     }
-    
+
 }

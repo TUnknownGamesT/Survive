@@ -1,7 +1,8 @@
 using System;
+using ConstantsValues;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour,IDamageable
+public class PlayerHealth : MonoBehaviour, IDamageable
 {
 
     public static Action<float> onPlayerHealthChanged;
@@ -10,6 +11,12 @@ public class PlayerHealth : MonoBehaviour,IDamageable
     public float currentHealth;
 
     private float maxLife;
+
+    void OnEnable()
+    {
+
+    }
+
 
     private void Start()
     {
@@ -21,8 +28,8 @@ public class PlayerHealth : MonoBehaviour,IDamageable
     {
         currentHealth -= damageReceived;
         onPlayerHealthChanged?.Invoke(currentHealth);
-        if (currentHealth<=0)
-        { 
+        if (currentHealth <= 0)
+        {
             CameraController.instance.TakeDamageEffect();
             Cursor.visible = true;
             onPlayerDeath?.Invoke();
@@ -43,9 +50,10 @@ public class PlayerHealth : MonoBehaviour,IDamageable
         onPlayerHealthChanged?.Invoke(amount);
     }
 
-    private void IncreaseMaxHealth(int amount)
+    public void IncreaseMaxHealth(int amount)
     {
-        maxLife += amount;
+        maxLife += CustomMath.GetPercentage((int)maxLife, amount);
+        maxLife += (int)Math.Round((double)(100 * amount) / maxLife);
         currentHealth = maxLife;
     }
 }

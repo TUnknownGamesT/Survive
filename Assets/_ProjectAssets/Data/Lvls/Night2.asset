@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b81a39a96f97ba64f938a3e50cee2c77, type: 3}
+  m_Name: Night2
+  m_EditorClassIdentifier: 
+  numberOfWaves: 4
+  enemies:
+  - enemyToSpawn: {fileID: 5833021910937230946, guid: 36a091c8732710c4baefa9c381fa75ba,
+      type: 3}
+    roundStartSpawning: 0
+  - enemyToSpawn: {fileID: 1311637112075416733, guid: 18fc946fd5cdb4f4dba1371a5460c727,
+      type: 3}
+    roundStartSpawning: 3
+  - enemyToSpawn: {fileID: 3374348190043655219, guid: d7f06e8e66c753f48bf8159df083b62d,
+      type: 3}
+    roundStartSpawning: 6
+  pauseBetweenRounds: 2
+  enemiesToSpawn: 5
+  enemiesPerRoundIncrease: 2
+  enemyToSpawnIncreaseRate: 2
+  pauseBetweenSpawns: 1

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -61,7 +62,7 @@ public class CameraController : MonoBehaviour
     }
 
 
-    private void Update()
+    void FixedUpdate()
     {
         if (shakeTimeRemain > 0)
         {
@@ -73,7 +74,6 @@ public class CameraController : MonoBehaviour
                 cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
             }
         }
-
     }
 
     private void LateUpdate()
@@ -93,7 +93,7 @@ public class CameraController : MonoBehaviour
         var playerPos = GameManager.playerRef.position;
         var crossHairPos = GameManager.crossHairRef.position;
         Bounds bounds = new Bounds(playerPos, Vector3.zero);
-        
+
         const float diff = 20;
         bounds.Encapsulate(
             new Vector3(
@@ -114,6 +114,18 @@ public class CameraController : MonoBehaviour
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = shakeAmplitude;
         shakeTimeRemain = shakeDuration;
 
+    }
+
+    public static void ShakeCameraAsync(float shakeDuration, float shakeAmplitude)
+    {
+        UniTask.Void(async () =>
+        {
+            CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin =
+                virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = shakeAmplitude;
+            await UniTask.Delay(TimeSpan.FromSeconds(shakeDuration), ignoreTimeScale: true);
+            cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
+        });
     }
 
     public static void SlowMotion(float scaler)

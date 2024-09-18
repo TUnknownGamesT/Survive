@@ -81,7 +81,8 @@ public class FactoryObjects : MonoBehaviour
                 CreateBlood(factoryObject.Instructions);
                 break;
             case FactoryObjectsType.EnemyWeapon:
-                CreateEnemyWeapon(factoryObject.Instructions);
+                Debug.LogWarning("EnemyWeapon type not found!");
+                // CreateEnemyWeapon(factoryObject.Instructions);
                 break;
             case FactoryObjectsType.XPItem:
                 CreateXpItem(factoryObject.Instructions);
@@ -101,14 +102,14 @@ public class FactoryObjects : MonoBehaviour
             Instantiate(blood, collision.contacts[0].point, Quaternion.identity);
     }
 
-    private void CreateEnemyWeapon<T>(T instructions)
-    {
-        if (instructions is EnemyWeaponInstructions enemyDetails)
-        {
-            Instantiate(enemyGuns.Find(x => x.enemyType == enemyDetails.enemyType).gameObject,
-                enemyDetails.parent.position, Quaternion.identity, enemyDetails.parent);
-        }
-    }
+    // private void CreateEnemyWeapon<T>(T instructions)
+    // {
+    //     if (instructions is EnemyWeaponInstructions enemyDetails)
+    //     {
+    //         Instantiate(enemyGuns.Find(x => x.enemyType == enemyDetails.enemyType).gameObject,
+    //             enemyDetails.parent.position, Quaternion.identity, enemyDetails.parent);
+    //     }
+    // }
 
     private void CreateXpItem<T>(T position)
     {

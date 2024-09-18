@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace ConstantsValues
@@ -31,7 +32,7 @@ namespace ConstantsValues
       Mele = 0,
       Minion = 5,
       Golem = 6,
-      Zombie = 7,
+      Goblin = 7,
    }
 
    public enum GunsType
@@ -40,6 +41,33 @@ namespace ConstantsValues
       AK = 1,
       Shotgun = 2,
       Sniper = 3,
+   }
+
+   public enum CardClass
+   {
+      COMMON,
+      RARE,
+      EPIC,
+   }
+
+   public enum UpgradesType
+   {
+      Player,
+      Guns,
+   }
+
+   public enum PlayerUpgradesOptions
+   {
+      Speed,
+      Life,
+      Shield,
+   }
+
+   public enum WeaponUpgradeOptions
+   {
+      Damage,
+      FireRate,
+      Spread,
    }
 
 
@@ -61,6 +89,23 @@ namespace ConstantsValues
 
       #endregion
       public LayerMask baseLayer;
+
+      public Color32 commonColor;
+      public Color32 rareColor;
+      public Color32 epicColor;
+
+      public Texture2D pistolIcon;
+      public Texture2D akIcon;
+      public Texture2D shotgunIcon;
+
+   }
+
+   public class CustomMath
+   {
+      public static float GetPercentage(float total, float percentage)
+      {
+         return (float)Math.Round((double)percentage / 100 * total, 3);
+      }
    }
 }
 

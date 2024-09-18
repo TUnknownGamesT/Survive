@@ -1,4 +1,5 @@
 using System;
+using ConstantsValues;
 using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,6 +14,7 @@ public abstract class Firearm : Weapon
 
     public Action onShoot;
     public Action<int, int> onFinishReload;
+    public GunsType gunsType;
 
     [Range(0, 1f)]
     public float spread;
@@ -64,7 +66,13 @@ public abstract class Firearm : Weapon
 
     }
 
-    public override bool CanShoot() => !reloading && timeSinceLastShot > 1f / (fireRate / 60f);
+    public override bool CanShoot()
+    {
+        if (GameManager.instance._isPaused) return false;
+
+        return !reloading && timeSinceLastShot > 1f / (fireRate / 60f);
+    }
+
 
     public virtual void Shoot()
     {

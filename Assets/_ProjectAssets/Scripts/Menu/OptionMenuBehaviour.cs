@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ public class OptionMenuBehaviour : MonoBehaviour
    #region Singleton
 
    public static OptionMenuBehaviour instance;
-   
+
    private void Awake()
    {
       instance = FindObjectOfType<OptionMenuBehaviour>();
@@ -18,44 +19,32 @@ public class OptionMenuBehaviour : MonoBehaviour
       {
          instance = this;
       }
-      
-      canvas = GetComponent<Canvas>();
-      graphicRaycaster = GetComponent<GraphicRaycaster>();
 
-      ambientVolumeSlider.value = OptionsMenu.AmbientMusicVolume;
-      soundEffectsVolumeSlider.value = OptionsMenu.SoundEffectVolume;
    }
 
    #endregion
-   
-   public Slider ambientVolumeSlider;
-   public Slider soundEffectsVolumeSlider;
    public OptionsMenu OptionsMenu;
 
-   private Canvas canvas;
-   private GraphicRaycaster graphicRaycaster;
-   
-   
-   public void AmbientVolumeChange()
+   public TextMeshProUGUI ambientVolumeText;
+   public TextMeshProUGUI soundEffectVolumeText;
+
+
+   void Start()
    {
-      OptionsMenu.SetAmbientSound(ambientVolumeSlider.value);
+      ambientVolumeText.text = $"Music - {OptionsMenu.AmbientMusicVolume * 100}%";
+      soundEffectVolumeText.text = $"Effect - {OptionsMenu.SoundEffectVolume * 100}%";
    }
 
-   public void SoundEffectChange()
+   public void SetAmbientVolume(float volume)
    {
-      OptionsMenu.SetSoundEffectVolume(soundEffectsVolumeSlider.value);
-   }
-   
-   public void DisableMainMenu()
-   {
-      canvas.enabled = false;
-      graphicRaycaster.enabled = false;
+      OptionsMenu.SetAmbientSound(volume);
+      ambientVolumeText.text = $"Music - {OptionsMenu.AmbientMusicVolume * 100}%";
    }
 
-   public void EnableMainMenu()
+   public void SetSoundEffectVolume(float volume)
    {
-      canvas.enabled = true;
-      graphicRaycaster.enabled = true;
+      OptionsMenu.SetSoundEffectVolume(volume);
+      soundEffectVolumeText.text = $"Effect - {OptionsMenu.SoundEffectVolume * 100}%";
    }
-   
+
 }

@@ -7,7 +7,6 @@ using UnityEngine.AI;
 [CreateAssetMenu(fileName = "EnemyType", menuName = "ScriptableObjects/EnemyType", order = 1)]
 public class EnemyType : ScriptableObject
 {
-    public GameObject armPrefab;
     public ConstantsValues.EnemyType enemyType;
     public int health;
     public float damping;

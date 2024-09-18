@@ -9,30 +9,33 @@ public class OptionsMenu : ScriptableObject
 
     public static Action<float> onAmbientVolumeValueChanged;
     public static Action<float> onSoundEffectVolumeValueChanged;
-    
-    private  float _ambientMusicVolume= 1;
-    private  float _soundEffectVolume=1;
 
-    public  float AmbientMusicVolume
+
+    private float _ambientMusicVolume = 1;
+    private float _soundEffectVolume = 1;
+
+    public float AmbientMusicVolume
     {
         get => _ambientMusicVolume;
     }
 
-    public  float SoundEffectVolume
+    public float SoundEffectVolume
     {
         get => _soundEffectVolume;
     }
 
 
-    public  void SetAmbientSound(float value)
+    public void SetAmbientSound(float value)
     {
-        _ambientMusicVolume = value;
+        float sound = Mathf.Clamp01(_ambientMusicVolume + value);
+        _ambientMusicVolume = Mathf.Round(sound * 1000f) / 1000f;
         onAmbientVolumeValueChanged?.Invoke(_ambientMusicVolume);
     }
 
-    public  void SetSoundEffectVolume(float value)
+    public void SetSoundEffectVolume(float value)
     {
-        _soundEffectVolume = value;
-        onSoundEffectVolumeValueChanged?.Invoke(value);
+        float sound = Mathf.Clamp01(_soundEffectVolume + value);
+        _soundEffectVolume = Mathf.Round(sound * 1000f) / 1000f;
+        onSoundEffectVolumeValueChanged?.Invoke(_soundEffectVolume);
     }
 }

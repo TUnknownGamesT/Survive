@@ -7,8 +7,13 @@ public class AK : Firearm
 {
 
     public MeshRenderer[] meshRenderers;
-    
-    
-    public override bool CanShoot() => !reloading && timeSinceLastShot > 1f / (fireRate / 60f);
-    
+
+
+    public override bool CanShoot()
+    {
+        if (GameManager.instance._isPaused) return false;
+
+        return !reloading && timeSinceLastShot > 1f / (fireRate / 60f);
+    }
+
 }
