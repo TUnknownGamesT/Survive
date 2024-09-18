@@ -59,8 +59,8 @@ public class SoundManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GunsUpgrade.onGunsUpgradeSelected += ClickButtonSound;
-        PlayerUpgrades.onPlayerUpgradeSelected += ClickButtonSound;
+        // GunsUpgrade.onGunsUpgradeSelected += ClickButtonSound;
+        // PlayerUpgrades.onPlayerUpgradeSelected += ClickButtonSound;
         BaseUpgrade.onBaseUpgradeSelected += ClickButtonSound;
         OptionsMenu.onAmbientVolumeValueChanged += SetMusicVolume;
         UpgradePanelBehaviour.onUpgradeCardInFront += UpgradeSoundEffect;
@@ -68,8 +68,8 @@ public class SoundManager : MonoBehaviour
 
     private void OnDisable()
     {
-        GunsUpgrade.onGunsUpgradeSelected -= ClickButtonSound;
-        PlayerUpgrades.onPlayerUpgradeSelected -= ClickButtonSound;
+        // GunsUpgrade.onGunsUpgradeSelected -= ClickButtonSound;
+        // PlayerUpgrades.onPlayerUpgradeSelected -= ClickButtonSound;
         BaseUpgrade.onBaseUpgradeSelected -= ClickButtonSound;
         OptionsMenu.onAmbientVolumeValueChanged -= SetMusicVolume;
         UpgradePanelBehaviour.onUpgradeCardInFront -= UpgradeSoundEffect;

@@ -40,8 +40,7 @@ public class UIManager : MonoBehaviour
     [Header("Weapon UI")]
     public GameObject gunsWrapper;
     public Image grenade;
-    public List<IWeaponDisplayer> weaponDisplayer = new();
-    private int _currentWeaponIndex = 0;
+    public WeaponDisplayerBehaviour weaponDisplayer;
 
     [Header("Upgrade UI")]
     public UpgradePanelBehaviour upgradePanel;
@@ -76,12 +75,7 @@ public class UIManager : MonoBehaviour
     }
     private void Start()
     {
-        foreach (Transform element in gunsWrapper.transform)
-        {
-            weaponDisplayer.Add(element.GetComponent<IWeaponDisplayer>());
-        }
 
-        weaponDisplayer.Reverse();
     }
 
     #region UI Menu
@@ -148,11 +142,9 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void ChangeWeaponIcon(int index)
+    public void ChangeWeaponIcon(Firearm firearm)
     {
-        weaponDisplayer[_currentWeaponIndex].Deactivate();
-        weaponDisplayer[index].Activate();
-        _currentWeaponIndex = index;
+        weaponDisplayer.SetDisplayer(firearm);
     }
 
 

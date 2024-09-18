@@ -4,15 +4,15 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.VFX;
 using ConstantsValues;
+using System.Linq;
 
 
 public class UpgradePanelBehaviour : MonoBehaviour
 {
     public static Action<UpgradeType> onUpgradeCardInFront;
 
-    public RectTransform playerCard;
-    public RectTransform gunsCard;
-    public RectTransform baseCard;
+    //TODO rethink the animation 
+    public List<RectTransform> cards;
     public RectTransform enemyCard;
     public VisualEffect sparks;
 
@@ -23,16 +23,18 @@ public class UpgradePanelBehaviour : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerUpgrades.onPlayerUpgradeSelected += UpgradeSelected;
-        GunsUpgrade.onGunsUpgradeSelected += UpgradeSelected;
-        BaseUpgrade.onBaseUpgradeSelected += UpgradeSelected;
+        // PlayerUpgrades.onPlayerUpgradeSelected += UpgradeSelected;
+        // GunsUpgrade.onGunsUpgradeSelected += UpgradeSelected;
+        // BaseUpgrade.onBaseUpgradeSelected += UpgradeSelected;
+        CardConstructor.onCardClicked += UpgradeSelected;
     }
 
     private void OnDisable()
     {
-        PlayerUpgrades.onPlayerUpgradeSelected -= UpgradeSelected;
-        GunsUpgrade.onGunsUpgradeSelected -= UpgradeSelected;
-        BaseUpgrade.onBaseUpgradeSelected -= UpgradeSelected;
+        // PlayerUpgrades.onPlayerUpgradeSelected -= UpgradeSelected;
+        // GunsUpgrade.onGunsUpgradeSelected -= UpgradeSelected;
+        // BaseUpgrade.onBaseUpgradeSelected -= UpgradeSelected;
+        CardConstructor.onCardClicked -= UpgradeSelected;
     }
 
 
@@ -40,12 +42,9 @@ public class UpgradePanelBehaviour : MonoBehaviour
     {
         Time.timeScale = 0;
         sparks.Play();
-        LeanTween.value(0, 1, 1f).setOnUpdate(val =>
+        LeanTween.value(0, 1.5f, 1f).setOnUpdate(val =>
         {
-            playerCard.localScale = new Vector3(val, val, val);
-            gunsCard.localScale = new Vector3(val, val, val);
-            baseCard.localScale = new Vector3(val, val, val);
-            Cursor.visible = true;
+            cards.ForEach(card => card.localScale = new Vector3(val, val, val));
         }).setEaseInElastic().setIgnoreTimeScale(true);
         UniTask.Void(async () =>
         {
@@ -55,35 +54,23 @@ public class UpgradePanelBehaviour : MonoBehaviour
     }
 
 
-    private void UpgradeSelected(UpgradeType upgradeType)
+    private void UpgradeSelected(int index)
     {
-        currentUpgradeType = upgradeType;
-        switch (upgradeType)
-        {
-            case UpgradeType.Player:
-                UpgradeEffect(new List<RectTransform> { playerCard, enemyCard }
-                    , new List<RectTransform> { gunsCard, baseCard });
-                break;
-            case UpgradeType.Guns:
-                UpgradeEffect(new List<RectTransform> { gunsCard, enemyCard }
-                    , new List<RectTransform> { playerCard, baseCard });
-                break;
-            case UpgradeType.Base:
-                UpgradeEffect(new List<RectTransform> { baseCard, enemyCard }
-                    , new List<RectTransform> { playerCard, gunsCard });
-                break;
-        }
+        List<RectTransform> deactivateCards = cards.Where((item, idx) => idx != index - 1).ToList();
+
+        UpgradeEffect(new List<RectTransform> { cards[index - 1], enemyCard }
+           , deactivateCards);
     }
 
 
     private void UpgradeEffect(List<RectTransform> cardsRemain, List<RectTransform> cardToDisappear)
     {
-        LeanTween.value(1, 0, 1.2f).setOnUpdate(value =>
+        LeanTween.value(1.5f, 0, 1.2f).setOnUpdate(value =>
         {
             cardToDisappear.ForEach(card => card.localScale = new Vector3(value, value, value));
         }).setEaseInOutElastic().setIgnoreTimeScale(true);
 
-        LeanTween.value(1f, 0, 1f).setOnUpdate(val =>
+        LeanTween.value(1.5f, 0, 1f).setOnUpdate(val =>
         {
             cardsRemain[0].localScale = new Vector3(val, val, val);
             Cursor.visible = false;
@@ -97,33 +84,33 @@ public class UpgradePanelBehaviour : MonoBehaviour
                 await UniTask.Delay(TimeSpan.FromSeconds(0.55f), ignoreTimeScale: true);
                 CameraController.ShakeCameraAsync(0.3f, 25f);
             });
-            LeanTween.value(0, 1, 1f).setOnUpdate(value =>
+            LeanTween.value(0, 1.5f, 1f).setOnUpdate(value =>
             {
                 cardsRemain.ForEach(card => card.localScale = new Vector3(value, value, value));
             }).setIgnoreTimeScale(true).setEaseInOutElastic().setOnComplete(() =>
             {
-                onUpgradeCardInFront?.Invoke(currentUpgradeType);
-                LeanTween.value(1, 1.5f, 0.5f).setOnUpdate(value =>
+                // onUpgradeCardInFront?.Invoke(currentUpgradeType);
+                LeanTween.value(1.5f, 2f, 0.5f).setOnUpdate(value =>
                 {
                     cardsRemain[0].localScale = new Vector3(value, value, value);
-                    cardsRemain[1].localScale = new Vector3(1 - value + 1, 1 - value + 1, 1 - value + 1);
+                    cardsRemain[1].localScale = new Vector3(1.5f - value + 1.5f, 1.5f - value + 1.5f, 1.5f - value + 1.5f);
                 }).setIgnoreTimeScale(true).setEaseInOutElastic().setOnComplete(() =>
                 {
-                    onUpgradeCardInFront?.Invoke(UpgradeType.Enemy);
-                    LeanTween.value(1.5f, 0.5f, 1f).setOnUpdate(value =>
+                    // onUpgradeCardInFront?.Invoke(UpgradeType.Enemy);
+                    LeanTween.value(2f, 1f, 1f).setOnUpdate(value =>
                     {
                         cardsRemain[0].localScale = new Vector3(value, value, value);
                         cardsRemain[1].localScale =
-                            new Vector3(0.5f + 1.5f - value, 0.5f + 1.5f - value, 0.5f + 1.5f - value);
+                            new Vector3(1f + 2f - value, 1f + 2f - value, 1f + 2f - value);
                     }).setIgnoreTimeScale(true).setEaseInOutElastic().setDelay(0.3f).setOnComplete(() =>
                     {
-                        LeanTween.value(0.5f, 1, 0.3f).setOnUpdate(value =>
+                        LeanTween.value(1f, 1.5f, 0.3f).setOnUpdate(value =>
                         {
                             cardsRemain[0].localScale = new Vector3(value, value, value);
-                            cardsRemain[1].localScale = new Vector3(1.5f - value + 0.5f, 1.5f - value + 0.5f, 1.5f - value + 0.5f);
+                            cardsRemain[1].localScale = new Vector3(2f - value + 1f, 2f - value + 1f, 2f - value + 1f);
                         }).setIgnoreTimeScale(true).setEaseInQuad().setDelay(0.3f).setOnComplete(() =>
                         {
-                            LeanTween.value(1, 0, 1f).setOnUpdate(value =>
+                            LeanTween.value(1.5f, 0, 1f).setOnUpdate(value =>
                             {
                                 cardsRemain.ForEach(card => card.localScale = new Vector3(value, value, value));
                             }).setIgnoreTimeScale(true).setEaseInOutElastic().setDelay(1f).setOnComplete(() =>

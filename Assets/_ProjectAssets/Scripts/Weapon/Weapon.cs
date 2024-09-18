@@ -9,7 +9,6 @@ public abstract class Weapon : MonoBehaviour
 
     public float damage;
     public float reloadTime;
-    public ConstantsValues.EnemyType enemyType;
     public Sprite weaponIcon;
     public VisualEffect vfx;
     protected float timeSinceLastShot;

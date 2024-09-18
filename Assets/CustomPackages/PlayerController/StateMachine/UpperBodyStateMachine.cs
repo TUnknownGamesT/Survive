@@ -72,6 +72,7 @@ public class UpperBodyStateMachine : MonoBehaviour
 
         ChangeState(_idleState);
         ChangeArm(guns[0]);
+        UIManager.instance.ChangeWeaponIcon(guns[0].GetComponent<Firearm>());
     }
 
     private void Update()
@@ -157,7 +158,7 @@ public class UpperBodyStateMachine : MonoBehaviour
             elapsedTime = 0;
         }
 
-        UIManager.instance.ChangeWeaponIcon(_currentGunIndex);
+        UIManager.instance.ChangeWeaponIcon(guns[_currentGunIndex].GetComponent<Firearm>());
         ChangeArm(guns[_currentGunIndex]);
     }
 
@@ -184,7 +185,7 @@ public class UpperBodyStateMachine : MonoBehaviour
 
         _shootState.OnInitState(gameObject);
         _reloadState.OnInitState(gameObject);
-        animation?.SetWeaponType((int)currentArm.enemyType);
+        // animation?.SetWeaponType((int)currentArm.enemyType);
         currentArm.SetArmHandler(animation);
     }
 

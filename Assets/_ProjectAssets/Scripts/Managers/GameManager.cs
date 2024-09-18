@@ -70,7 +70,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        UserInputController._pause.started += PauseGame;
         Time.timeScale = 0;
     }
 
@@ -89,6 +88,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        UserInputController._pause.started += PauseGame;
         Time.timeScale = 1f;
     }
 

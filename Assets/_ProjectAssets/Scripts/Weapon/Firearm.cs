@@ -1,4 +1,5 @@
 using System;
+using ConstantsValues;
 using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,6 +14,7 @@ public abstract class Firearm : Weapon
 
     public Action onShoot;
     public Action<int, int> onFinishReload;
+    public GunsType gunsType;
 
     [Range(0, 1f)]
     public float spread;

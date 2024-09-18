@@ -31,30 +31,20 @@ public class OptionMenuBehaviour : MonoBehaviour
 
    void Start()
    {
-      ambientVolumeText.text = $"{OptionsMenu.AmbientMusicVolume * 100}%";
-      soundEffectVolumeText.text = $"{OptionsMenu.SoundEffectVolume * 100}%";
+      ambientVolumeText.text = $"Music - {OptionsMenu.AmbientMusicVolume * 100}%";
+      soundEffectVolumeText.text = $"Effect - {OptionsMenu.SoundEffectVolume * 100}%";
    }
 
    public void SetAmbientVolume(float volume)
    {
       OptionsMenu.SetAmbientSound(volume);
-      ambientVolumeText.text = $"{OptionsMenu.AmbientMusicVolume * 100}%";
+      ambientVolumeText.text = $"Music - {OptionsMenu.AmbientMusicVolume * 100}%";
    }
 
    public void SetSoundEffectVolume(float volume)
    {
       OptionsMenu.SetSoundEffectVolume(volume);
-      soundEffectVolumeText.text = $"{OptionsMenu.SoundEffectVolume * 100}%";
-   }
-
-   public void DisableMainMenu()
-   {
-
-   }
-
-   public void EnableMainMenu()
-   {
-
+      soundEffectVolumeText.text = $"Effect - {OptionsMenu.SoundEffectVolume * 100}%";
    }
 
 }
