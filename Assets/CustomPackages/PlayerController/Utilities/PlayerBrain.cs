@@ -71,16 +71,13 @@ public class PlayerBrain : MonoBehaviour
         switch (upgradeType)
         {
             case PlayerUpgradesOptions.Speed:
-
                 _lowerBodyStateMachine.speed += CustomMath.GetPercentage(amount, (int)_lowerBodyStateMachine.speed);
                 break;
-
             case PlayerUpgradesOptions.Life:
                 _playerHealth.IncreaseMaxHealth(amount);
                 break;
-
-            //TODO Implement Shield Upgrade
             case PlayerUpgradesOptions.Shield:
+                _playerHealth.IncreaseShield(amount);
                 break;
 
             default:

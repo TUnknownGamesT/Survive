@@ -16,6 +16,9 @@ public class Minion : MonoBehaviour, IDamageable
 
     public BoxCollider armCollider;
 
+    public SkinnedMeshRenderer meshRenderer;
+
+
     private bool _timeToAttack = true;
     private CancellationTokenSource _cancellationTokenSource;
 
@@ -122,6 +125,7 @@ public class Minion : MonoBehaviour, IDamageable
         health -= damage;
         if (health <= 0)
         {
+            FactoryObjects.instance.CreateObject(new FactoryObject<Vector3>(FactoryObjectsType.Blood, transform.position));
             _enemyAnimations.Die();
             _ragDollComponent.ActivateRagDoll();
             GetComponent<NavMeshAgent>().enabled = false;
@@ -130,6 +134,18 @@ public class Minion : MonoBehaviour, IDamageable
             parent.Kill(this);
             this.enabled = false;
         }
+    }
+
+    private void DamageEffect()
+    {
+        UniTask.Void(async () =>
+        {
+            meshRenderer.material.color = Color.red;
+            await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
+            meshRenderer.material.color = Color.white;
+        });
+
+
     }
 
     public void EnableArmCollider()
