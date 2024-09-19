@@ -28,11 +28,10 @@ public class BulletBehaviour : MonoBehaviour
         else if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<IDamageable>().TakeDamage(damage);
-            FactoryObjects.instance.CreateObject(new FactoryObject<Collision>(FactoryObjectsType.Blood, collision));
             Destroy(gameObject);
         }
 
-        
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -44,6 +43,6 @@ public class BulletBehaviour : MonoBehaviour
             Destroy(gameObject);
         }
 
-        
+
     }
 }

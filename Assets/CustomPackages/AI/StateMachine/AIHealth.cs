@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class AIHealth : MonoBehaviour, IDamageable
@@ -10,6 +11,8 @@ public class AIHealth : MonoBehaviour, IDamageable
     private float forceMultiplier = 10;
     private AIBrain _aiBrain;
     private Vector3 _collisionPoint;
+
+    public SkinnedMeshRenderer meshRenderer;
 
 
     private void Awake()
@@ -25,14 +28,30 @@ public class AIHealth : MonoBehaviour, IDamageable
     public void TakeDamage(float damage)
     {
         health -= damage;
+        DamageEffect();
+        FactoryObjects.instance.CreateObject(new FactoryObject<DamageTextInstructions>(FactoryObjectsType.DamageText, new DamageTextInstructions(transform.position, (int)damage)));
         SoundManager.instance.PlaySoundEffect(_aiBrain.enemyType, _aiBrain._soundComponent, SoundEffects.GetDamage);
         if (health <= 0)
         {
+            FactoryObjects.instance.CreateObject(new FactoryObject<BloodInstructions>(FactoryObjectsType.Blood, new BloodInstructions(transform.position, _aiBrain.enemyType)));
             //CameraController.instance.KillEffect();
             _aiBrain.Death();
             //ActivateRagDoll(_collisionPoint);
             //CameraController.SlowMotion(0.5f);
         }
+    }
+
+
+    private void DamageEffect()
+    {
+        UniTask.Void(async () =>
+        {
+            meshRenderer.material.color = Color.red;
+            await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
+            meshRenderer.material.color = Color.white;
+        });
+
+
     }
 
     private void ActivateRagDoll(Vector3 collisionPoint)

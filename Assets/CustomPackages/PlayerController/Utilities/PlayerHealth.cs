@@ -12,10 +12,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private float maxLife;
 
-    void OnEnable()
-    {
-
-    }
+    private float _shield;
 
 
     private void Start()
@@ -26,7 +23,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damageReceived)
     {
-        currentHealth -= damageReceived;
+        float damage = damageReceived - CustomMath.GetPercentage(damageReceived, _shield);
+        currentHealth -= damage;
         onPlayerHealthChanged?.Invoke(currentHealth);
         if (currentHealth <= 0)
         {
@@ -55,5 +53,10 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         maxLife += CustomMath.GetPercentage((int)maxLife, amount);
         maxLife += (int)Math.Round((double)(100 * amount) / maxLife);
         currentHealth = maxLife;
+    }
+
+    public void IncreaseShield(int amount)
+    {
+        _shield += CustomMath.GetPercentage(_shield, amount);
     }
 }

@@ -165,6 +165,7 @@ MonoBehaviour:
   parent: {fileID: 0}
   isAlive: 1
   armCollider: {fileID: 1889853286242572721}
+  meshRenderer: {fileID: 4208695802882372146}
 --- !u!114 &-8145688392727683985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,6 +368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463b047a8187c6e4a964fe679dca07c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 0
 --- !u!65 &1889853286242572721
 BoxCollider:
   m_ObjectHideFlags: 0

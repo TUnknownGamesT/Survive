@@ -2,14 +2,39 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Constants = ConstantsValues;
 
 public enum FactoryObjectsType
 {
-    KillingText,
+    DamageText,
     Enemy,
     Blood,
     EnemyWeapon,
     XPItem
+}
+
+public struct BloodInstructions
+{
+    public Vector3 Position;
+    public Constants.EnemyType enemyType;
+
+    public BloodInstructions(Vector3 position, Constants.EnemyType enemyType)
+    {
+        Position = position;
+        this.enemyType = enemyType;
+    }
+}
+
+public struct DamageTextInstructions
+{
+    public Vector3 Position;
+    public int Value;
+
+    public DamageTextInstructions(Vector3 position, int value)
+    {
+        Position = position;
+        Value = value;
+    }
 }
 
 
@@ -53,12 +78,11 @@ public class FactoryObjects : MonoBehaviour
     public List<Weapon> enemyGuns;
 
     public GameObject blood;
+
+    public GameObject golemBlood;
     public GameObject xpItem;
 
-    [Header("Text")]
-    [ColorUsage(true, true)]
-    public List<Color> colors;
-    public List<string> texts;
+    public TextPopUpBehaviour damageText;
 
     private void OnEnable()
     {
@@ -87,6 +111,9 @@ public class FactoryObjects : MonoBehaviour
             case FactoryObjectsType.XPItem:
                 CreateXpItem(factoryObject.Instructions);
                 break;
+            case FactoryObjectsType.DamageText:
+                CreateDamageText(factoryObject.Instructions);
+                break;
             default:
                 Debug.LogWarning("FactoryObject type not found!");
                 break;
@@ -100,6 +127,27 @@ public class FactoryObjects : MonoBehaviour
             Instantiate(blood, collider.ClosestPointOnBounds(collider.transform.position), Quaternion.identity);
         if (position is Collision collision)
             Instantiate(blood, collision.contacts[0].point, Quaternion.identity);
+        if (position is Vector3 castedPosition)
+            Instantiate(blood, castedPosition, Quaternion.identity);
+
+        if (position is BloodInstructions bloodInstructions)
+        {
+            switch (bloodInstructions.enemyType)
+            {
+                case Constants.EnemyType.Golem:
+                    Instantiate(golemBlood, bloodInstructions.Position, Quaternion.identity);
+                    break;
+                case Constants.EnemyType.Minion:
+                    Instantiate(blood, bloodInstructions.Position, Quaternion.identity);
+                    break;
+                case Constants.EnemyType.Goblin:
+                    Instantiate(blood, bloodInstructions.Position, Quaternion.identity);
+                    break;
+                default:
+                    break;
+            }
+
+        }
     }
 
     // private void CreateEnemyWeapon<T>(T instructions)
@@ -127,19 +175,16 @@ public class FactoryObjects : MonoBehaviour
     }
 
 
-    #region CreateKillingText
-
-
-
-    private string GetRandomText()
+    #region CreateDamageText
+    private void CreateDamageText<T>(T value)
     {
-        return texts[UnityEngine.Random.Range(0, texts.Count)];
+        if (value is DamageTextInstructions instructions)
+        {
+            TextPopUpBehaviour text = Instantiate(damageText, instructions.Position, damageText.transform.rotation);
+            text.SetTextAndColor(Color.white, instructions.Value.ToString());
+        }
     }
 
-    private Color32 GetRandomColor()
-    {
-        return colors[UnityEngine.Random.Range(0, colors.Count)];
-    }
 
     #endregion
 

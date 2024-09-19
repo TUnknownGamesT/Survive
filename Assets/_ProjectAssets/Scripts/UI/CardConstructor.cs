@@ -19,6 +19,8 @@ public class CardConstructor : MonoBehaviour
     public TextMeshProUGUI upgradeDescription;
     public RawImage arrow;
 
+    public Button button;
+
 
 
     public void ConstructCard(UpgradeObject upgradeObject)
@@ -28,6 +30,7 @@ public class CardConstructor : MonoBehaviour
         this.upgradeDescription.text = upgradeObject.upgradeDescription;
         SetArrowColor(upgradeObject.cardClass);
         ResizeImage(upgradeObject.cardImage, 95.6704f, 112.5304f, 90, 110);
+        button.enabled = true;
     }
 
 
@@ -101,6 +104,7 @@ public class CardConstructor : MonoBehaviour
     {
         Debug.Log("Card Clicked");
         onCardClicked?.Invoke(index);
+        button.enabled = false;
     }
 
 
