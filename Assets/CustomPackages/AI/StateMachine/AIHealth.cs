@@ -12,7 +12,7 @@ public class AIHealth : MonoBehaviour, IDamageable
     private AIBrain _aiBrain;
     private Vector3 _collisionPoint;
 
-    public SkinnedMeshRenderer meshRenderer;
+    public SkinnedMeshRenderer[] meshRenderer;
 
 
     private void Awake()
@@ -46,9 +46,16 @@ public class AIHealth : MonoBehaviour, IDamageable
     {
         UniTask.Void(async () =>
         {
-            meshRenderer.material.color = Color.red;
+            foreach (var renderer in meshRenderer)
+            {
+                renderer.material.color = Color.red;
+            }
+
             await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
-            meshRenderer.material.color = Color.white;
+            foreach (var renderer in meshRenderer)
+            {
+                renderer.material.color = Color.white;
+            }
         });
 
 
