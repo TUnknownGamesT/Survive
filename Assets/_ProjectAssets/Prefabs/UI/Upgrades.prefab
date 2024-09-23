@@ -131,7 +131,7 @@ MonoBehaviour:
   upgradeText: {fileID: 1167865796}
   mainImage: {fileID: 1769143779}
   speedImage: {fileID: 21300000, guid: f0b2ad81ef0bb864f904b947aa1beb7e, type: 3}
-  healthImage: {fileID: 21300000, guid: e500e73dd7caf6243b9991caa6c9d64b, type: 3}
+  healthImage: {fileID: 21300000, guid: 8084140f06e03664f8293ad0618487b4, type: 3}
   damageImage: {fileID: 21300000, guid: 306998da0695f6241824dfccb7f4e5bb, type: 3}
   speedUpgrade: 1
   healthUpgrade: 1
@@ -1086,7 +1086,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.4745026, y: 6.348892}
+  m_AnchoredPosition: {x: 2.4745026, y: 11.683228}
   m_SizeDelta: {x: -90.3481, y: -56.636}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2250368653254049212
@@ -1167,7 +1167,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1865166360633856858}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -1716,8 +1716,8 @@ RectTransform:
   m_GameObject: {fileID: 3662188733785147560}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8831407157413103772}
   - {fileID: 1224605612}
@@ -1747,6 +1747,7 @@ MonoBehaviour:
   cardMainUpgrade: {fileID: 1623091902}
   upgradeDescription: {fileID: 2060820628}
   arrow: {fileID: 2801415146710394360}
+  button: {fileID: 1224605613}
 --- !u!1 &3873546779117974547
 GameObject:
   m_ObjectHideFlags: 0
@@ -1849,7 +1850,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000035286, y: 5.3605}
+  m_AnchoredPosition: {x: -0.000030517578, y: 5.3604736}
   m_SizeDelta: {x: -85.4, y: -58.612}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6748804024928386804
@@ -1930,7 +1931,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 4925977655421267052}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -1984,8 +1985,8 @@ RectTransform:
   m_GameObject: {fileID: 4383402622914196470}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1473222271980091157}
   - {fileID: 2902437861833590135}
@@ -2015,6 +2016,7 @@ MonoBehaviour:
   cardMainUpgrade: {fileID: 4472616990205510123}
   upgradeDescription: {fileID: 3465403892336811091}
   arrow: {fileID: 8662778616705398533}
+  button: {fileID: 5318761460232307077}
 --- !u!1 &4577642529647323757
 GameObject:
   m_ObjectHideFlags: 0
@@ -2465,8 +2467,8 @@ RectTransform:
   m_GameObject: {fileID: 7192379206338048201}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7886553258585607630}
   - {fileID: 7029969535636230281}
@@ -2496,6 +2498,7 @@ MonoBehaviour:
   cardMainUpgrade: {fileID: 6172930044854759140}
   upgradeDescription: {fileID: 5282949113810476621}
   arrow: {fileID: 4533005562433600697}
+  button: {fileID: 8718754284261980738}
 --- !u!1 &7394339399794354010
 GameObject:
   m_ObjectHideFlags: 0
@@ -2777,9 +2780,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7996b1e18f94ac248838299248e99904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCard: {fileID: 4103300149194793384}
-  gunsCard: {fileID: 0}
-  baseCard: {fileID: 0}
+  cards:
+  - {fileID: 4103300149194793384}
+  - {fileID: 6600974442332961060}
+  - {fileID: 1543108161147237186}
   enemyCard: {fileID: 908260802}
   sparks: {fileID: 0}
 --- !u!114 &1934341246

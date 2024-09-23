@@ -1,20 +1,80 @@
 fileFormatVersion: 2
-guid: d68b67e307b9761409467aa8b2845cfe
+guid: 2694fa9e16fdf1241bdc84b2a623ad0c
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
-      74: -3100369314251171874
-    second: Idle
+      74: 8371906606807339716
+    second: Golem|Circle.001|Hit.001
   - first:
-      74: 4583860916694850387
-    second: Hit.001
+      74: -8790459075297960764
+    second: Golem|Circle.001|Idle
   - first:
-      74: -1610863427237328480
-    second: Walking
+      74: 6572540597356753021
+    second: Golem|Circle.001|idle
   - first:
-      74: -5252816984213320552
-    second: idle
+      74: 7153816446830862887
+    second: Golem|Circle.001|Walking
+  - first:
+      74: 2700942288333827492
+    second: Golem|Circle.002|Hit.001
+  - first:
+      74: 9050914403403656360
+    second: Golem|Circle.002|Idle
+  - first:
+      74: -8811253129545687287
+    second: Golem|Circle.002|idle
+  - first:
+      74: 2625470288353460330
+    second: Golem|Circle.002|Walking
+  - first:
+      74: -3836852107319571638
+    second: Golem|Circle.003|Hit.001
+  - first:
+      74: -3129170184408639824
+    second: Golem|Circle.003|Idle
+  - first:
+      74: -7184647705991986903
+    second: Golem|Circle.003|idle
+  - first:
+      74: 7335368478437609733
+    second: Golem|Circle.003|Walking
+  - first:
+      74: -7909810566171887238
+    second: Golem|Circle.004|Hit.001
+  - first:
+      74: 8650031671685229190
+    second: Golem|Circle.004|Idle
+  - first:
+      74: 2231623739132088239
+    second: Golem|Circle.004|idle
+  - first:
+      74: 6443357000248489564
+    second: Golem|Circle.004|Walking
+  - first:
+      74: -2032928152826355239
+    second: Golem|Circle|Hit.001
+  - first:
+      74: -5057598876772301345
+    second: Golem|Circle|Idle
+  - first:
+      74: -3319980597743345079
+    second: Golem|Circle|idle
+  - first:
+      74: -1588173667367411976
+    second: Golem|Circle|Walking
+  - first:
+      74: -5949039997185215592
+    second: Golem|Golem|Hit.001
+  - first:
+      74: -8443686576028854135
+    second: Golem|Golem|Idle
+  - first:
+      74: 8930831396241130577
+    second: Golem|Golem|idle
+  - first:
+      74: 2201517937990613385
+    second: Golem|Golem|Walking
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -47,9 +107,9 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 3
+    globalScale: 1
     meshCompression: 0
-    addColliders: 1
+    addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
     importVisibility: 1
@@ -100,7 +160,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 3
+    globalScale: 0.01
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
